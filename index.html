@@ -1,7 +1,115 @@
 <!DOCTYPE html>
 <html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-</body>
+	<head>
+		<title>Majora's Mask 3D Map and Item Tracker</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="style.css" type="text/css">
+	</head>
+	<body>
+		<script src="scripts/items.js"></script>
+		<script src="scripts/chests.js"></script>
+		<script type="text/javascript">
+			if (document.addEventListener) {
+				document.addEventListener('contextmenu', function(e) {
+					//Runs when you right click to bring up context menu
+					if(mouseOverItem == true){
+						//Want context menu in edit mode.
+						if(!editmode) {
+							//call method that handles right click
+							gridItemRightClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							e.preventDefault();
+						}
+					}
+				}, false);
+			} 
+			else {
+				document.attachEvent('oncontextmenu', function() {
+					if(mouseOverItem == true){
+						if(!editmode) {
+							gridItemRightClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							window.event.returnValue = false;
+						}
+					}
+				});
+			}
+		</script>
+		<script src="scripts/main.js"></script>
+
+		<div id='layoutdiv'>
+			<div id="itemdiv" oncontextmenu="gridItemRightClick()" class="itemdiv"></div>
+			<div id="'mapdiv" class="mapdiv">
+				<div id="submapdiv" class="submapdiv">
+					<div align="center"><span id='submaparea' style="font-size: 20px;">Termina</span></div>
+					<hr style="margin-top: 4px; margin-bottom: 4px;">
+					<ul onselectstart="return false" id="submaplist" style="margin-top: 4px; margin-bottom: 4px; overflow-y: auto; height: 232px;"></ul>
+				</div>
+			</div>
+		</div>
+
+		<!-- Settings Panel-->
+		 
+		<button id="settingsbutton" type="button" onclick="showSettings(this)">Settings</button>
+		<fieldset id="settings" class="settings">
+			<legend>Settings</legend>
+			<fieldset>
+				<legend>Item Tracker</legend>
+				<button type="button" onclick="EditMode()">EditMode</button>
+				<button type="button" onclick="ResetLayout()">Reset Layout</button>
+				<button type="button" onclick="ResetTracker()">Reset Tracker</button>
+				<br>
+				Size<input type="range" name="itemdivsize" value="100" max="200" min="1" onchange="setZoom('itemdiv', this)">
+				<span id="itemdivsize">100%</span><br>
+			</fieldset>
+			<fieldset>
+				<legend>Map Tracker</legend>
+				<input type="checkbox" name="showmap" checked="true" onchange="showTracker('mapdiv', this)">Enabled<br>
+				Size<input type="range" name="mapdivsize" value="100" max="200" min="1" onchange="setZoom('mapdiv', this)">
+				<span id="mapdivsize">100%</span><br>
+				Position:
+				<input type="radio" name="mapposition" value="Side" checked="true" onclick="setOrder(false)">Side
+				<input type="radio" name="mapposition" value="Below" onclick="setOrder(true)">Below<br>
+				<fieldset>
+					<legend>Item Settings</legend>
+					<input type="checkbox" name="transformmasklogic" value="transform" checked="true" onclick="setTransLogic(this)">Shuffle Transformation Masks
+					<input type="checkbox" name="maskslogic" value="mask" checked="true" onclick="setMaskLogic(this)">Shuffle Masks
+					<input type="checkbox" name="piecelogic" value="pieces" checked="true" onclick="setPieceLogic(this)">Shuffle Heart Pieces
+					<input type="checkbox" name="skullslogic" value="skulls" onclick="setSkullsLogic(this)">Tokensanity
+					<input type="checkbox" name="scrubtradelogic" value="deeds" onclick="setScrubTradeLogic(this)">Shuffle Deku Trades
+					<input type="checkbox" name="anjulogic" value="anju" onclick="setAnjuLogic(this)">Shuffle Anju and Kafei Items
+					<input type="checkbox" name="greatfairylogic" value="greatfairys" onclick="setGFLogic(this)">Shuffle Great Fairy Items
+					<input type="checkbox" name="tinglelogic" value="tingle" onclick="setTingleLogic(this)">Shuffle Tingle Maps
+					<input type="checkbox" name="notebooklogic" value="notebook" onclick="setNotebookLogic(this)">Shuffle Bomber's Notebook
+					<input type="checkbox" name="moonitemlogic" value="moonitems" onclick="setMoonItemLogic(this)">Shuffle Moon Items
+					<input type="checkbox" name="deitylogic" value="deity" onclick="setFDLogic(this)">Shuffle Fierce Deity Mask
+				</fieldset>
+				<fieldset>
+					<legend>Dungeon Settings</legend>
+					<input type="checkbox" name="mapslogic" value="maps" checked="true" onclick="setMapsLogic(this)">Maps and Compasses
+					<input type="checkbox" name="smallkeylogic" value="small" checked="true" onclick="setSmallKeyLogic(this)">Keysanity(Small)
+					<input type="checkbox" name="bigkeylogic" value="big" checked="true" onclick="setBigKeyLogic(this)">Keysanity(Boss)
+				<!--  Uncomment this when we add stray fairy sanity  
+				  <input type="checkbox" name="straylogic" value="stray" checked="true" onclick="setStrayLogic(this)">StrayFairySanity 
+				-->
+					<input type="checkbox" name="remainslogic" value="remains" checked="true" onclick="setRemainsLogic(this)">Boss Remains
+					<input type="checkbox" name="containerlogic" value="container" checked="true" onclick="setContainerLogic(this)"><div class="tooltip">Heart Containers
+						<span class="tooltiptext">Shuffle Heart Container Rewards</span></div>					
+				</fieldset>
+				<fieldset>
+					<legend>Custom Logic</legend>
+					<input type="checkbox" name="skipbombers" value="bombers" onclick="setSkipBombers(this)"><div class="tooltip">Skip Bombers Minigame
+						<span class="tooltiptext">Sets Bombers Code to 12345</span></div>
+				</fieldset>
+			</fieldset>
+		</fieldset>
+
+		<table id="itemconfig" class="itemconfig" style="display: none;"></table>
+
+		<script>
+			init();
+		</script>
+
+		<footer style="bottom: 0; width: 100%; text-align: center; position: relative; color: gray;">
+			Majoras Mask 3D Randomizer Item and Map Tracker v0.1
+		</footer>
+	</body>
 </html>
