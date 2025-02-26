@@ -69,8 +69,8 @@ var cookieDefault = {
     remains: defaultRemains,
     items: defaultItemGrid,
     obtainedItems: items,
-    chests: serializeChests(),
-    dungeonChests: serializeDungeonChests(),
+    checks: serializeChecks(),
+    dungeonChecks: serializeDungeonChecks(),
     tmask: 1,
     mask: 1,
     piece: 1,
@@ -108,8 +108,8 @@ function loadCookie() {
     remains = JSON.parse(JSON.stringify(cookieobj.remains));
     initGridRow(JSON.parse(JSON.stringify(cookieobj.items)));
     items = JSON.parse(JSON.stringify(cookieobj.obtainedItems));
-    deserializeChests(JSON.parse(JSON.stringify(cookieobj.dungeonChests)));
-    deserializeDungeonChests(JSON.parse(JSON.stringify(cookieobj.dungeonChests)));
+    deserializeChecks(JSON.parse(JSON.stringify(cookieobj.dungeonChecks)));
+    deserializeDungeonChecks(JSON.parse(JSON.stringify(cookieobj.dungeonChecks)));
 
     updateGridItemAll();
 
@@ -183,8 +183,8 @@ function saveCookie() {
     cookieobj.remains = JSON.parse(JSON.stringify(remains));
     cookieobj.items = JSON.parse(JSON.stringify(itemLayout));
     cookieobj.obtainedItems = JSON.parse(JSON.stringify(items));
-    cookieobj.chests = JSON.parse(JSON.stringify(serializeChests()));
-    cookieobj.dungeonChests = JSON.parse(JSON.stringify(serializeDungeonChests()));
+    cookieobj.checks = JSON.parse(JSON.stringify(serializeChecks()));
+    cookieobj.dungeonChecks = JSON.parse(JSON.stringify(serializeDungeonChecks()));
 
     //Item Settings
     cookieobj.tmask = document.getElementsByName('transformmasklogic')[0].checked ? 1 : 0;
@@ -213,45 +213,45 @@ function saveCookie() {
     cookielock = false;
 }
 
-function serializeChests() {
-    return chests.map(chest => chest.isOpened || false);
+function serializeChecks() {
+    return checks.map(check => check.isOpened || false);
 }
 
-function serializeDungeonChests() {
-    return dungeons.map(dungeon => Object.values(dungeon.chestlist).map(chest => chest.isOpened || false));
+function serializeDungeonChecks() {
+    return dungeons.map(dungeon => Object.values(dungeon.checklist).map(check => check.isOpened || false));
 }
 
-function deserializeChests() {
-    for (var i = 0; i < chests.length; i++) {
-        chests[i].isOpened = serializedChests[i];
-        refreshChest(i);
+function deserializeChecks() {
+    for (var i = 0; i < checks.length; i++) {
+        checks[i].isOpened = serializedChecks[i];
+        refreshCheck(i);
     }
 }
 
-function deserializeDungeonChests() {
+function deserializeDungeonChecks() {
     for (var i = 0; i < dungeons.length; i++) {
         var dungeon = dungeons[i];
         var serializedDungeon = serializedDungeons[i];
-        var chestNames = Object.keys(dungeon.chestlist);
-        for (var j = 0; j > chestNames.length; j++) {
-            dungeon.chestlist[chestNames[j]].isOpened = serializedDungeon[j];
+        var checkNames = Object.keys(dungeon.checklist);
+        for (var j = 0; j > checkNames.length; j++) {
+            dungeon.checklist[checkNames[j]].isOpened = serializedDungeon[j];
         }
     }
 }
 
-//when clicking on a chest
-function toggleChest(x) {
-    chests[x].isOpened = !chests[x].isOpened;
-    refreshChest(x);
+//when clicking on a check
+function toggleCheck(x) {
+    checks[x].isOpened = !checks[x].isOpened;
+    refreshCheck(x);
     saveCookie();
 }
 
-function refreshChest(x) {
-    var stateClass = chests[x].isOpened ? 'opened' : chests[x].isAvailable();
-    document.getElementById(x).className = 'mapspan chest ' + stateClass;
+function refreshCheck(x) {
+    var stateClass = checks[x].isOpened ? 'opened' : checks[x].isAvailable();
+    document.getElementById(x).className = 'mapspan check ' + stateClass;
 }
 
-//highlights a chest location
+//highlights a check location
 function highlight(x) {
     document.getElementById(x).style.backgroundImage = 'url(images/highlighted.png)';
 }
@@ -260,7 +260,7 @@ function unhighlight(x) {
     document.getElementById(x).style.backgroundImage = 'url(images/poi.png)';
 }
 
-//highlights a dungeon chest location
+//highlights a dungeon check location
 function highlightDungeon(x) {
     document.getElementById('dungeon' + x).style.backgroundImage = 'url(images/highlighted.png)';
 }
@@ -279,35 +279,35 @@ function clickDungeon(d) {
     var DClist = document.getElementById('submaplist');
     DClist.innerHTML = '';
 
-    for (var key in dungeons[dungeonSelect].chestlist) {
+    for (var key in dungeons[dungeonSelect].checklist) {
         var s = document.createElement('li');
         s.innerHTML = key;
 
-        if (dungeons[dungeonSelect].chestlist[key].isOpened()) {
+        if (dungeons[dungeonSelect].checklist[key].isOpened()) {
             s.className = "DCopened";
         } 
-        else if (dungeons[dungeonSelect].chestlist[key].isAvailable()) {
+        else if (dungeons[dungeonSelect].checklist[key].isAvailable()) {
             s.className = "DCavailable";
         }
         else {
             s.className = "DCunavailable";
         }
 
-        s.onclick = new Function('toggleDungeonChest(this,' + dungeonSelect + ',"' + key + '")');
-        s.onmouseover = new Function('highlightDungeonChest(this');
-        s.onmouseout = new Function('unhighlightDungeonChest(this');
+        s.onclick = new Function('toggleDungeonCheck(this,' + dungeonSelect + ',"' + key + '")');
+        s.onmouseover = new Function('highlightDungeonCheck(this');
+        s.onmouseout = new Function('unhighlightDungeonCheck(this');
         s.style.cursor = "pointer";
 
         DClist.appendChild(s);
     }
 }
 
-function toggleDungeonChest(sender, d, c) {
-    dungeons[d].chestlist[c].isOpened = !dungeons[d].chestlist[c].isOpened;
-    if (dungeons[d].chestlist[c].isOpened) {
+function toggleDungeonCheck(sender, d, c) {
+    dungeons[d].checklist[c].isOpened = !dungeons[d].checklist[c].isOpened;
+    if (dungeons[d].checklist[c].isOpened) {
         sender.className = 'DCopened';
     }
-    else if (dungeons[d].chestlist[c].isAvailable) {
+    else if (dungeons[d].checklist[c].isAvailable) {
         sender.className = 'DCavailable';
     }
     else {
@@ -318,11 +318,11 @@ function toggleDungeonChest(sender, d, c) {
     saveCookie();
 }
 
-function highlightDungeonChest(x) {
+function highlightDungeonCheck(x) {
     x.style.backgroundColor = '#282828';
 }
 
-function unhighlightDungeonChest(x) {
+function unhighlightDungeonCheck(x) {
     x.style.backgroundColor = '';
 }
 
@@ -502,8 +502,8 @@ function ResetLayout() {
 }
 
 function ResetTracker() {
-    chests.forEach(chest => delete chest.isOpened);
-    dungeons.forEach(dungeon => Object.values(dungeon.chestlist).forEach(chest => delete chest.isOpened));
+    checks.forEach(check => delete check.isOpened);
+    dungeons.forEach(dungeon => Object.values(dungeon.checklist).forEach(check => delete check.isOpened));
     items = Object.assign({}, baseItems);
     updateGridItemAll();
     updateMap();
@@ -555,3 +555,463 @@ function removeItemRow() {
     saveCookie();
 }
 
+function addItem(r) {
+    var i = itemLayout[r].length;
+    itemGrid[r][i] = [];
+    itemLayout[r][i] = 'blank';
+    itemGrid[r][i]['item'] = document.createElement('td');
+    itemGrid[r][i]['item'].className = 'griditem';
+    itemGrid[r]['row'].appendChild(itemGrid[r][i]['item']);
+
+    var tdt = document.createElement('table');
+    tdt.className = 'bonk';
+    itemGrid[r][i]['item'].appendChild(tdt);
+
+    var tdtr1 = document.createElement('tr');
+    tdt.appendChild(tdtr1);
+    itemGrid[r][i][0] = document.createElement('th');
+    itemGrid[r][i][0].className = 'corner';
+    itemGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    itemGrid[r][i][0].onmouseout = new Function("setMOff()");
+    itemGrid[r][i][0].onclick = new Function("gridItemClick(" + r + "," + i + ",0)");
+    tdtr1.appendChild(itemGrid[r][i][0]);
+    itemGrid[r][i][1] = document.createElement('th');
+    itemGrid[r][i][1].className = 'corner';
+    itemGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    itemGrid[r][i][1].onmouseout = new Function("setMOff()");
+    itemGrid[r][i][1].onclick = new Function("gridItemClick(" + r + "," + i + ",1)");
+    tdtr1.appendChild(itemGrid[r][i][1]);
+
+    var tdtr2 = document.createElement('tr');
+    tdt.appendChild(tdtr2);
+    itemGrid[r][i][2] = document.createElement('th');
+    itemGrid[r][i][2].className = 'corner';
+    itemGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    itemGrid[r][i][2].onmouseout = new Function("setMOff()");
+    itemGrid[r][i][2].onclick = new Function("gridItemClick(" + r + "," + i + ",2)");
+    tdtr2.appendChild(itemGrid[r][i][2]);
+    itemGrid[r][i][3] = document.createElement('th');
+    itemGrid[r][i][3].className = 'corner';
+    itemGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    itemGrid[r][i][3].onmouseout = new Function("setMOff()");
+    itemGrid[r][i][3].onclick = new Function("gridItemClick(" + r + "," + i + ",3)");
+    tdtr1.appendChild(itemGrid[r][i][3]);
+
+    updateGridItem(r, i);
+    saveCookie();
+}
+
+function removeItem(r) {
+    var i = itemLayout[r].length - 1;
+    if (i < 0) {
+        return;
+    }
+    itemGrid[r]['row'].removeChild(itemGrid[r][i]['item']);
+    itemGrid[r].splice(i, 1);
+    itemLayout[r].splice(i, 1);
+    saveCookie();
+}
+
+function updateGridItem(row, index) {
+    var item = itemLayout[row][index];
+    if (editmode) {
+        if (!item || item == 'blank') {
+            itemGrid[row][index]['item'].style.backgroundImage = 'url(images/blank.png)';
+        }
+        else if ((typeof items[item]) == 'boolean') {
+            itemGrid[row][index]['item'].style.backgroundImage = 'url(images/' + item + '-3D.png)';
+        }
+        else {
+            itemGrid[row][index]['item'].style.backgroundImage = 'url(images/' + item + itemsMax[item] + '-3D.png)';
+        }
+        itemGrid[row][index]['item'].style.border = '1px solid white';
+        itemGrid[row][index]['item'].className = 'griditem true';
+        return;
+    }
+
+    itemGrid[row][index]['item'].style.border = '0px';
+
+    if (!item || item == 'blank') {
+        itemGrid[row][index]['item'].style.backgroundImage = '';
+        return;
+    }
+
+    if ((typeof items[item]) == 'boolean') {
+        itemGrid[row][index]['item'].style.backgroundImage = 'url(images/' + item + '-3D.png)';
+    }
+    else {
+        itemGrid[row][index]['item'].style.backgroundImage = 'url(images/' + item + items[item] + '-3D.png)';
+    }
+
+    itemGrid[row][index]['item'].className = 'griditem ' + !!items[item];
+
+    if (remains[item] != undefined) {
+        itemGrid[row][index][3].style.backgroundImage = '';
+    }
+}
+
+function updateGridItemAll() {
+    var r, c;
+    for (r = 0; r < itemLayout.length; r++) {
+        for (c = 0; c < itemLayout[r].length; c++) {
+            updateGridItem(r, c);
+        }
+        if (editmode) {
+            itemGrid[r]['addbutton'].style.display = '';
+            itemGrid[r]['removebutton'].style.display = '';
+        }
+        else {
+            itemGrid[r]['addbutton'].style.display = 'none';
+            itemGrid[r]['removebutton'].style.display = 'none';
+        }
+    }
+}
+
+function setGridItem(item, row, index) {
+    while (!itemLayout[row]) {
+        addItemRow();
+    }
+    while (!itemLayout[row][index]) {
+        addItem(row);
+    }
+    itemLayout[row][index] = item;
+    updateGridItem(row, index);
+}
+
+function initGridRow(itemsets) {
+    while(itemLayout.length > 0) {
+        removeItemRow();
+    }
+
+    var r, c;
+    for (r = 0; r < itemsets.length; r++) {
+        for (c = 0; c < itemsets[r].length; c++) {
+            setGridItem(itemsets[r][c], r, c);
+        }
+    }
+}
+
+function setMOver(row, col, corner) {
+    //keep track of what was moused over
+    mouseLastOverCor = corner;
+    mouseLastOverR = row;
+    mouseLastOverC = col;
+    mouseOverItem = true;
+}
+
+function setMOff() {
+    mouseOverItem = false;
+}
+
+function gridItemClick(row, col, corner) {
+    if (editmode) {
+        if (selected.item) {
+            document.getElementById(selected.item).style.border = '1px solid white';
+            var old = itemLayout[row][col];
+            if (old == selected.item) {
+                selected = {};
+                return;
+            }
+            itemLayout[row][col] = selected.item;
+            updateGridItem(row, col);
+            selected = {};
+            document.getElementById(old).style.opacity = 1;
+        }
+        else if (selected.row !== undefined) {
+            itemGrid[selected.row][selected.col]['item'].style.border = '1px solid white';
+            var temp = itemLayout[row][col];
+            itemLayout[row][col] = itemLayout[selected.row][selected.col];
+            itemLayout[selected.row][selected.col] = temp;
+            updateGridItem(row, col);
+            updateGridItem(selected.row, selected.col);
+            selected = {};
+        }
+    }
+    else {
+        var item = itemLayout[row][col];
+        if (remains[item] !== undefined) {
+            if (corner == 3) {
+                remains[item]++;
+                if (remains[item] >= 4) {
+                    remains[item] = 0;
+                }
+            }
+            else {
+                items[item] = !items[item];
+            }
+        }
+        else if ((typeof items[item]) == 'boolean') {
+            items[item] = !items[item];
+        }
+        else {
+            items[item]++;
+            if (items[item] > itemsMax[item]) {
+                items[item] = itemsMin[item];
+            }
+        }
+    }
+    updateMap();
+    updateGridItem(row,col);
+    saveCookie();
+}
+
+function gridItemRClick(row, col, corner) {
+    if (editmode) {
+        //do nothing
+    }
+    else {
+        var item = itemLayout[row][col];
+        if (remains[item] != undefined) {
+            if (corner == 3) {
+                //dungeon list happens here
+                //corner 3 is bottom right
+                if (remains[item] <= 0) {
+                    remains[item] = 4;
+                }
+                else {
+                    remains[item] = remains[item] - 1;
+                }
+            }
+            else {
+                items[item] = !items[item];
+            }
+        }
+        else if ((typeof items[item]) == 'boolean') {
+            items[item] = !items[item];
+        }
+        else {
+            if (items[item] == itemsMin[item]) {
+                items[item] = itemsMax[item]
+            }
+            else {
+                items[item]--;
+            }
+        }
+        updateMap();
+        updateGridItem(row, col);
+    }
+    saveCookie();
+}
+
+function updateMap() {
+    for (k = 0; k < checks.length; k++) {
+        if(!checks[k].isOpened) {
+            document.getElementById(k).className = 'mapspan check ' + checks[k].isAvailable();
+        }
+    }
+    for (k = 0; k < dungeons.length; k++) {
+        document.getElementById('dungeon' + k).className = 'mapspan dungeon ' + dungeons[k].canGetCheck();
+        var DCcount = 0;
+        for (var key in dungeons[k].checklist) {
+            if (dungeons[k].checklist.hasOwnProperty(key)) {
+                if (!dungeons[k].checklist[key].isOpened && dungeons[k].checklist[key].isAvailable()) {
+                    DCcount++;
+                }
+            }
+        }
+        var child = document.getElementById('dugeon ' + k).firstChild;
+        while (child) {
+            if (child.className == 'checkCount') {
+                if (DCcount == 0) {
+                    child.innerHTML = '';
+                }
+                else {
+                    child.innerHTML = DCcount;
+                }
+                break;
+            }
+            child = child.nextSibling;
+        }
+    }
+    document.getElementById('submaparea').className = 'DC' + dungeons[dungeonSelect].isBeatable();
+    var itemlist = document.getElementById('submaplist').children;
+    for (var item in itemlist) {
+        if (itemlist.hasOwnProperty(item)) {
+            if (dungeons[dungeonSelect].checklist[itemlist[item].innerHTML].isOpened) {
+                itemlist[item].className = 'DCopened';
+            }
+            else if (dungeons[dungeonSelect].checklist[itemlist[item].innerHTML].isAvailable()) {
+                itemlist[item].className = 'DCavailable';
+            }
+            else {
+                itemlist[item].className = 'DCunavailable';
+            }
+        }
+    }
+}
+
+function itemConfigClick(sender) {
+    var item = sender.id;
+    if (selected.item) {
+        document.getElementById(selected.item).style.border = '0px';
+        sender.style.border = '3px solid yellow';
+        selected = {item: item};
+    }
+    else if (selected.row !== undefined) {
+        itemGrid[selected.row][selected.col]['item'].style.border = '1px solid white';
+        var old = itemLayout[selected.row][selected.col];
+        if (old == item) {
+            selected = {};
+            return;
+        }
+        itemLayout[selected.row][selected.col] = item;
+        updateGridItem(selected.row, selected.col);
+        document.getElementById(old).style.opacity = 1;
+        selected = {};
+    }
+    else {
+        sender.style.border = '3px solid yellow';
+        selected = {item: item}
+    }
+}
+
+function populateMapDiv() {
+    var mapdiv = document.getElementById('mapdiv');
+    //Initialize all checks on the map
+    for (k = 0; k < checks.length; k++) {
+        var s = document.createElement('span');
+        s.style.backgroundImage = 'url(images/poi.png)';
+        s.style.color = 'black';
+        s.id = k;
+        s.onclick = new Function('toggleCheck(' + k + ')');
+        s.onmouseover = new Function('highlight(' + k + ')');
+        s.onmouseout = new Function('unhighlight(' + k + ')');
+        s.style.left = checks[k].x;
+        s.style.top = checks[k].y;
+        if (checks[k].isOpened) {
+            s.className = 'mapspan check opened';
+        }
+        else {
+            s.className = 'mapspan check ' + checks[k].isAvailable();
+        }
+        var ss = document.createElement('span');
+        ss.className = 'tooltip';
+        ss.innerHTML = checks[k].name;
+        s.appendChild(ss);
+        mapdiv.appendChild(s);
+    }
+
+    //Dungeon Bosses and checks
+    for (k = 0; k < dungeons.length; k++) {
+        s.document.createElement('span');
+        s.id = 'dungeon' + k;
+        s.onclick = new Function('clickDungeon(' + k + ')');
+        s.onmouseover = new Function('highlightDungeon(' + k + ')');
+        s.onmouseover = new Function('unhighlightDungeon(' = k + ')');
+        s.style.backgroundImage = 'url(images/poi.png)';
+        s.style.left = dungeons[k].x;
+        s.style.top = dungeons[k].y;
+        s.style.textAlign = 'center';
+        s.className = 'mapspan dungeon ' + dungeons[k].canGetCheck();
+        var DCcount = 0;
+        for (var key in dungeons[k].checklist) {
+            if (dungeons[k].checklist.hasOwnProperty(key)) {
+                if (!dungeons[k].checklist[key].isOpened && dungeons[k].checklist[key].isAvailable()) {
+                    DCcount++;
+                }
+            }
+        }
+        var ss = document.createElement('span');
+        ss.className = 'checkCount';
+        if (DCcount == 0) {
+            ss.innerHTML = '';
+        }
+        else {
+            ss.innerHTML = DCcount;
+        }
+        ss.style.color = 'black';
+        ss.display = 'inline-block';
+        ss.style.lineHeight = '24px';
+        s.appendChild(ss);
+        mapdiv.appendChild(s);
+    }
+    document.getElementById('submaparea').innerHTML = dungeons[dungeonSelect].name;
+    document.getElementById('submaparea').className = 'DC' + dungeons[dungeonSelect].isBeatable();
+    document.getElementById('dungeon' + dungeonSelect).style.backgroundImage = 'url(images/highlighted.png)';
+    for (var key in dungeons[dungeonSelect].checklist) {
+        var s = document.createElement('li');
+        s.innerHTML = key;
+
+        if (dungeons[dungeonSelect].checklist[key].isOpened) {
+            s.className = 'DCopened';
+        }
+        else if (dungeons[dungeonSelect].checklist[key].isAvailable()) {
+            s.className = 'DCavailable';
+        }
+        else {
+            s.className = 'DCunavailable';
+        }
+        s.onclick = new Function('toggleDungeonCheck(this,' + dungeonSelect + ',"' + key + '")');
+        s.onmouseover = new Function('highlightDungeonCheck(this)');
+        s.onmouseout = new Function('unhighlightDungeonCheck(this)');
+        s.style.cursor = 'pointer';
+        document.getElementById('submaplist').appendChild(s);
+    }
+}
+
+function populateItemConfig() {
+    var grid = document.getElementById('itemconfig');
+    var i = 0;
+    var row;
+    for (var key in items) {
+        if (i % 10 == 0) {
+            row = document.createElement('tr');
+            grid.appendChild(row);
+        }
+        i++;
+        var rowitem = document.createElement('td');
+        rowitem.className = 'corner';
+        rowitem.id = key;
+        rowitem.style.backgroundSize = '100% 100%';
+        rowitem.onclick = new Function('itemConfigClick(this)');
+        if ((typeof items[key]) == 'boolean') {
+            rowitem.style.backgroundImage = 'url(images/' + key + '-3D.png)';
+        }
+        else {
+            rowitem.style.backgroundImage = 'url(images/' + key + itemsMax[key] + '-3D.png)';
+        }
+        row.appendChild(rowitem);
+    }
+}
+
+function init() {
+    populateMapDiv();
+    populateItemConfig();
+    loadCookie();
+    saveCookie();
+}
+
+function preloader() {
+    for (item in items) {
+        if ((typeof items[item]) == 'boolean') {
+            var img = new Image();
+            img.src = 'images/' + item + '-3D.png';
+        }
+        else {
+            for (i = itemsMin[item]; i < itemsMax[item]; i++) {
+                var img = new Image();
+                img.src = 'images/' + item + i + '-3D.png';
+            }
+        }
+    }
+    for (remains in dungeonImg) {
+        var img = new Image();
+        img.src = 'images/' + dungeonImg[remains] + '-3D.png';
+    }
+}
+
+function addLoadEvent(func) {
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function') {
+        window.onload = func;
+    }
+    else {
+        window.onload = function() {
+            if (oldonload) {
+                oldonload();
+            }
+            func();
+        }
+    }
+}
+addLoadEvent(preloader);
