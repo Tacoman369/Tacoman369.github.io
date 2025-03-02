@@ -1,6 +1,7 @@
 /*eslint strict: ["error", "never"]*/
 function generalCanGetCheck(checklist) {
-    var canGet, unopened, checkable = 0;
+    var canGet = 0;
+    var unopened = 0;
     for (var key in checklist) {
         if (checklist.hasOwnProperty(key)) {
             if (!checklist[key].isOpened) {
@@ -9,9 +10,9 @@ function generalCanGetCheck(checklist) {
             if (!checklist[key].isOpened && checklist[key].isAvailable()) {
                 canGet++;   
             }
-            if (checklist[key].isCheckable(key)){
+            /*if (checklist[key].isCheckable(key)){
                 checkable++;
-            }
+            }*/
         }
     }
     if (unopened == 0) {
@@ -23,13 +24,14 @@ function generalCanGetCheck(checklist) {
     if (canGet == 0) {
         return "unavailable";
     }
+    /*
     if (checkable == 1)
     {
         return "hidden";
-    }
+    }*/
     return "possible";
 }
-
+/*
 function isCheckable(key) {
     return (key.hasOwnProperty(transformmasklogic) || key.hasOwnProperty(maskslogic) || key.hasOwnProperty(piecelogic) ||
             key.hasOwnProperty(skullslogic) || key.hasOwnProperty(scrubtradelogic) || key.hasOwnProperty(anjulogic) ||
@@ -37,18 +39,18 @@ function isCheckable(key) {
             key.hasOwnProperty(moonitemlogic) || key.hasOwnProperty(deitylogic) || key.hasOwnProperty(mapslogic) || 
             key.hasOwnProperty(smallkeylogic) || key.hasOwnProperty(bigkeylogic) || key.hasOwnProperty(remainslogic) || 
             key.hasOwnProperty(containerlogic) );
-}
+}*/
 
 function canPlay(song) {
     return (song && items.Ocarina);
 }
 
 function Fighting(){
-    return (items.Sword >= 1 || items.GoronMask || items.ZoraMask || GreatFairySword); 
+    return (items.Sword >= 1 || items.GoronMask || items.ZoraMask || items.GreatFairySword); 
 }
 
 function HasBottle() {
-    return (items.RedPotion || items.GoldDust || items.Milk || items.ChateauRomani || items.MysteryMilk || (EmptyBottle >= 1));
+    return (items.RedPotion || items.GoldDust || items.Milk || items.ChateauRomani || items.MysteryMilk || (items.EmptyBottle >= 1));
 }
 
 function HasRangeAttack() {
@@ -77,11 +79,11 @@ function WoodfallClear() {
 }
 
 function SnowheadClear() {
-    return (items.Bow >= 1 && items.GoronMask && items.SnowSmallKey >= 3 && items.FireArrow && items.Magic >= 1 && HasExplosives() && canPlay(GoronLullaby) && items.SnowBigKey && Fighting() && items.LensOfTruth);
+    return (items.Bow >= 1 && items.GoronMask && items.SnowSmallKey >= 3 && items.FireArrow && items.Magic >= 1 && HasExplosives() && canPlay(items.GoronLullaby) && items.SnowBigKey && Fighting() && items.LensOfTruth);
 }
 
 function BayClear() {
-    return (items.Bow >= 1 && items.ZoraMask && items.OceanSmallKey >= 1 && items.OceanBigKey && items.IceArrow && items.Magic >= 1 && canPlay(NewWaveBossaNova) && Fighting() && canPlay(EponasSong) && items.Hookshot);
+    return (items.Bow >= 1 && items.ZoraMask && items.OceanSmallKey >= 1 && items.OceanBigKey && items.IceArrow && items.Magic >= 1 && canPlay(items.NewWaveBossaNova) && Fighting() && canPlay(items.EponasSong) && items.Hookshot);
 }
 
 function StoneClear() {
@@ -97,11 +99,11 @@ function EnterSnowheadTemple() {
 }
 
 function EnterGreatBayTemple() {
-    return (canPlay(EponasSong) && items.Hookshot && items.ZoraMask && items.ZoraEggs >= 7 && items.Magic >= 1);
+    return (canPlay(items.EponasSong) && items.Hookshot && items.ZoraMask && items.ZoraEggs >= 7 && items.Magic >= 1);
 }
 
 function EnterIkana() {
-    return (canPlay(EponasSong) && (items.GaroMask || items.GibdoMask) && items.Hookshot && CanUse(items.IceArrow));
+    return (canPlay(items.EponasSong) && (items.GaroMask || items.GibdoMask) && items.Hookshot && CanUse(items.IceArrow));
 }
 
 function EnterStoneTower() {
@@ -156,7 +158,7 @@ var areas = [
             'Old Lady': { isAvailable: function() { return Fighting();}},
             'Tingle Clock Town Map': { isAvailable: function() {return tinglelogic;}},
             'Tingle Woodfall Map': { isAvailable: function() {return tinglelogic;}},
-            'Postbox': { isAvailable: function() {return PostmanHat && piecelogic;}},
+            'Postbox': { isAvailable: function() {return items.PostmanHat && piecelogic;}},
             'Deku Playground (all 3 days)': { isAvailable: function() {return items.DekuMask && piecelogic;}},
         },
         isBeatable: function() {
@@ -249,9 +251,9 @@ var areas = [
         y: "%",
         checklist: {
             'Rosa Sisters': { isAvailable: function() { return items.KamaroMask;}, },
-            'Swordsman School': { isAvailable: function() { return Sword >= 1;}, },
+            'Swordsman School': { isAvailable: function() { return items.Sword >= 1;}, },
             'Postman Game': { isAvailable: function() { return items.BunnyHood;}, },
-            'All Night Mask': { isAvailable: function() { return Wallet >= 2;}, },
+            'All Night Mask': { isAvailable: function() { return items.Wallet >= 2;}, },
             'Bomb Bag': { isAvailable: function() { return true;}, },
             'Big Bomb Bag': { isAvailable: function() { return Fighting();}, },
         },
@@ -351,8 +353,8 @@ var areas = [
             'Tree HP': { isAvailable: function() { return HasRangeAttack() && piecelogic;}, },
             'Tingle Woodfall Map': { isAvailable: function() { return HasRangeAttack() && tinglelogic;}, },
             'Tingle Snowhead Map': { isAvailable: function() { return HasRangeAttack() && tinglelogic;}, },
-            'Swamp Archery 1': { isAvailable: function() { return Bow >= 1;}, },
-            'Swamp Archery 2': { isAvailable: function() { return (Bow >=1) && piecelogic;}, },
+            'Swamp Archery 1': { isAvailable: function() { return items.Bow >= 1;}, },
+            'Swamp Archery 2': { isAvailable: function() { return (items.Bow >=1) && piecelogic;}, },
             'Grotto Chest': { isAvailable: function() { return true;}, },
 
         },
@@ -428,7 +430,7 @@ var areas = [
             'Frog Choir': { isAvailable: function() { return WoodfallClear() && SnowheadClear() && BayClear() && items.DonGeroMask  && piecelogic;}, },
             'Hungry Goron': { isAvailable: function() { return items.GoronMask && items.Magic >= 1 && items.Bow >=1 && HasExplosives() && piecelogic;}, },
             'Waterfall Chest': { isAvailable: function() { return SnowheadClear() && CanUse(items.LensOfTruth);}, },
-            'Darmani': { isAvailable: function() { return CanUse(item.LensOfTruth) && canPlay(SongOfHealing) && items.Bow >= 1 && HasExplosives() && transformmasklogic;}, },
+            'Darmani': { isAvailable: function() { return CanUse(items.LensOfTruth) && canPlay(SongOfHealing) && items.Bow >= 1 && HasExplosives() && transformmasklogic;}, },
             'Smith Day 1': { isAvailable: function() { return HasExplosives() && items.Wallet >=1 && items.Sword >= 1 && (CanUse(items.FireArrow) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth))) ;}, },
             'Smith Day 2': { isAvailable: function() { return HasExplosives() && items.GoldDust && items.Wallet >=1 && items.Sword >= 1 && ((CanUse(items.FireArrow)) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth)));}, },
             'Spring Water Grotto Chest': { isAvailable: function() { return SnowheadClear();}, },
@@ -527,7 +529,7 @@ var areas = [
             'Ledge HP': { isAvailable: function() { return canPlay(items.EponasSong) && items.Hookshot && HasBottle() && items.MagicBean && piecelogic;}, },
             'Mikau': { isAvailable: function() { return canPlay(items.EponasSong) && canPlay(items.SongOfHealing) && transformmasklogic;}, },
             'Tingle Great Bay Map': { isAvailable: function() { return canPlay(items.EponasSong) && HasRangeAttack() && tinglelogic;}, },
-            'Tingle Stone Tower Map': { isAvailable: function() { return canPlay(EponasSong) && HasRangeAttack() && tinglelogic;}, },
+            'Tingle Stone Tower Map': { isAvailable: function() { return canPlay(items.EponasSong) && HasRangeAttack() && tinglelogic;}, },
             'Baby Zoras': { isAvailable: function() { return canPlay(items.EponasSong) && HasBottle() && items.ZoraEggs >= 7;}, },
             'Lab Fish': { isAvailable: function() { return canPlay(items.EponasSong) && HasBottle() && piecelogic;}, },
             'Grotto Chest': { isAvailable: function() { return canPlay(items.EponasSong);}, },
@@ -758,22 +760,22 @@ var areas = [
         x: "%",
         y: "%",
         checklist: {
-            'Exterior Log Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.Magic >= 1;}, },
-            'Exterior Sand Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.Magic >= 1;}, },
-            'Exterior Corner Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.Magic >= 1;}, },
-            'Maze Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1;}, },
-            'Cage Shallow Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1;}, },
-            'Cage Deep Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1;}, },
-            'Cage HP': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1;}, },
-            'Interior Lower Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.Hookshot && items.Magic >= 1;}, },
-            'Interior Upper Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.Hookshot && items.Magic >= 1;}, },
-            'Invisible Soldier': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && CanUse(items.LensOfTruth) && HasBottle();}, },
-            'Hookshot Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Bow >= 1 && items.Magic >= 1;}, },
-            'Guard Room Chest': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && (HasRangeAttack() || items.StoneMask);}, },
-            'Barrel Maze Zora Egg': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && items.Hookshot;}, },
-            'Lava Room Zora Egg': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && items.Hookshot;}, },
-            'Guard Room Zora Egg': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && items.Hookshot;}, },
-            'Hookshot Room Zora Egg': { isAvailable: function() { return canPlay(EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && items.Hookshot;}, },
+            'Exterior Log Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.Magic >= 1;}, },
+            'Exterior Sand Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.Magic >= 1;}, },
+            'Exterior Corner Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.Magic >= 1;}, },
+            'Maze Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1;}, },
+            'Cage Shallow Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1;}, },
+            'Cage Deep Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1;}, },
+            'Cage HP': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1;}, },
+            'Interior Lower Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.Hookshot && items.Magic >= 1;}, },
+            'Interior Upper Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.Hookshot && items.Magic >= 1;}, },
+            'Invisible Soldier': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && CanUse(items.LensOfTruth) && HasBottle();}, },
+            'Hookshot Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Bow >= 1 && items.Magic >= 1;}, },
+            'Guard Room Chest': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && (HasRangeAttack() || items.StoneMask);}, },
+            'Barrel Maze Zora Egg': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && items.Hookshot;}, },
+            'Lava Room Zora Egg': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && items.Hookshot;}, },
+            'Guard Room Zora Egg': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && items.Hookshot;}, },
+            'Hookshot Room Zora Egg': { isAvailable: function() { return canPlay(items.EponasSong) && items.ZoraMask && items.GoronMask && items.Magic >= 1 && items.Hookshot;}, },
         },
         isBeatable: function() {
             return this.canGetCheck();

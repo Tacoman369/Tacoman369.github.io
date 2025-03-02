@@ -8,18 +8,18 @@ body{
     text-align: center;
 }
 
-.flexcontainer {
+.flexcontainer{
     display: flex;
 }
 
 /*tooltip container*/
-.tooltip {
+.tooltip{
     position: relative;
     display: inline-block;
     border-bottom: 1px dotted black;
 }
 
-.tooltip .tooltiptext {
+.tooltip .tooltiptext{
     visibility: hidden;
     width: 120px;
     background-color: white;
@@ -34,11 +34,11 @@ body{
 }
 
 /*show tooltip on mouse over*/
-.tooltip:hover .tooltiptext {
+.tooltip:hover .tooltiptext{
     visibility: visible;
 }
 
-.settings {
+.settings{
     background-color: black;
     position: fixed;
     right: 0;
@@ -47,7 +47,7 @@ body{
     display: none;
 }
 
-#settingsbutton {
+#settingsbutton{
     position: fixed;
     right: 0;
     bottom: 0;
@@ -56,7 +56,7 @@ body{
     color: red;
 }
 
-.tracker {
+.tracker{
     background-color: rgba(0,0,0);
     position: relative;
     top: 0px;
@@ -67,7 +67,7 @@ body{
     border: 0px;
 }
 
-.tracker td {
+.tracker td{
     width: 64px;
     height: 64px;
     padding: 0px;
@@ -75,7 +75,7 @@ body{
     background-size: 64px 64px;
 }
 
-.itemconfig {
+.itemconfig{
     border-spacing: 0px;
     border: 1px solid white;
 }
@@ -84,13 +84,13 @@ body{
     box-sizing: border-box;
 }
 
-.stoops {
+.stoops{
     width: 128px;
     height: 128px;
     background-size: 200% 200%;
 }
 
-input {
+input{
     margin-top: 5px;
     margin-bottom: 5px;
     margin-left: 20px;
@@ -98,7 +98,7 @@ input {
     vertical-align: middle;
 }
 
-label {
+label{
     display: inline-block;
     /*float: left;*/
     padding-top: 5px;
@@ -106,7 +106,7 @@ label {
     width: 140px;
 }
 
-.bonk {
+.bonk{
     width: 64px;
     height: 64px;
     border-spacing: 0px;
@@ -114,7 +114,7 @@ label {
     margin: 2px;
 }
 
-.corner {
+.corner{
     width: 32px;
     height: 32px;
 }
@@ -122,18 +122,18 @@ label {
 /*.true {
 }*/
 
-.false {
+.false{
     -webkit-filter: grayscale(50%) brightness(30%); /*safari 6 - 9 */
     filter: grayscale(50%) brightness(30%);
 }
 
-.mini {
+.mini{
     width: 16px;
     height: 16px;
     vertical-align: text-bottom;
 }
 
-.boss {
+.boss{
     width: 12px;
     height: 12px;
     background-repeat: no-repeat;
@@ -145,7 +145,7 @@ label {
     z-index: 2;
 }
 
-.area {
+.area{
     width: 24px;
     height: 24px;
     background-size: 100% 100%;
@@ -155,13 +155,13 @@ label {
     cursor: pointer;
 }
 
-.itemdiv {
+.itemdiv{
     position: relative;
     left: 0px;
     justify-content: center;
 }
 
-.mapdiv {
+.mapdiv{
     background-image: url("images/map.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -171,7 +171,7 @@ label {
     left: 0px;
 }
 
-.submapdiv {
+.submapdiv{
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -184,7 +184,7 @@ label {
     margin-left: 805px;
 }
 
-.check {
+.check{
     width: 16px;
     height: 16px;
     background-size: 100% 100%;
@@ -194,51 +194,51 @@ label {
     cursor: pointer;
 }
 
-.unavailable {
+.unavailable{
     background-color: red;
 }
 
-.hidden {
+.hidden{
     background-color: black;
 }
 
-.available {
+.available{
     background-color: green;
 }
 
-.possible {
+.possible{
     background-color: rgb(210, 190, 30);
 }
 
-.opened {
+.opened{
     background-color: rgb(127, 127, 127);
 }
 
-.DCunavailable {
+.DCunavailable{
     color: red;
 }
 
-.DChidden {
+.DChidden{
     color:black;
 }
 
-.DCavailable {
+.DCavailable{
     color: green;
 }
 
-.DCpossible {
+.DCpossible{
     color: rgb(210, 190, 30);
 }
 
-.DCopened {
+.DCopened{
     color: rgb(127, 127, 127);
 }
 
-.DChighlight {
+.DChighlight{
     color: rgb(255, 255, 0);
 }
 
-.mapspan .tooltipgrey {
+.mapspan .tooltipgrey{
     visibility: hidden;
     width: 120px;
     background-color: grey;
@@ -253,15 +253,15 @@ label {
     margin-left: -60px;
 }
 
-.mapspan .tooltipgrey:hover {
+.mapspan .tooltipgrey:hover{
     display: none;
 }
 
-.mapspan:hover .tooltipgrey {
+.mapspan:hover .tooltipgrey{
     visibility: visible;
 }
 
-.mapspan .tooltip {
+.mapspan .tooltip{
     visibility: hidden;
     width: 120px;
     background-color: black;
@@ -276,7 +276,7 @@ label {
     margin-left: -60px;
 }
 
-.mapspan .tooltip::after {
+.mapspan .tooltip::after{
     content: "";
     position: absolute;
     top: 100%;
@@ -287,10 +287,10 @@ label {
     border-color: black transparent transparent transparent;
 }
 
-.mapspan .tooltip:hover {
+.mapspan .tooltip:hover{
     display: none;
 }
 
-.mapspan:hover .tooltip {
+.mapspan:hover .tooltip{
     visibility: visible;
 }

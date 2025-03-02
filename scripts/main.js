@@ -125,43 +125,43 @@ function loadCookie() {
 
     //Item Settings
     document.getElementsByName("transformmasklogic")[0].checked = !!cookieobj.tmask;
-    document.getElementsByName("transformmasklogic")[0].onchange();
+    //document.getElementsByName('transformmasklogic')[0].onchange();
     document.getElementsByName("maskslogic")[0].checked = !!cookieobj.mask;
-    document.getElementsByName("maskslogic")[0].onchange();
+    //document.getElementsByName("maskslogic")[0].onchange();
     document.getElementsByName("piecelogic")[0].checked = !!cookieobj.piece;
-    document.getElementsByName("piecelogic")[0].onchange();
+    //document.getElementsByName("piecelogic")[0].onchange();
     document.getElementsByName("skullslogic")[0].checked = !!cookieobj.skulls;
-    document.getElementsByName("skullslogic")[0].onchange();
+    //document.getElementsByName("skullslogic")[0].onchange();
     document.getElementsByName("scrubtradelogic")[0].checked = !!cookieobj.scrubtrade;
-    document.getElementsByName("scrubtradelogic")[0].onchange();
+    //document.getElementsByName("scrubtradelogic")[0].onchange();
     document.getElementsByName("anjulogic")[0].checked = !!cookieobj.anju;
-    document.getElementsByName("anjulogic")[0].onchange();
+    //document.getElementsByName("anjulogic")[0].onchange();
     document.getElementsByName("greatfairylogic")[0].checked = !!cookieobj.gfairy;
-    document.getElementsByName("greatfairylogic")[0].onchange();
+    //document.getElementsByName("greatfairylogic")[0].onchange();
     document.getElementsByName("tinglelogic")[0].checked = !!cookieobj.tingle;
-    document.getElementsByName("tinglelogic")[0].onchange();
+    //document.getElementsByName("tinglelogic")[0].onchange();
     document.getElementsByName("notebooklogic")[0].checked = !!cookieobj.notebook;
-    document.getElementsByName("notebooklogic")[0].onchange();
+    //document.getElementsByName("notebooklogic")[0].onchange();
     document.getElementsByName("moonitemlogic")[0].checked = !!cookieobj.moonitem;
-    document.getElementsByName("moonitemlogic")[0].onchange();
+    //document.getElementsByName("moonitemlogic")[0].onchange();
     document.getElementsByName("deitylogic")[0].checked = !!cookieobj.deity;
-    document.getElementsByName("deitylogic")[0].onchange();
+    //document.getElementsByName("deitylogic")[0].onchange();
 
     //Area Settings
     document.getElementsByName("mapslogic")[0].checked = !!cookieobj.mapscompass;
-    document.getElementsByName("mapslogic")[0].onchange();
+    //document.getElementsByName("mapslogic")[0].onchange();
     document.getElementsByName("smallkeylogic")[0].checked = !!cookieobj.skey;
-    document.getElementsByName("smallkeylogic")[0].onchange();
+    //document.getElementsByName("smallkeylogic")[0].onchange();
     document.getElementsByName("bigkeylogic")[0].checked = !!cookieobj.bkey;
-    document.getElementsByName("bigkeylogic")[0].onchange();
+    //document.getElementsByName("bigkeylogic")[0].onchange();
     document.getElementsByName("remainslogic")[0].checked = !!cookieobj.bosses;
-    document.getElementsByName("remainslogic")[0].onchange();
+    //document.getElementsByName("remainslogic")[0].onchange();
     document.getElementsByName("containerlogic")[0].checked = !!cookieobj.containers;
-    document.getElementsByName("containerlogic")[0].onchange();
+    //document.getElementsByName("containerlogic")[0].onchange();
 
     //Tricks and Logic Settings
     document.getElementsByName("skipbombers")[0].checked = !!cookieobj.skipnotebook;
-    document.getElementsByName("skipbombers")[0].onchange();
+    //document.getElementsByName("skipbombers")[0].onchange();
 
     cookielock = false;
 }
@@ -222,14 +222,14 @@ function serializeAreaChecks() {
     return areas.map(area => Object.values(area.checklist).map(check => check.isOpened || false));
 }
 
-function deserializeChecks() {
+function deserializeChecks(serializedChecks) {
     for (var i = 0; i < checks.length; i++) {
         checks[i].isOpened = serializedChecks[i];
         refreshCheck(i);
     }
 }
 
-function deserializeAreaChecks() {
+function deserializeAreaChecks(serializedAreas) {
     for (var i = 0; i < areas.length; i++) {
         var area = areas[i];
         var serializedArea = serializedAreas[i];
@@ -284,22 +284,22 @@ function clickArea(d) {
         var s = document.createElement("li");
         s.innerHTML = key;
 
-        if (areas[areaSelect].checklist[key].isOpened()) {
+        if (areas[areaSelect].checklist[key].isOpened) {
             s.className = "DCopened";
         }
         else if (areas[areaSelect].checklist[key].isAvailable()) {
             s.className = "DCavailable";
         }
-        else if (areas[areaSelect].check[key].isCheckable()) {
+        /*else if (areas[areaSelect].check[key].isCheckable()) {
             s.className = "DChidden";
-        }
+        }*/
         else {
             s.className = "DCunavailable";
         }
 
-        s.onclick = new eval("toggleAreaCheck(this," + areaSelect + ',"' + key + '")');
-        s.onmouseover = new eval("highlightAreaCheck(this");
-        s.onmouseout = new eval("unhighlightAreaCheck(this");
+        s.onclick = new Function("toggleAreaCheck(this," + areaSelect + ',"' + key + '")');
+        s.onmouseover = new Function("highlightAreaCheck(this)");
+        s.onmouseout = new Function("unhighlightAreaCheck(this)");
         s.style.cursor = "pointer";
 
         DClist.appendChild(s);
@@ -314,9 +314,9 @@ function toggleAreaCheck(sender, d, c) {
     else if (areas[d].checklist[c].isAvailable()) {
         sender.className = "DCavailable";
     }
-    else if (areas[d].checklist[c].isCheckable()) {
+    /*else if (areas[d].checklist[c].isCheckable()) {
         sender.className = "DChidden";
-    }
+    }*/
     else {
         sender.className = "DCunavailable";
     }
@@ -451,6 +451,7 @@ function setSkipBombers(sender) {
 
 function setZoom(target, sender) {
     document.getElementById(target).style.zoom = sender.value / 100;
+    document.getElementById(target).style.zoom = sender.value / 100;
     document.getElementById(target).style.MozTransform = "scale(" + (sender.value /100) + ")";
     document.getElementById(target).style.MozTransformOrigin = "0 0";
     document.getElementById(target + "size").innerHTML = (sender.value) + "%";
@@ -499,7 +500,7 @@ function EditMode() {
     showTracker("mapdiv", {checked: false});
     document.getElementById("settings").style.display = "none";
     document.getElementById("itemconfig").style.display = "";
-    document.getElementById("rowButtons").style.display = "flex";
+    document.getElementById("rowButtons").style.display = 'flex';
     document.getElementById("settingsbutton").innerHTML = "Exit Edit Mode";
 }
 
@@ -524,29 +525,29 @@ function addItemRow() {
     itemGrid[r] = [];
     itemLayout[r] = [];
 
-    itemGrid[r].row = document.createElement("table");
-    itemGrid[r].row.className = "tracker";
+    itemGrid[r]['row'] = document.createElement("table");
+    itemGrid[r]['row'].className = "tracker";
 
     itemGrid[r].tablerow = document.createElement("tr");
-    itemGrid[r].tablerow.appendChild(itemGrid[r].row);
+    itemGrid[r].tablerow.appendChild(itemGrid[r]['row']);
     sender.appendChild(itemGrid[r].tablerow);
 
     var tr = document.createElement("tr");
-    itemGrid[r].row.appendChild(tr);
+    itemGrid[r]['row'].appendChild(tr);
 
-    itemGrid[r].addButton = document.createElement("button");
-    itemGrid[r].addButton.innerHTML = "+";
-    itemGrid[r].addButton.style.backgroundColor = "green";
-    itemGrid[r].addButton.style.color = "white";
-    itemGrid[r].addButton.onclick = new eval("addItem(" + r + ")");
-    itemGrid[r].row.appendChild(itemGrid[r].addbutton);
+    itemGrid[r]['addbutton'] = document.createElement("button");
+    itemGrid[r]['addbutton'].innerHTML = "+";
+    itemGrid[r]['addbutton'].style.backgroundColor = "green";
+    itemGrid[r]['addbutton'].style.color = "white";
+    itemGrid[r]['addbutton'].onclick = new Function("addItem(" + r + ")");
+    itemGrid[r]['row'].appendChild(itemGrid[r]['addbutton']);
 
-    itemGrid[r].removeButton = document.createElement("button");
-    itemGrid[r].removeButton.innerHTML = "-";
-    itemGrid[r].removeButton.style.backgroundColor = "red";
-    itemGrid[r].removeButton.style.color = "white";
-    itemGrid[r].removeButton.onclick = new eval("addItem(" + r + ")");
-    itemGrid[r].row.appendChild(itemGrid[r].removeButton);
+    itemGrid[r]['removebutton'] = document.createElement("button");
+    itemGrid[r]['removebutton'].innerHTML = "-";
+    itemGrid[r]['removebutton'].style.backgroundColor = "red";
+    itemGrid[r]['removebutton'].style.color = "white";
+    itemGrid[r]['removebutton'].onclick = new Function("addItem(" + r + ")");
+    itemGrid[r]['row'].appendChild(itemGrid[r]['removebutton']);
 
     saveCookie();
 }
@@ -568,7 +569,7 @@ function addItem(r) {
     itemLayout[r][i] = "blank";
     itemGrid[r][i].item = document.createElement("td");
     itemGrid[r][i].item.className = "griditem";
-    itemGrid[r].row.appendChild(itemGrid[r][i].item);
+    itemGrid[r]['row'].appendChild(itemGrid[r][i].item);
 
     var tdt = document.createElement("table");
     tdt.className = "bonk";
@@ -578,30 +579,30 @@ function addItem(r) {
     tdt.appendChild(tdtr1);
     itemGrid[r][i][0] = document.createElement("th");
     itemGrid[r][i][0].className = "corner";
-    itemGrid[r][i][0].onmouseover = new eval("setMOver(" + r + "," + i + ",0)");
-    itemGrid[r][i][0].onmouseout = new eval("setMOff()");
-    itemGrid[r][i][0].onclick = new eval("gridItemClick(" + r + "," + i + ",0)");
+    itemGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    itemGrid[r][i][0].onmouseout = new Function("setMOff()");
+    itemGrid[r][i][0].onclick = new Function("gridItemClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(itemGrid[r][i][0]);
     itemGrid[r][i][1] = document.createElement("th");
     itemGrid[r][i][1].className = "corner";
-    itemGrid[r][i][1].onmouseover = new eval("setMOver(" + r + "," + i + ",1)");
-    itemGrid[r][i][1].onmouseout = new eval("setMOff()");
-    itemGrid[r][i][1].onclick = new eval("gridItemClick(" + r + "," + i + ",1)");
+    itemGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    itemGrid[r][i][1].onmouseout = new Function("setMOff()");
+    itemGrid[r][i][1].onclick = new Function("gridItemClick(" + r + "," + i + ",1)");
     tdtr1.appendChild(itemGrid[r][i][1]);
 
     var tdtr2 = document.createElement("tr");
     tdt.appendChild(tdtr2);
     itemGrid[r][i][2] = document.createElement("th");
     itemGrid[r][i][2].className = "corner";
-    itemGrid[r][i][2].onmouseover = new eval("setMOver(" + r + "," + i + ",2)");
-    itemGrid[r][i][2].onmouseout = new eval("setMOff()");
-    itemGrid[r][i][2].onclick = new eval("gridItemClick(" + r + "," + i + ",2)");
+    itemGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    itemGrid[r][i][2].onmouseout = new Function("setMOff()");
+    itemGrid[r][i][2].onclick = new Function("gridItemClick(" + r + "," + i + ",2)");
     tdtr2.appendChild(itemGrid[r][i][2]);
     itemGrid[r][i][3] = document.createElement("th");
     itemGrid[r][i][3].className = "corner";
-    itemGrid[r][i][3].onmouseover = new eval("setMOver(" + r + "," + i + ",3)");
-    itemGrid[r][i][3].onmouseout = new eval("setMOff()");
-    itemGrid[r][i][3].onclick = new eval("gridItemClick(" + r + "," + i + ",3)");
+    itemGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    itemGrid[r][i][3].onmouseout = new Function("setMOff()");
+    itemGrid[r][i][3].onclick = new Function("gridItemClick(" + r + "," + i + ",3)");
     tdtr1.appendChild(itemGrid[r][i][3]);
 
     updateGridItem(r, i);
@@ -613,7 +614,7 @@ function removeItem(r) {
     if (i < 0) {
         return;
     }
-    itemGrid[r].row.removeChild(itemGrid[r][i].item);
+    itemGrid[r]['row'].removeChild(itemGrid[r][i].item);
     itemGrid[r].splice(i, 1);
     itemLayout[r].splice(i, 1);
     saveCookie();
@@ -664,12 +665,12 @@ function updateGridItemAll() {
             updateGridItem(r, c);
         }
         if (editmode) {
-            itemGrid[r].addbutton.style.display = "";
-            itemGrid[r].removebutton.style.display = "";
+            itemGrid[r]['addbutton'].style.display = "";
+            itemGrid[r]['removebutton'].style.display = "";
         }
         else {
-            itemGrid[r].addbutton.style.display = "none";
-            itemGrid[r].removebutton.style.display = "none";
+            itemGrid[r]['addbutton'].style.display = "none";
+            itemGrid[r]['removebutton'].style.display = "none";
         }
     }
 }
@@ -816,7 +817,7 @@ function updateMap() {
                 }
             }
         }
-        var child = document.getElementById("area " + k).firstChild;
+        var child = document.getElementById("area" + k).firstChild;
         while (child) {
             if (child.className == "checkCount") {
                 if (DCcount == 0) {
@@ -840,9 +841,9 @@ function updateMap() {
             else if (areas[areaSelect].checklist[itemlist[item].innerHTML].isAvailable()) {
                 itemlist[item].className = "DCavailable";
             }
-            else if (areas[areaSelect].checklist[itemlist[item].innerHTML].isCheckable()) {
+            /*else if (areas[areaSelect].checklist[itemlist[item].innerHTML].isCheckable()) {
                 itemlist[item].className = "DChidden";
-            }
+            }*/
             else {
                 itemlist[item].className = "DCunavailable";
             }
@@ -876,18 +877,17 @@ function itemConfigClick(sender) {
 }
 
 function populateMapDiv() {
-    var mapdiv = document.getElementById("mapdiv");
+    var mapdiv = document.getElementById('mapdiv');
     //Initialize all checks on the map
     
-    var s = document.createElement("span");
-    var ss = document.createElement("span");
     for (k = 0; k < checks.length; k++) {
+        var s = document.createElement("span");
         s.style.backgroundImage = "url(images/poi.png)";
         s.style.color = "black";
         s.id = k;
-        s.onclick = new eval("toggleCheck(" + k + ")");
-        s.onmouseover = new eval("highlight(" + k + ")");
-        s.onmouseout = new eval("unhighlight(" + k + ")");
+        s.onclick = new Function("toggleCheck(" + k + ")");
+        s.onmouseover = new Function("highlight(" + k + ")");
+        s.onmouseout = new Function("unhighlight(" + k + ")");
         s.style.left = checks[k].x;
         s.style.top = checks[k].y;
         if (checks[k].isOpened) {
@@ -896,6 +896,7 @@ function populateMapDiv() {
         else {
             s.className = "mapspan check " + checks[k].isAvailable();
         }
+        var ss = document.createElement("span");
         ss.className = "tooltip";
         ss.innerHTML = checks[k].name;
         s.appendChild(ss);
@@ -904,16 +905,18 @@ function populateMapDiv() {
 
     //Area Bosses and checks
     for (k = 0; k < areas.length; k++) {
-        s.document.createElement("span");
+        var s = document.createElement("span");
         s.id = "area" + k;
-        s.onclick = new eval("clickArea(" + k + ")");
-        s.onmouseover = new eval("highlightArea(" + k + ")");
-        s.onmouseout = new eval("unhighlightArea(" + k + ")");
+
+        s.onclick = new Function("clickArea(" + k + ")");
+        s.onmouseover = new Function("highlightArea(" + k + ")");
+        s.onmouseout = new Function("unhighlightArea(" + k + ")");
         s.style.backgroundImage = 'url(images/poi.png)';
         s.style.left = areas[k].x;
         s.style.top = areas[k].y;
         s.style.textAlign = "center";
         s.className = "mapspan area " + areas[k].canGetCheck();
+
         var DCcount = 0;
         for (var key in areas[k].checklist) {
             if (areas[k].checklist.hasOwnProperty(key)) {
@@ -922,7 +925,7 @@ function populateMapDiv() {
                 }
             }
         }
-        //var ss = document.createElement("span");
+        var ss = document.createElement("span");
         ss.className = "checkCount";
         if (DCcount == 0) {
             ss.innerHTML = "";
@@ -934,6 +937,12 @@ function populateMapDiv() {
         ss.display = "inline-block";
         ss.style.lineHeight = "24px";
         s.appendChild(ss);
+
+        var ss = document.createElement('span');
+        ss.className = 'tooltipgrey';
+        ss.innerHTML = areas[k].name;
+        s.appendChild(ss);
+
         mapdiv.appendChild(s);
     }
     document.getElementById("submaparea").innerHTML = areas[areaSelect].name;
@@ -949,15 +958,15 @@ function populateMapDiv() {
         else if (areas[areaSelect].checklist[key1].isAvailable()) {
             length.className = "DCavailable";
         }
-        else if (areas[areaSelect].checklist[key1].isCheckable()) {
+        /*else if (areas[areaSelect].checklist[key1].isCheckable()) {
             length.className = "DChidden";
-        }
+        }*/
         else {
             l.className = "DCunavailable";
         }
-        l.onclick = new eval('toggleAreaCheck(this,' + areaSelect + ',"' + key1 + '")');
-        l.onmouseover = new eval("highlightAreaCheck(this)");
-        l.onmouseout = new eval("unhighlightAreaCheck(this)");
+        l.onclick = new Function('toggleAreaCheck(this,' + areaSelect + ',"' + key1 + '")');
+        l.onmouseover = new Function("highlightAreaCheck(this)");
+        l.onmouseout = new Function("unhighlightAreaCheck(this)");
         l.style.cursor = "pointer";
         document.getElementById("submaplist").appendChild(l);
     }
@@ -977,7 +986,7 @@ function populateItemConfig() {
         rowitem.className = "corner";
         rowitem.id = key;
         rowitem.style.backgroundSize = "100% 100%";
-        rowitem.onclick = new eval("itemConfigClick(this)");
+        rowitem.onclick = new Function("itemConfigClick(this)");
         if ((typeof items[key]) == "boolean") {
             rowitem.style.backgroundImage = 'url(images/' + key + '.png")';
         }
@@ -1006,9 +1015,6 @@ function preloader() {
                 img.src = "images/" + item + i + ".png";
             }
         }
-    }
-    for (var remains in areaImg) {
-        img.src = "images/" + areaImg[remains] + ".png";
     }
 }
 

@@ -16,7 +16,7 @@
 						//Want context menu in edit mode.
 						if(!editmode) {
 							//call method that handles right click
-							gridItemRightClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							gridItemRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
 							e.preventDefault();
 						}
 					}
@@ -26,7 +26,7 @@
 				document.attachEvent('oncontextmenu', function() {
 					if(mouseOverItem == true){
 						if(!editmode) {
-							gridItemRightClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							gridItemRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
 							window.event.returnValue = false;
 						}
 					}
@@ -36,8 +36,9 @@
 		<script src="scripts/main.js"></script>
 
 		<div id='layoutdiv'>
-			<div id="itemdiv" oncontextmenu="gridItemRClick()" class="itemdiv"></div>
-			<div id="'mapdiv" class="mapdiv">
+			<div id="itemdiv" oncontextmenu="gridItemRClick()" class="itemdiv">
+			</div>
+			<div id="mapdiv" class="mapdiv">
 				<div id="submapdiv" class="submapdiv">
 					<div class="areatitle"><span id='submaparea' style="font-size: 20px;" >Termina</span></div>
 					<hr style="margin-top: 4px; margin-bottom: 4px;">
