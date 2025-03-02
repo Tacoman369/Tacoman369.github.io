@@ -1,57 +1,58 @@
+/*jshint esversion: 6 */
 var defaultRemains = {
     OdolwaRemains: 0,
     GohtRemains: 0,
     GyorgRemains: 0,
-    TwinmoldRemains: 0,
+    TwinmoldRemains: 0
 };
 var Remains = defaultRemains;
 //logic vars
 var transformmasklogic = false;
-maskslogic = false;
-piecelogic = false;
-skullslogic = false;
-scrubtradelogic = false;
-anjulogic = false;
-greatfairylogic = false;
-tinglelogic = false;
-notebooklogic = false;
-moonitemlogic = false;
-deitylogic = false;
-mapslogic = false;
-smallkeylogic = false;
-bigkeylogic = false;
-remainslogic = false;
-containerlogic = false;
+var maskslogic = false;
+var piecelogic = false;
+var skullslogic = false;
+var scrubtradelogic = false;
+var anjulogic = false;
+var greatfairylogic = false;
+var tinglelogic = false;
+var notebooklogic = false;
+var moonitemlogic = false;
+var deitylogic = false;
+var mapslogic = false;
+var smallkeylogic = false;
+var bigkeylogic = false;
+var remainslogic = false;
+var containerlogic = false;
 //trick vars
-skipbombers = false;
+var skipbombers = false;
 
 var mouseOverItem = false;
 var mouseLastOverR;
 var mouseLastOverC;
 var mouseLastOverCor;
 
-var itemGrid= [];
+var itemGrid = [];
 var itemLayout = [];
 
 var editmode = false;
 var selected = {};
 
-var dungeonSelect = 0;
+var areaSelect = 0;
 
 function setCookie(obj) {
-    var d = new Data();
-    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000) );
+    var d = new Date();
     var expires = "expires=" + d.toUTCString();
     var val = JSON.stringify(obj);
+    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
     document.cookie = "key=" + val + ";" + expires + ";path=/";
 }
 
 function getCookie() {
     var name = "key=";
-    var ca = document.cookie.split(';');
-    for (var i = 0 ; i < ca.length; i++) {
+    var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) == " ") {
             c = c.substring(1);
         }
         if (c.indexOf(name) == 0) {
@@ -70,7 +71,7 @@ var cookieDefault = {
     items: defaultItemGrid,
     obtainedItems: items,
     checks: serializeChecks(),
-    dungeonChecks: serializeDungeonChecks(),
+    areaChecks: serializeAreaChecks(),
     tmask: 1,
     mask: 1,
     piece: 1,
@@ -88,7 +89,7 @@ var cookieDefault = {
     bosses: 1,
     containers: 1,
     skipnotebook: 1,
-}
+};
 
 var cookielock = false;
 function loadCookie() {
@@ -108,59 +109,59 @@ function loadCookie() {
     remains = JSON.parse(JSON.stringify(cookieobj.remains));
     initGridRow(JSON.parse(JSON.stringify(cookieobj.items)));
     items = JSON.parse(JSON.stringify(cookieobj.obtainedItems));
-    deserializeChecks(JSON.parse(JSON.stringify(cookieobj.dungeonChecks)));
-    deserializeDungeonChecks(JSON.parse(JSON.stringify(cookieobj.dungeonChecks)));
+    deserializeChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
+    deserializeAreaChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
 
     updateGridItemAll();
 
-    document.getElementsByName('showmap')[0].checked = !!cookieobj.map;
-    document.getElementsByName('showmap')[0].onchange();
-    document.getElementsByName('itemdivsize')[0].value = cookieobj.iZoom;
-    document.getElementsByName('itemdivsize')[0].onchange();
-    document.getElementsByName('mapdivsize')[0].value = cookieobj.mZoom;
-    document.getElementsByName('mapdivsize')[0].onchange();
+    document.getElementsByName("showmap")[0].checked = !!cookieobj.map;
+    document.getElementsByName("showmap")[0].onchange();
+    document.getElementsByName("itemdivsize")[0].value = cookieobj.iZoom;
+    document.getElementsByName("itemdivsize")[0].onchange();
+    document.getElementsByName("mapdivsize")[0].value = cookieobj.mZoom;
+    document.getElementsByName("mapdivsize")[0].onchange();
 
-    document.getElementsByName('mapposition')[cookieobj.mPos].click();
+    document.getElementsByName("mapposition")[cookieobj.mPos].click();
 
     //Item Settings
-    document.getElementsByName('transformmasklogic')[0].checked = !!cookieobj.tmask;
-    document.getElementsByName('transformmasklogic')[0].onchange();
-    document.getElementsByName('maskslogic')[0].checked = !!cookieobj.mask;
-    document.getElementsByName('maskslogic')[0].onchange();
-    document.getElementsByName('piecelogic')[0].checked = !!cookieobj.piece;
-    document.getElementsByName('piecelogic')[0].onchange();
-    document.getElementsByName('skullslogic')[0].checked = !!cookieobj.skulls;
-    document.getElementsByName('skullslogic')[0].onchange();
-    document.getElementsByName('scrubtradelogic')[0].checked = !!cookieobj.scrubtrade;
-    document.getElementsByName('scrubtradelogic')[0].onchange();
-    document.getElementsByName('anjulogic')[0].checked = !!cookieobj.anju;
-    document.getElementsByName('anjulogic')[0].onchange();
-    document.getElementsByName('greatfairylogic')[0].checked = !!cookieobj.gfairy;
-    document.getElementsByName('greatfairylogic')[0].onchange();
-    document.getElementsByName('tinglelogic')[0].checked = !!cookieobj.tingle;
-    document.getElementsByName('tinglelogic')[0].onchange();
-    document.getElementsByName('notebooklogic')[0].checked = !!cookieobj.notebook;
-    document.getElementsByName('notebooklogic')[0].onchange();
-    document.getElementsByName('moonitemlogic')[0].checked = !!cookieobj.moonitem;
-    document.getElementsByName('moonitemlogic')[0].onchange();
-    document.getElementsByName('deitylogic')[0].checked = !!cookieobj.deity;
-    document.getElementsByName('deitylogic')[0].onchange();
+    document.getElementsByName("transformmasklogic")[0].checked = !!cookieobj.tmask;
+    document.getElementsByName("transformmasklogic")[0].onchange();
+    document.getElementsByName("maskslogic")[0].checked = !!cookieobj.mask;
+    document.getElementsByName("maskslogic")[0].onchange();
+    document.getElementsByName("piecelogic")[0].checked = !!cookieobj.piece;
+    document.getElementsByName("piecelogic")[0].onchange();
+    document.getElementsByName("skullslogic")[0].checked = !!cookieobj.skulls;
+    document.getElementsByName("skullslogic")[0].onchange();
+    document.getElementsByName("scrubtradelogic")[0].checked = !!cookieobj.scrubtrade;
+    document.getElementsByName("scrubtradelogic")[0].onchange();
+    document.getElementsByName("anjulogic")[0].checked = !!cookieobj.anju;
+    document.getElementsByName("anjulogic")[0].onchange();
+    document.getElementsByName("greatfairylogic")[0].checked = !!cookieobj.gfairy;
+    document.getElementsByName("greatfairylogic")[0].onchange();
+    document.getElementsByName("tinglelogic")[0].checked = !!cookieobj.tingle;
+    document.getElementsByName("tinglelogic")[0].onchange();
+    document.getElementsByName("notebooklogic")[0].checked = !!cookieobj.notebook;
+    document.getElementsByName("notebooklogic")[0].onchange();
+    document.getElementsByName("moonitemlogic")[0].checked = !!cookieobj.moonitem;
+    document.getElementsByName("moonitemlogic")[0].onchange();
+    document.getElementsByName("deitylogic")[0].checked = !!cookieobj.deity;
+    document.getElementsByName("deitylogic")[0].onchange();
 
-    //Dungeon Settings
-    document.getElementsByName('mapslogic')[0].checked = !!cookieobj.mapscompass;
-    document.getElementsByName('mapslogic')[0].onchange();
-    document.getElementsByName('smallkeylogic')[0].checked = !!cookieobj.skey;
-    document.getElementsByName('smallkeylogic')[0].onchange();
-    document.getElementsByName('bigkeylogic')[0].checked = !!cookieobj.bkey;
-    document.getElementsByName('bigkeylogic')[0].onchange();
-    document.getElementsByName('remainslogic')[0].checked = !!cookieobj.bosses;
-    document.getElementsByName('remainslogic')[0].onchange();
-    document.getElementsByName('containerlogic')[0].checked = !!cookieobj.containers;
-    document.getElementsByName('containerlogic')[0].onchange();
+    //Area Settings
+    document.getElementsByName("mapslogic")[0].checked = !!cookieobj.mapscompass;
+    document.getElementsByName("mapslogic")[0].onchange();
+    document.getElementsByName("smallkeylogic")[0].checked = !!cookieobj.skey;
+    document.getElementsByName("smallkeylogic")[0].onchange();
+    document.getElementsByName("bigkeylogic")[0].checked = !!cookieobj.bkey;
+    document.getElementsByName("bigkeylogic")[0].onchange();
+    document.getElementsByName("remainslogic")[0].checked = !!cookieobj.bosses;
+    document.getElementsByName("remainslogic")[0].onchange();
+    document.getElementsByName("containerlogic")[0].checked = !!cookieobj.containers;
+    document.getElementsByName("containerlogic")[0].onchange();
 
     //Tricks and Logic Settings
-    document.getElementsByName('skipbombers')[0].checked = !!cookieobj.skipnotebook;
-    document.getElementsByName('skipbombers')[0].onchange();
+    document.getElementsByName("skipbombers")[0].checked = !!cookieobj.skipnotebook;
+    document.getElementsByName("skipbombers")[0].onchange();
 
     cookielock = false;
 }
@@ -174,40 +175,40 @@ function saveCookie() {
 
     cookieobj = {};
 
-    cookieobj.map = document.getElementsByName('showmap')[0].checked ? 1 : 0;
-    cookieobj.iZoom = document.getElementsByName('itemdivsize')[0].value;
-    cookieobj.mZoom = document.getElementsByName('mapdivsize')[0].value;
+    cookieobj.map = document.getElementsByName("showmap")[0].checked ? 1 : 0;
+    cookieobj.iZoom = document.getElementsByName("itemdivsize")[0].value;
+    cookieobj.mZoom = document.getElementsByName("mapdivsize")[0].value;
 
-    cookieobj.mPos = document.getElementsByName('mapposition')[1].checked ? 1 : 0;
+    cookieobj.mPos = document.getElementsByName("mapposition")[1].checked ? 1 : 0;
 
     cookieobj.remains = JSON.parse(JSON.stringify(remains));
     cookieobj.items = JSON.parse(JSON.stringify(itemLayout));
     cookieobj.obtainedItems = JSON.parse(JSON.stringify(items));
     cookieobj.checks = JSON.parse(JSON.stringify(serializeChecks()));
-    cookieobj.dungeonChecks = JSON.parse(JSON.stringify(serializeDungeonChecks()));
+    cookieobj.areaChecks = JSON.parse(JSON.stringify(serializeAreaChecks()));
 
     //Item Settings
-    cookieobj.tmask = document.getElementsByName('transformmasklogic')[0].checked ? 1 : 0;
-    cookieobj.mask = document.getElementsByName('maskslogic')[0].checked ? 1 : 0;
-    cookieobj.piece = document.getElementsByName('piecelogic')[0].checked ? 1 : 0;
-    cookieobj.skulls = document.getElementsByName('skullslogic')[0].checked ? 1 : 0;
-    cookieobj.scrubtrade = document.getElementsByName('scrubtradelogic')[0].checked ? 1 : 0;
-    cookieobj.anju = document.getElementsByName('anjulogic')[0].checked ? 1 : 0;
-    cookieobj.gfairy = document.getElementsByName('greatfairylogic')[0].checked ? 1 : 0;
-    cookieobj.tingle = document.getElementsByName('tinglelogic')[0].checked ? 1 : 0;
-    cookieobj.notebook = document.getElementsByName('notebooklogic')[0].checked ? 1 : 0;
-    cookieobj.moonitem = document.getElementsByName('moonitemlogic')[0].checked ? 1 : 0;
-    cookieobj.deity = document.getElementsByName('deitylogic')[0].checked ? 1 : 0;
+    cookieobj.tmask = document.getElementsByName("transformmasklogic")[0].checked ? 1 : 0;
+    cookieobj.mask = document.getElementsByName("maskslogic")[0].checked ? 1 : 0;
+    cookieobj.piece = document.getElementsByName("piecelogic")[0].checked ? 1 : 0;
+    cookieobj.skulls = document.getElementsByName("skullslogic")[0].checked ? 1 : 0;
+    cookieobj.scrubtrade = document.getElementsByName("scrubtradelogic")[0].checked ? 1 : 0;
+    cookieobj.anju = document.getElementsByName("anjulogic")[0].checked ? 1 : 0;
+    cookieobj.gfairy = document.getElementsByName("greatfairylogic")[0].checked ? 1 : 0;
+    cookieobj.tingle = document.getElementsByName("tinglelogic")[0].checked ? 1 : 0;
+    cookieobj.notebook = document.getElementsByName("notebooklogic")[0].checked ? 1 : 0;
+    cookieobj.moonitem = document.getElementsByName("moonitemlogic")[0].checked ? 1 : 0;
+    cookieobj.deity = document.getElementsByName("deitylogic")[0].checked ? 1 : 0;
 
-    //Dungeon Settings
-    cookieobj.mapscompass = document.getElementsByName('mapslogic')[0].checked ? 1 : 0;
-    cookieobj.skey = document.getElementsByName('smallkeylogic')[0].checked ? 1 : 0;
-    cookieobj.bkey = document.getElementsByName('bigkeylogic')[0].checked ? 1 : 0;
-    cookieobj.bosses = document.getElementsByName('remainslogic')[0].checked ? 1 : 0;
-    cookieobj.containers = document.getElementsByName('containerlogic')[0].checked ? 1 : 0;
+    //Area Settings
+    cookieobj.mapscompass = document.getElementsByName("mapslogic")[0].checked ? 1 : 0;
+    cookieobj.skey = document.getElementsByName("smallkeylogic")[0].checked ? 1 : 0;
+    cookieobj.bkey = document.getElementsByName("bigkeylogic")[0].checked ? 1 : 0;
+    cookieobj.bosses = document.getElementsByName("remainslogic")[0].checked ? 1 : 0;
+    cookieobj.containers = document.getElementsByName("containerlogic")[0].checked ? 1 : 0;
 
     //Tricks and Logic Settings
-    cookieobj.skipnotebook = document.getElementsByName('skipbombers')[0].checked ? 1 : 0;
+    cookieobj.skipnotebook = document.getElementsByName("skipbombers")[0].checked ? 1 : 0;
 
     setCookie(cookieobj);
     cookielock = false;
@@ -217,8 +218,8 @@ function serializeChecks() {
     return checks.map(check => check.isOpened || false);
 }
 
-function serializeDungeonChecks() {
-    return dungeons.map(dungeon => Object.values(dungeon.checklist).map(check => check.isOpened || false));
+function serializeAreaChecks() {
+    return areas.map(area => Object.values(area.checklist).map(check => check.isOpened || false));
 }
 
 function deserializeChecks() {
@@ -228,13 +229,13 @@ function deserializeChecks() {
     }
 }
 
-function deserializeDungeonChecks() {
-    for (var i = 0; i < dungeons.length; i++) {
-        var dungeon = dungeons[i];
-        var serializedDungeon = serializedDungeons[i];
-        var checkNames = Object.keys(dungeon.checklist);
+function deserializeAreaChecks() {
+    for (var i = 0; i < areas.length; i++) {
+        var area = areas[i];
+        var serializedArea = serializedAreas[i];
+        var checkNames = Object.keys(area.checklist);
         for (var j = 0; j > checkNames.length; j++) {
-            dungeon.checklist[checkNames[j]].isOpened = serializedDungeon[j];
+            area.checklist[checkNames[j]].isOpened = serializedArea[j];
         }
     }
 }
@@ -247,91 +248,97 @@ function toggleCheck(x) {
 }
 
 function refreshCheck(x) {
-    var stateClass = checks[x].isOpened ? 'opened' : checks[x].isAvailable();
-    document.getElementById(x).className = 'mapspan check ' + stateClass;
+    var stateClass = checks[x].isOpened ? "opened" : checks[x].isAvailable();
+    document.getElementById(x).className = "mapspan check " + stateClass;
 }
 
 //highlights a check location
 function highlight(x) {
-    document.getElementById(x).style.backgroundImage = 'url("images/highlighted.png")';
+    document.getElementById(x).style.backgroundImage = "url(images/highlighted.png)";
 }
 
 function unhighlight(x) {
-    document.getElementById(x).style.backgroundImage = 'url("images/poi.png")';
+    document.getElementById(x).style.backgroundImage = "url(images/poi.png)";
 }
 
-//highlights a dungeon check location
-function highlightDungeon(x) {
-    document.getElementById('dungeon' + x).style.backgroundImage = 'url("images/highlighted.png")';
+//highlights a area check location
+function highlightArea(x) {
+    document.getElementById("area" + x).style.backgroundImage = "url(images/highlighted.png)";
 }
 
-function unhighlightDungeon(x) {
-    document.getElementById('dungeon' + x).style.backgroundImage = 'url("images/poi.png")';
+function unhighlightArea(x) {
+    document.getElementById("area" + x).style.backgroundImage = 'url(images/poi.png)';
 }
 
-function clickDungeon(d) {
-    document.getElementById('dungeon' + dungeonSelect).style.backgroundImage = 'url("images/poi.png")';
-    dungeonSelect = 0;
-    document.getElementById('dungeon' + dungeonSelect).style.backgroundImage = 'url("images/highlighted.png")';
+function clickArea(d) {
+    document.getElementById("area" + areaSelect).style.backgroundImage = 'url(images/poi.png)';
+    areaSelect = 0;
+    document.getElementById("area" + areaSelect).style.backgroundImage = 'url(images/highlighted.png)';
 
-    document.getElementById('submaparea').innerHTML = dungeons[dungeonSelect].name;
-    document.getElementById('submaparea').className = 'DC' + dungeons[dungeonSelect].isBeatable();
-    var DClist = document.getElementById('submaplist');
-    DClist.innerHTML = '';
+    document.getElementById("submaparea").innerHTML = areas[areaSelect].name;
+    document.getElementById("submaparea").className = "DC" + areas[areaSelect].isBeatable();
+    var DClist = document.getElementById("submaplist");
+    DClist.innerHTML = "";
 
-    for (var key in dungeons[dungeonSelect].checklist) {
-        var s = document.createElement('li');
+    for (var key in areas[areaSelect].checklist) {
+        var s = document.createElement("li");
         s.innerHTML = key;
 
-        if (dungeons[dungeonSelect].checklist[key].isOpened()) {
+        if (areas[areaSelect].checklist[key].isOpened()) {
             s.className = "DCopened";
-        } 
-        else if (dungeons[dungeonSelect].checklist[key].isAvailable()) {
+        }
+        else if (areas[areaSelect].checklist[key].isAvailable()) {
             s.className = "DCavailable";
+        }
+        else if (areas[areaSelect].check[key].isCheckable()) {
+            s.className = "DChidden";
         }
         else {
             s.className = "DCunavailable";
         }
 
-        s.onclick = new Function('toggleDungeonCheck(this,' + dungeonSelect + ',"' + key + '")');
-        s.onmouseover = new Function('highlightDungeonCheck(this');
-        s.onmouseout = new Function('unhighlightDungeonCheck(this');
+        s.onclick = new eval("toggleAreaCheck(this," + areaSelect + ',"' + key + '")');
+        s.onmouseover = new eval("highlightAreaCheck(this");
+        s.onmouseout = new eval("unhighlightAreaCheck(this");
         s.style.cursor = "pointer";
 
         DClist.appendChild(s);
     }
 }
 
-function toggleDungeonCheck(sender, d, c) {
-    dungeons[d].checklist[c].isOpened = !dungeons[d].checklist[c].isOpened;
-    if (dungeons[d].checklist[c].isOpened) {
-        sender.className = 'DCopened';
+function toggleAreaCheck(sender, d, c) {
+    areas[d].checklist[c].isOpened = !areas[d].checklist[c].isOpened;
+    if (areas[d].checklist[c].isOpened) {
+        sender.className = "DCopened";
     }
-    else if (dungeons[d].checklist[c].isAvailable) {
-        sender.className = 'DCavailable';
+    else if (areas[d].checklist[c].isAvailable()) {
+        sender.className = "DCavailable";
+    }
+    else if (areas[d].checklist[c].isCheckable()) {
+        sender.className = "DChidden";
     }
     else {
-        sender.className = 'DCunavailable';
+        sender.className = "DCunavailable";
     }
 
     updateMap();
     saveCookie();
 }
 
-function highlightDungeonCheck(x) {
-    x.style.backgroundColor = '#282828';
+function highlightAreaCheck(x) {
+    x.style.backgroundColor = "#282828";
 }
 
-function unhighlightDungeonCheck(x) {
-    x.style.backgroundColor = '';
+function unhighlightAreaCheck(x) {
+    x.style.backgroundColor = "";
 }
 
 function setOrder(H) {
     if (H) {
-        document.getElementById('layoutdiv').classList.remove('flexcontainer');
+        document.getElementById("layoutdiv").classList.remove("flexcontainer");
     }
     else {
-        document.getElementById('layoutdiv').classList.add('flexcontainer');
+        document.getElementById("layoutdiv").classList.add("flexcontainer");
     }
     saveCookie();
 }
@@ -444,9 +451,9 @@ function setSkipBombers(sender) {
 
 function setZoom(target, sender) {
     document.getElementById(target).style.zoom = sender.value / 100;
-    document.getElementById(target).style.MozTransform = 'scale(' + (sender.value /100) + ')';
-    document.getElementById(target).style.MozTransformOrigin = '0 0';
-    document.getElementById(target + 'size').innerHTML = (sender.value) + '%';
+    document.getElementById(target).style.MozTransform = "scale(" + (sender.value /100) + ")";
+    document.getElementById(target).style.MozTransformOrigin = "0 0";
+    document.getElementById(target + "size").innerHTML = (sender.value) + "%";
     saveCookie();
 }
 
@@ -456,31 +463,31 @@ function showSettings(sender) {
         var startdraw = false;
         editmode = false;
         updateGridItemAll();
-        showTracker('mapdiv', document.getElementsByName('showmap')[0]);
-        document.getElementById('itemconfig').style.display = 'none';
-        document.getElementById('rowButtons').style.display = 'none';
-        sender.innerHTML = 'Options';
+        showTracker("mapdiv", document.getElementsByName("showmap")[0]);
+        document.getElementById("itemconfig").style.display = "none";
+        document.getElementById("rowButtons").style.display = "none";
+        sender.innerHTML = "Options";
         saveCookie();
     }
     else {
-        var x = document.getElementById('settings');
-        if (!x.style.display || x.style.display == 'none') {
-            x.style.display = 'initial';
-            sender.innerHTML = 'X';
+        var x = document.getElementById("settings");
+        if (!x.style.display || x.style.display == "none") {
+            x.style.display = "initial";
+            sender.innerHTML = "X";
         }
         else {
-            x.style.display = 'none';
-            sender.innerHTML = 'Options';
+            x.style.display = "none";
+            sender.innerHTML = "Options";
         }
     }
 }
 
 function showTracker(target, sender) {
     if (sender.checked) {
-        document.getElementById(target).style.display = '';
+        document.getElementById(target).style.display = "";
     }
     else {
-        document.getElementById(target).style.display = 'none';
+        document.getElementById(target).style.display = "none";
     }
 }
 
@@ -489,11 +496,11 @@ function EditMode() {
 
     editmode = true;
     updateGridItemAll();
-    showTracker('mapdiv', {checked: false});
-    document.getElementById('settings').style.display = 'none';
-    document.getElementById('itemconfig').style.display = '';
-    document.getElementById('rowButtons').style.display = 'flex';
-    document.getElementById('settingsbutton').innerHTML = 'Exit Edit Mode';
+    showTracker("mapdiv", {checked: false});
+    document.getElementById("settings").style.display = "none";
+    document.getElementById("itemconfig").style.display = "";
+    document.getElementById("rowButtons").style.display = "flex";
+    document.getElementById("settingsbutton").innerHTML = "Exit Edit Mode";
 }
 
 function ResetLayout() {
@@ -503,7 +510,7 @@ function ResetLayout() {
 
 function ResetTracker() {
     checks.forEach(check => delete check.isOpened);
-    dungeons.forEach(dungeon => Object.values(dungeon.checklist).forEach(check => delete check.isOpened));
+    areas.forEach(area => Object.values(area.checklist).forEach(check => delete check.isOpened));
     items = Object.assign({}, baseItems);
     updateGridItemAll();
     updateMap();
@@ -511,44 +518,44 @@ function ResetTracker() {
 }
 
 function addItemRow() {
-    var sender = document.getElementById('itemdiv');
+    var sender = document.getElementById("itemdiv");
     var r = itemLayout.length;
 
     itemGrid[r] = [];
     itemLayout[r] = [];
 
-    itemGrid[r]['row'] = document.createElement('table');
-    itemGrid[r]['row'].className = 'tracker';
+    itemGrid[r].row = document.createElement("table");
+    itemGrid[r].row.className = "tracker";
 
-    itemGrid[r]['tablerow'] = document.createElement('tr');
-    itemGrid[r]['tablerow'].appendChild(itemGrid[r]['row']);
-    sender.appendChild(itemGrid[r]['tablerow']);
+    itemGrid[r].tablerow = document.createElement("tr");
+    itemGrid[r].tablerow.appendChild(itemGrid[r].row);
+    sender.appendChild(itemGrid[r].tablerow);
 
-    var tr = document.createElement('tr');
-    itemGrid[r]['row'].appendChild(tr);
+    var tr = document.createElement("tr");
+    itemGrid[r].row.appendChild(tr);
 
-    itemGrid[r]['addButton'] = document.createElement('button');
-    itemGrid[r]['addButton'].innerHTML = "+";
-    itemGrid[r]['addButton'].style.backgroundColor = 'green';
-    itemGrid[r]['addButton'].style.color = 'white';
-    itemGrid[r]['addButton'].onclick = new Function("addItem(" + r + ")");
-    itemGrid[r]['row'].appendChild(itemGrid[r]['addbutton']);
+    itemGrid[r].addButton = document.createElement("button");
+    itemGrid[r].addButton.innerHTML = "+";
+    itemGrid[r].addButton.style.backgroundColor = "green";
+    itemGrid[r].addButton.style.color = "white";
+    itemGrid[r].addButton.onclick = new eval("addItem(" + r + ")");
+    itemGrid[r].row.appendChild(itemGrid[r].addbutton);
 
-    itemGrid[r]['removeButton'] = document.createElement('button');
-    itemGrid[r]['removeButton'].innerHTML = "-";
-    itemGrid[r]['removeButton'].style.backgroundColor = 'red';
-    itemGrid[r]['removeButton'].style.color = 'white';
-    itemGrid[r]['removeButton'].onclick = new Function("addItem(" + r + ")");
-    itemGrid[r]['row'].appendChild(itemGrid[r]['removeButton']);
+    itemGrid[r].removeButton = document.createElement("button");
+    itemGrid[r].removeButton.innerHTML = "-";
+    itemGrid[r].removeButton.style.backgroundColor = "red";
+    itemGrid[r].removeButton.style.color = "white";
+    itemGrid[r].removeButton.onclick = new eval("addItem(" + r + ")");
+    itemGrid[r].row.appendChild(itemGrid[r].removeButton);
 
     saveCookie();
 }
 
 function removeItemRow() {
-    var sender = document.getElementById('itemdiv');
+    var sender = document.getElementById("itemdiv");
     var r = itemLayout.length - 1;
 
-    sender.removeChild(itemGrid[r]['tablerow']);
+    sender.removeChild(itemGrid[r].tablerow);
     itemGrid.splice(r,1);
     itemLayout.splice(r,1);
 
@@ -558,43 +565,43 @@ function removeItemRow() {
 function addItem(r) {
     var i = itemLayout[r].length;
     itemGrid[r][i] = [];
-    itemLayout[r][i] = 'blank';
-    itemGrid[r][i]['item'] = document.createElement('td');
-    itemGrid[r][i]['item'].className = 'griditem';
-    itemGrid[r]['row'].appendChild(itemGrid[r][i]['item']);
+    itemLayout[r][i] = "blank";
+    itemGrid[r][i].item = document.createElement("td");
+    itemGrid[r][i].item.className = "griditem";
+    itemGrid[r].row.appendChild(itemGrid[r][i].item);
 
-    var tdt = document.createElement('table');
-    tdt.className = 'bonk';
-    itemGrid[r][i]['item'].appendChild(tdt);
+    var tdt = document.createElement("table");
+    tdt.className = "bonk";
+    itemGrid[r][i].item.appendChild(tdt);
 
-    var tdtr1 = document.createElement('tr');
+    var tdtr1 = document.createElement("tr");
     tdt.appendChild(tdtr1);
-    itemGrid[r][i][0] = document.createElement('th');
-    itemGrid[r][i][0].className = 'corner';
-    itemGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
-    itemGrid[r][i][0].onmouseout = new Function("setMOff()");
-    itemGrid[r][i][0].onclick = new Function("gridItemClick(" + r + "," + i + ",0)");
+    itemGrid[r][i][0] = document.createElement("th");
+    itemGrid[r][i][0].className = "corner";
+    itemGrid[r][i][0].onmouseover = new eval("setMOver(" + r + "," + i + ",0)");
+    itemGrid[r][i][0].onmouseout = new eval("setMOff()");
+    itemGrid[r][i][0].onclick = new eval("gridItemClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(itemGrid[r][i][0]);
-    itemGrid[r][i][1] = document.createElement('th');
-    itemGrid[r][i][1].className = 'corner';
-    itemGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
-    itemGrid[r][i][1].onmouseout = new Function("setMOff()");
-    itemGrid[r][i][1].onclick = new Function("gridItemClick(" + r + "," + i + ",1)");
+    itemGrid[r][i][1] = document.createElement("th");
+    itemGrid[r][i][1].className = "corner";
+    itemGrid[r][i][1].onmouseover = new eval("setMOver(" + r + "," + i + ",1)");
+    itemGrid[r][i][1].onmouseout = new eval("setMOff()");
+    itemGrid[r][i][1].onclick = new eval("gridItemClick(" + r + "," + i + ",1)");
     tdtr1.appendChild(itemGrid[r][i][1]);
 
-    var tdtr2 = document.createElement('tr');
+    var tdtr2 = document.createElement("tr");
     tdt.appendChild(tdtr2);
-    itemGrid[r][i][2] = document.createElement('th');
-    itemGrid[r][i][2].className = 'corner';
-    itemGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
-    itemGrid[r][i][2].onmouseout = new Function("setMOff()");
-    itemGrid[r][i][2].onclick = new Function("gridItemClick(" + r + "," + i + ",2)");
+    itemGrid[r][i][2] = document.createElement("th");
+    itemGrid[r][i][2].className = "corner";
+    itemGrid[r][i][2].onmouseover = new eval("setMOver(" + r + "," + i + ",2)");
+    itemGrid[r][i][2].onmouseout = new eval("setMOff()");
+    itemGrid[r][i][2].onclick = new eval("gridItemClick(" + r + "," + i + ",2)");
     tdtr2.appendChild(itemGrid[r][i][2]);
-    itemGrid[r][i][3] = document.createElement('th');
-    itemGrid[r][i][3].className = 'corner';
-    itemGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
-    itemGrid[r][i][3].onmouseout = new Function("setMOff()");
-    itemGrid[r][i][3].onclick = new Function("gridItemClick(" + r + "," + i + ",3)");
+    itemGrid[r][i][3] = document.createElement("th");
+    itemGrid[r][i][3].className = "corner";
+    itemGrid[r][i][3].onmouseover = new eval("setMOver(" + r + "," + i + ",3)");
+    itemGrid[r][i][3].onmouseout = new eval("setMOff()");
+    itemGrid[r][i][3].onclick = new eval("gridItemClick(" + r + "," + i + ",3)");
     tdtr1.appendChild(itemGrid[r][i][3]);
 
     updateGridItem(r, i);
@@ -606,7 +613,7 @@ function removeItem(r) {
     if (i < 0) {
         return;
     }
-    itemGrid[r]['row'].removeChild(itemGrid[r][i]['item']);
+    itemGrid[r].row.removeChild(itemGrid[r][i].item);
     itemGrid[r].splice(i, 1);
     itemLayout[r].splice(i, 1);
     saveCookie();
@@ -615,38 +622,38 @@ function removeItem(r) {
 function updateGridItem(row, index) {
     var item = itemLayout[row][index];
     if (editmode) {
-        if (!item || item == 'blank') {
-            itemGrid[row][index]['item'].style.backgroundImage = 'url("images/blank.png")';
+        if (!item || item == "blank") {
+            itemGrid[row][index].item.style.backgroundImage = 'url(images/blank.png)';
         }
-        else if ((typeof items[item]) == 'boolean') {
-            itemGrid[row][index]['item'].style.backgroundImage = 'url("images/' + item + '.png")';
+        else if ((typeof items[item]) == "boolean") {
+            itemGrid[row][index].item.style.backgroundImage = 'url(images/' + item + '.png)';
         }
         else {
-            itemGrid[row][index]['item'].style.backgroundImage = 'url("images/' + item + itemsMax[item] + '.png")';
+            itemGrid[row][index].item.style.backgroundImage = 'url(images/' + item + itemsMax[item] + '.png)';
         }
-        itemGrid[row][index]['item'].style.border = '1px solid white';
-        itemGrid[row][index]['item'].className = 'griditem true';
+        itemGrid[row][index].item.style.border = "1px solid white";
+        itemGrid[row][index].item.className = "griditem true";
         return;
     }
 
-    itemGrid[row][index]['item'].style.border = '0px';
+    itemGrid[row][index].item.style.border = "0px";
 
-    if (!item || item == 'blank') {
-        itemGrid[row][index]['item'].style.backgroundImage = '';
+    if (!item || item == "blank") {
+        itemGrid[row][index].item.style.backgroundImage = "";
         return;
     }
 
-    if ((typeof items[item]) == 'boolean') {
-        itemGrid[row][index]['item'].style.backgroundImage = 'url("images/' + item + '.png")';
+    if ((typeof items[item]) == "boolean") {
+        itemGrid[row][index].item.style.backgroundImage = 'url(images/' + item + '.png)';
     }
     else {
-        itemGrid[row][index]['item'].style.backgroundImage = 'url("images/' + item + items[item] + '.png")';
+        itemGrid[row][index].item.style.backgroundImage = 'url(images/' + item + items[item] + '.png)';
     }
 
-    itemGrid[row][index]['item'].className = 'griditem ' + !!items[item];
+    itemGrid[row][index].item.className = "griditem " + !!items[item];
 
     if (remains[item] != undefined) {
-        itemGrid[row][index][3].style.backgroundImage = '';
+        itemGrid[row][index][3].style.backgroundImage = "";
     }
 }
 
@@ -657,12 +664,12 @@ function updateGridItemAll() {
             updateGridItem(r, c);
         }
         if (editmode) {
-            itemGrid[r]['addbutton'].style.display = '';
-            itemGrid[r]['removebutton'].style.display = '';
+            itemGrid[r].addbutton.style.display = "";
+            itemGrid[r].removebutton.style.display = "";
         }
         else {
-            itemGrid[r]['addbutton'].style.display = 'none';
-            itemGrid[r]['removebutton'].style.display = 'none';
+            itemGrid[r].addbutton.style.display = "none";
+            itemGrid[r].removebutton.style.display = "none";
         }
     }
 }
@@ -706,7 +713,7 @@ function setMOff() {
 function gridItemClick(row, col, corner) {
     if (editmode) {
         if (selected.item) {
-            document.getElementById(selected.item).style.border = '1px solid white';
+            document.getElementById(selected.item).style.border = "1px solid white";
             var old = itemLayout[row][col];
             if (old == selected.item) {
                 selected = {};
@@ -718,7 +725,7 @@ function gridItemClick(row, col, corner) {
             document.getElementById(old).style.opacity = 1;
         }
         else if (selected.row !== undefined) {
-            itemGrid[selected.row][selected.col]['item'].style.border = '1px solid white';
+            itemGrid[selected.row][selected.col].item.style.border = "1px solid white";
             var temp = itemLayout[row][col];
             itemLayout[row][col] = itemLayout[selected.row][selected.col];
             itemLayout[selected.row][selected.col] = temp;
@@ -740,7 +747,7 @@ function gridItemClick(row, col, corner) {
                 items[item] = !items[item];
             }
         }
-        else if ((typeof items[item]) == 'boolean') {
+        else if ((typeof items[item]) == "boolean") {
             items[item] = !items[item];
         }
         else {
@@ -763,7 +770,7 @@ function gridItemRClick(row, col, corner) {
         var item = itemLayout[row][col];
         if (remains[item] != undefined) {
             if (corner == 3) {
-                //dungeon list happens here
+                //area list happens here
                 //corner 3 is bottom right
                 if (remains[item] <= 0) {
                     remains[item] = 4;
@@ -776,12 +783,12 @@ function gridItemRClick(row, col, corner) {
                 items[item] = !items[item];
             }
         }
-        else if ((typeof items[item]) == 'boolean') {
+        else if ((typeof items[item]) == "boolean") {
             items[item] = !items[item];
         }
         else {
             if (items[item] == itemsMin[item]) {
-                items[item] = itemsMax[item]
+                items[item] = itemsMax[item];
             }
             else {
                 items[item]--;
@@ -796,24 +803,24 @@ function gridItemRClick(row, col, corner) {
 function updateMap() {
     for (k = 0; k < checks.length; k++) {
         if(!checks[k].isOpened) {
-            document.getElementById(k).className = 'mapspan check ' + checks[k].isAvailable();
+            document.getElementById(k).className = "mapspan check " + checks[k].isAvailable();
         }
     }
-    for (k = 0; k < dungeons.length; k++) {
-        document.getElementById('dungeon' + k).className = 'mapspan dungeon ' + dungeons[k].canGetCheck();
+    for (k = 0; k < areas.length; k++) {
+        document.getElementById("area" + k).className = "mapspan area " + areas[k].canGetCheck();
         var DCcount = 0;
-        for (var key in dungeons[k].checklist) {
-            if (dungeons[k].checklist.hasOwnProperty(key)) {
-                if (!dungeons[k].checklist[key].isOpened && dungeons[k].checklist[key].isAvailable()) {
+        for (var key in areas[k].checklist) {
+            if (areas[k].checklist.hasOwnProperty(key)) {
+                if (!areas[k].checklist[key].isOpened && areas[k].checklist[key].isAvailable()) {
                     DCcount++;
                 }
             }
         }
-        var child = document.getElementById('dugeon ' + k).firstChild;
+        var child = document.getElementById("area " + k).firstChild;
         while (child) {
-            if (child.className == 'checkCount') {
+            if (child.className == "checkCount") {
                 if (DCcount == 0) {
-                    child.innerHTML = '';
+                    child.innerHTML = "";
                 }
                 else {
                     child.innerHTML = DCcount;
@@ -823,18 +830,21 @@ function updateMap() {
             child = child.nextSibling;
         }
     }
-    document.getElementById('submaparea').className = 'DC' + dungeons[dungeonSelect].isBeatable();
-    var itemlist = document.getElementById('submaplist').children;
+    document.getElementById("submaparea").className = "DC" + areas[areaSelect].isBeatable();
+    var itemlist = document.getElementById("submaplist").children;
     for (var item in itemlist) {
         if (itemlist.hasOwnProperty(item)) {
-            if (dungeons[dungeonSelect].checklist[itemlist[item].innerHTML].isOpened) {
-                itemlist[item].className = 'DCopened';
+            if (areas[areaSelect].checklist[itemlist[item].innerHTML].isOpened) {
+                itemlist[item].className = "DCopened";
             }
-            else if (dungeons[dungeonSelect].checklist[itemlist[item].innerHTML].isAvailable()) {
-                itemlist[item].className = 'DCavailable';
+            else if (areas[areaSelect].checklist[itemlist[item].innerHTML].isAvailable()) {
+                itemlist[item].className = "DCavailable";
+            }
+            else if (areas[areaSelect].checklist[itemlist[item].innerHTML].isCheckable()) {
+                itemlist[item].className = "DChidden";
             }
             else {
-                itemlist[item].className = 'DCunavailable';
+                itemlist[item].className = "DCunavailable";
             }
         }
     }
@@ -843,12 +853,12 @@ function updateMap() {
 function itemConfigClick(sender) {
     var item = sender.id;
     if (selected.item) {
-        document.getElementById(selected.item).style.border = '0px';
-        sender.style.border = '3px solid yellow';
+        document.getElementById(selected.item).style.border = "0px";
+        sender.style.border = "3px solid yellow";
         selected = {item: item};
     }
     else if (selected.row !== undefined) {
-        itemGrid[selected.row][selected.col]['item'].style.border = '1px solid white';
+        itemGrid[selected.row][selected.col].item.style.border = "1px solid white";
         var old = itemLayout[selected.row][selected.col];
         if (old == item) {
             selected = {};
@@ -860,115 +870,119 @@ function itemConfigClick(sender) {
         selected = {};
     }
     else {
-        sender.style.border = '3px solid yellow';
-        selected = {item: item}
+        sender.style.border = "3px solid yellow";
+        selected = {item: item};
     }
 }
 
 function populateMapDiv() {
-    var mapdiv = document.getElementById('mapdiv');
+    var mapdiv = document.getElementById("mapdiv");
     //Initialize all checks on the map
+    
+    var s = document.createElement("span");
+    var ss = document.createElement("span");
     for (k = 0; k < checks.length; k++) {
-        var s = document.createElement('span');
-        s.style.backgroundImage = 'url("images/poi.png")';
-        s.style.color = 'black';
+        s.style.backgroundImage = "url(images/poi.png)";
+        s.style.color = "black";
         s.id = k;
-        s.onclick = new Function('toggleCheck(' + k + ')');
-        s.onmouseover = new Function('highlight(' + k + ')');
-        s.onmouseout = new Function('unhighlight(' + k + ')');
+        s.onclick = new eval("toggleCheck(" + k + ")");
+        s.onmouseover = new eval("highlight(" + k + ")");
+        s.onmouseout = new eval("unhighlight(" + k + ")");
         s.style.left = checks[k].x;
         s.style.top = checks[k].y;
         if (checks[k].isOpened) {
-            s.className = 'mapspan check opened';
+            s.className = "mapspan check opened";
         }
         else {
-            s.className = 'mapspan check ' + checks[k].isAvailable();
+            s.className = "mapspan check " + checks[k].isAvailable();
         }
-        var ss = document.createElement('span');
-        ss.className = 'tooltip';
+        ss.className = "tooltip";
         ss.innerHTML = checks[k].name;
         s.appendChild(ss);
         mapdiv.appendChild(s);
     }
 
-    //Dungeon Bosses and checks
-    for (k = 0; k < dungeons.length; k++) {
-        s.document.createElement('span');
-        s.id = 'dungeon' + k;
-        s.onclick = new Function('clickDungeon(' + k + ')');
-        s.onmouseover = new Function('highlightDungeon(' + k + ')');
-        s.onmouseover = new Function('unhighlightDungeon(' = k + ')');
-        s.style.backgroundImage = 'url("images/poi.png")';
-        s.style.left = dungeons[k].x;
-        s.style.top = dungeons[k].y;
-        s.style.textAlign = 'center';
-        s.className = 'mapspan dungeon ' + dungeons[k].canGetCheck();
+    //Area Bosses and checks
+    for (k = 0; k < areas.length; k++) {
+        s.document.createElement("span");
+        s.id = "area" + k;
+        s.onclick = new eval("clickArea(" + k + ")");
+        s.onmouseover = new eval("highlightArea(" + k + ")");
+        s.onmouseout = new eval("unhighlightArea(" + k + ")");
+        s.style.backgroundImage = 'url(images/poi.png)';
+        s.style.left = areas[k].x;
+        s.style.top = areas[k].y;
+        s.style.textAlign = "center";
+        s.className = "mapspan area " + areas[k].canGetCheck();
         var DCcount = 0;
-        for (var key in dungeons[k].checklist) {
-            if (dungeons[k].checklist.hasOwnProperty(key)) {
-                if (!dungeons[k].checklist[key].isOpened && dungeons[k].checklist[key].isAvailable()) {
+        for (var key in areas[k].checklist) {
+            if (areas[k].checklist.hasOwnProperty(key)) {
+                if (!areas[k].checklist[key].isOpened && areas[k].checklist[key].isAvailable()) {
                     DCcount++;
                 }
             }
         }
-        var ss = document.createElement('span');
-        ss.className = 'checkCount';
+        //var ss = document.createElement("span");
+        ss.className = "checkCount";
         if (DCcount == 0) {
-            ss.innerHTML = '';
+            ss.innerHTML = "";
         }
         else {
             ss.innerHTML = DCcount;
         }
-        ss.style.color = 'black';
-        ss.display = 'inline-block';
-        ss.style.lineHeight = '24px';
+        ss.style.color = "black";
+        ss.display = "inline-block";
+        ss.style.lineHeight = "24px";
         s.appendChild(ss);
         mapdiv.appendChild(s);
     }
-    document.getElementById('submaparea').innerHTML = dungeons[dungeonSelect].name;
-    document.getElementById('submaparea').className = 'DC' + dungeons[dungeonSelect].isBeatable();
-    document.getElementById('dungeon' + dungeonSelect).style.backgroundImage = 'url("images/highlighted.png")';
-    for (var key in dungeons[dungeonSelect].checklist) {
-        var s = document.createElement('li');
-        s.innerHTML = key;
+    document.getElementById("submaparea").innerHTML = areas[areaSelect].name;
+    document.getElementById("submaparea").className = "DC" + areas[areaSelect].isBeatable();
+    document.getElementById("area" + areaSelect).style.backgroundImage = 'url(images/highlighted.png)';
+    for (var key1 in areas[areaSelect].checklist) {
+        var l = document.createElement("li");
+        l.innerHTML = key1;
 
-        if (dungeons[dungeonSelect].checklist[key].isOpened) {
-            s.className = 'DCopened';
+        if (areas[areaSelect].checklist[key1].isOpened) {
+            l.className = "DCopened";
         }
-        else if (dungeons[dungeonSelect].checklist[key].isAvailable()) {
-            s.className = 'DCavailable';
+        else if (areas[areaSelect].checklist[key1].isAvailable()) {
+            length.className = "DCavailable";
+        }
+        else if (areas[areaSelect].checklist[key1].isCheckable()) {
+            length.className = "DChidden";
         }
         else {
-            s.className = 'DCunavailable';
+            l.className = "DCunavailable";
         }
-        s.onclick = new Function('toggleDungeonCheck(this,' + dungeonSelect + ',"' + key + '")');
-        s.onmouseover = new Function('highlightDungeonCheck(this)');
-        s.onmouseout = new Function('unhighlightDungeonCheck(this)');
-        s.style.cursor = 'pointer';
-        document.getElementById('submaplist').appendChild(s);
+        l.onclick = new eval('toggleAreaCheck(this,' + areaSelect + ',"' + key1 + '")');
+        l.onmouseover = new eval("highlightAreaCheck(this)");
+        l.onmouseout = new eval("unhighlightAreaCheck(this)");
+        l.style.cursor = "pointer";
+        document.getElementById("submaplist").appendChild(l);
     }
 }
 
 function populateItemConfig() {
-    var grid = document.getElementById('itemconfig');
+    var grid = document.getElementById("itemconfig");
     var i = 0;
     var row;
     for (var key in items) {
         if (i % 10 == 0) {
-            row = document.createElement('tr');
+            row = document.createElement("tr");
             grid.appendChild(row);
         }
         i++;
-        var rowitem = document.createElement('td');
-        rowitem.className = 'corner';
+        var rowitem = document.createElement("td");
+        rowitem.className = "corner";
         rowitem.id = key;
-        rowitem.style.backgroundSize = '100% 100%';
-        rowitem.onclick = new Function('itemConfigClick(this)');
-        if ((typeof items[key]) == 'boolean') {
-            rowitem.style.backgroundImage = 'url("images/' + key + '.png")';
+        rowitem.style.backgroundSize = "100% 100%";
+        rowitem.onclick = new eval("itemConfigClick(this)");
+        if ((typeof items[key]) == "boolean") {
+            rowitem.style.backgroundImage = 'url(images/' + key + '.png")';
         }
         else {
-            rowitem.style.backgroundImage = 'url("images/' + key + itemsMax[key] + '.png")';
+            rowitem.style.backgroundImage = 'url(images/' + key + itemsMax[key] + '.png")';
         }
         row.appendChild(rowitem);
     }
@@ -982,27 +996,25 @@ function init() {
 }
 
 function preloader() {
-    for (item in items) {
-        if ((typeof items[item]) == 'boolean') {
-            var img = new Image();
-            img.src = 'images/' + item + '.png';
+    var img = new Image();
+    for (var item in items) {
+        if ((typeof items[item]) == "boolean") {
+            img.src = "images/" + item + ".png";
         }
         else {
             for (i = itemsMin[item]; i < itemsMax[item]; i++) {
-                var img = new Image();
-                img.src = 'images/' + item + i + '.png';
+                img.src = "images/" + item + i + ".png";
             }
         }
     }
-    for (remains in dungeonImg) {
-        var img = new Image();
-        img.src = 'images/' + dungeonImg[remains] + '.png';
+    for (var remains in areaImg) {
+        img.src = "images/" + areaImg[remains] + ".png";
     }
 }
 
 function addLoadEvent(func) {
     var oldonload = window.onload;
-    if (typeof window.onload != 'function') {
+    if (typeof window.onload != "function") {
         window.onload = func;
     }
     else {
@@ -1011,7 +1023,7 @@ function addLoadEvent(func) {
                 oldonload();
             }
             func();
-        }
+        };
     }
 }
 addLoadEvent(preloader);

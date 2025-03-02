@@ -26,6 +26,7 @@ var defaultItemGrid = [
         "SwampDeed",
         "MountainDeed",
         "OceanDeed",
+        "ScarecrowSong",
     ],
     [
         "RoomKey",   
@@ -42,7 +43,7 @@ var defaultItemGrid = [
         "ChateauRomani",
         "MysteryMilk",
         "EmptyBottle",
-        "ZoraEggs",
+        "ZoraEgg",
     ],
     [
         "PostmanHat",
@@ -86,12 +87,13 @@ var defaultItemGrid = [
         "TwinmoldRemains",
     ],
     [
+        "Magic",
         "BombersNotebook",
-        "NoteNum1",
-        "NoteNum2",
-        "NoteNum3",
-        "NoteNum4",
-        "NoteNum5",
+        "NoteNumOne",
+        "NoteNumTwo",
+        "NoteNumThree",
+        "NoteNumFour",
+        "NoteNumFive",
     ],
     [
         "SwampSkulltulas",
@@ -140,7 +142,7 @@ var defaultItemGrid = [
         "ElegyOfEmptiness",
         "OathToOrder",
     ]
-]
+];
 
 var baseItems = {
     Ocarina: false,
@@ -180,7 +182,7 @@ var baseItems = {
     ChateauRomani: false,
     MysteryMilk: false,
     EmptyBottle: 0,
-    ZoraEggs: 0,
+    ZoraEgg: 0,
 
     PostmanHat: false,
     AllNightMask: false,
@@ -218,12 +220,13 @@ var baseItems = {
     GyorgRemains: false,
     TwinmoldRemains: false,
 
+    Magic: 0,
     BombersNotebook: false,
-    NoteNum1: 0,
-    NoteNum2: 0,
-    NoteNum3: 0,
-    NoteNum4: 0,
-    NoteNum5: 0,
+    NoteNumOne: 0,
+    NoteNumTwo: 0,
+    NoteNumThree: 0,
+    NoteNumFour: 0,
+    NoteNumFive: 0,
 
     SwampSkulltulas: 0,
     OceanSkulltulas: 0,
@@ -266,6 +269,7 @@ var baseItems = {
     OathToOrder: false,
 
     blank: false,
+    ScarecrowSong: true,
 };
 
 var itemsMin = {
@@ -276,6 +280,7 @@ var itemsMin = {
     EmptyBottle: 0,
     ZoraEggs: 0,
     Sword: 0,
+    Magic: 0,
     NoteNum1: 0,
     NoteNum2: 0,
     NoteNum3: 0,
@@ -301,11 +306,12 @@ var itemsMax = {
     EmptyBottle: 2,
     ZoraEggs: 6,
     Sword: 3,
-    NoteNum1: 9,
-    NoteNum2: 9,
-    NoteNum3: 9,
-    NoteNum4: 9,
-    NoteNum5: 9,
+    Magic: 2,
+    NoteNum1: 5,
+    NoteNum2: 5,
+    NoteNum3: 5,
+    NoteNum4: 5,
+    NoteNum5: 5,
     SwampSkulltulas: 30,
     OceanSkulltulas: 30,
     SwampStrayFairy: 15,
