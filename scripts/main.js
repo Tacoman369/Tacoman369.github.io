@@ -32,7 +32,13 @@ var mouseLastOverC;
 var mouseLastOverCor;
 
 var itemGrid = [];
+var maskGrid = [];
+var dungeonGrid = [];
+var questGrid = [];
 var itemLayout = [];
+var maskLayout = [];
+var dungeonLayout = [];
+var questLayout = [];
 
 var editmode = false;
 var selected = {};
@@ -69,7 +75,13 @@ var cookieDefault = {
     mPos: 0,
     remains: defaultRemains,
     items: defaultItemGrid,
+    masks: defaultMaskGrid,
+    dungeons: defaultDungeonGrid,
+    quests: defaultQuestGrid,
     obtainedItems: items,
+    obtainedMasks: masks,
+    obtainedDungeons: dungeons,
+    obtainedQuests: quests,
     checks: serializeChecks(),
     areaChecks: serializeAreaChecks(),
     tmask: 1,
@@ -107,23 +119,33 @@ function loadCookie() {
     });
 
     remains = JSON.parse(JSON.stringify(cookieobj.remains));
-    initGridRow(JSON.parse(JSON.stringify(cookieobj.items)));
+    initGridRowItem(JSON.parse(JSON.stringify(cookieobj.items)));
+    initGridRowMask(JSON.parse(JSON.stringify(cookieobj.masks)));
+    initGridRowDungeon(JSON.parse(JSON.stringify(cookieobj.dungeons)));
+    initGridRowQuest(JSON.parse(JSON.stringify(cookieobj.quests)));
     items = JSON.parse(JSON.stringify(cookieobj.obtainedItems));
+    masks = JSON.parse(JSON.stringify(cookieobj.obtainedMasks));
+    dungeons = JSON.parse(JSON.stringify(cookieobj.obtainedDungeons));
+    quests = JSON.parse(JSON.stringify(cookieobj.obtainedQuests));
     deserializeChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
     deserializeAreaChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
 
     updateGridItemAll();
+    updateGridMaskAll();
+    updateGridDungeonAll();
+    updateGridQuestAll();
 
     document.getElementsByName("showmap")[0].checked = !!cookieobj.map;
     document.getElementsByName("showmap")[0].onchange();
-    document.getElementsByName("itemdivsize")[0].value = cookieobj.iZoom;
-    document.getElementsByName("itemdivsize")[0].onchange();
+    document.getElementsByName("itemtablesize")[0].value = cookieobj.iZoom;
+    document.getElementsByName("itemtablesize")[0].onchange();
     document.getElementsByName("mapdivsize")[0].value = cookieobj.mZoom;
     document.getElementsByName("mapdivsize")[0].onchange();
 
     document.getElementsByName("mapposition")[cookieobj.mPos].click();
 
     //Item Settings
+    /*
     document.getElementsByName("transformmasklogic")[0].checked = !!cookieobj.tmask;
     //document.getElementsByName('transformmasklogic')[0].onchange();
     document.getElementsByName("maskslogic")[0].checked = !!cookieobj.mask;
@@ -158,7 +180,7 @@ function loadCookie() {
     //document.getElementsByName("remainslogic")[0].onchange();
     document.getElementsByName("containerlogic")[0].checked = !!cookieobj.containers;
     //document.getElementsByName("containerlogic")[0].onchange();
-
+    */
     //Tricks and Logic Settings
     document.getElementsByName("skipbombers")[0].checked = !!cookieobj.skipnotebook;
     //document.getElementsByName("skipbombers")[0].onchange();
@@ -176,18 +198,25 @@ function saveCookie() {
     cookieobj = {};
 
     cookieobj.map = document.getElementsByName("showmap")[0].checked ? 1 : 0;
-    cookieobj.iZoom = document.getElementsByName("itemdivsize")[0].value;
+    cookieobj.iZoom = document.getElementsByName("itemtablesize")[0].value;
     cookieobj.mZoom = document.getElementsByName("mapdivsize")[0].value;
 
     cookieobj.mPos = document.getElementsByName("mapposition")[1].checked ? 1 : 0;
 
     cookieobj.remains = JSON.parse(JSON.stringify(remains));
     cookieobj.items = JSON.parse(JSON.stringify(itemLayout));
+    cookieobj.masks = JSON.parse(JSON.stringify(maskLayout));
+    cookieobj.dungeons = JSON.parse(JSON.stringify(dungeonLayout));
+    cookieobj.quests = JSON.parse(JSON.stringify(questLayout));
     cookieobj.obtainedItems = JSON.parse(JSON.stringify(items));
+    cookieobj.obtainedMasks = JSON.parse(JSON.stringify(masks));
+    cookieobj.obtainedDungeons = JSON.parse(JSON.stringify(dungeons));
+    cookieobj.obtainedQuests = JSON.parse(JSON.stringify(quests));
     cookieobj.checks = JSON.parse(JSON.stringify(serializeChecks()));
     cookieobj.areaChecks = JSON.parse(JSON.stringify(serializeAreaChecks()));
 
     //Item Settings
+    /*
     cookieobj.tmask = document.getElementsByName("transformmasklogic")[0].checked ? 1 : 0;
     cookieobj.mask = document.getElementsByName("maskslogic")[0].checked ? 1 : 0;
     cookieobj.piece = document.getElementsByName("piecelogic")[0].checked ? 1 : 0;
@@ -206,7 +235,7 @@ function saveCookie() {
     cookieobj.bkey = document.getElementsByName("bigkeylogic")[0].checked ? 1 : 0;
     cookieobj.bosses = document.getElementsByName("remainslogic")[0].checked ? 1 : 0;
     cookieobj.containers = document.getElementsByName("containerlogic")[0].checked ? 1 : 0;
-
+    */
     //Tricks and Logic Settings
     cookieobj.skipnotebook = document.getElementsByName("skipbombers")[0].checked ? 1 : 0;
 
@@ -447,6 +476,9 @@ function setSkipBombers(sender) {
         skipbombers = false;
     }
     updateGridItemAll();
+    updateGridMaskAll();
+    updateGridDungeonAll();
+    updateGridQuestAll();
 }
 
 function setZoom(target, sender) {
@@ -464,8 +496,14 @@ function showSettings(sender) {
         var startdraw = false;
         editmode = false;
         updateGridItemAll();
+        updateGridMaskAll();
+        updateGridDungeonAll();
+        updateGridQuestAll();
         showTracker("mapdiv", document.getElementsByName("showmap")[0]);
         document.getElementById("itemconfig").style.display = "none";
+        document.getElementById("maskconfig").style.display = "none";
+        document.getElementById("dungeonconfig").style.display = "none";
+        document.getElementById("questconfig").style.display = "none";
         document.getElementById("rowButtons").style.display = "none";
         sender.innerHTML = "Options";
         saveCookie();
@@ -497,28 +535,47 @@ function EditMode() {
 
     editmode = true;
     updateGridItemAll();
+    updateGridMaskAll();
+    updateGridDungeonAll();
+    updateGridQuestAll();
     showTracker("mapdiv", {checked: false});
     document.getElementById("settings").style.display = "none";
     document.getElementById("itemconfig").style.display = "";
+    document.getElementById("maskconfig").style.display = "";
+    document.getElementById("dungeonconfig").style.display = "";
+    document.getElementById("questconfig").style.display = "";
     document.getElementById("rowButtons").style.display = 'flex';
     document.getElementById("settingsbutton").innerHTML = "Exit Edit Mode";
 }
 
 function ResetLayout() {
-    initGridRow(defaultItemGrid);
+    initGridRowItem(defaultItemGrid);
     updateGridItemAll();
+    initGridRowMask(defaultMaskGrid);
+    updateGridMaskAll();
+    initGridRowDungeon(defaultDungeonGrid);
+    updateGridDungeonAll();
+    initGridRowQuest(defaultQuestGrid);
+    updateGridQuestAll();
 }
 
 function ResetTracker() {
     checks.forEach(check => delete check.isOpened);
     areas.forEach(area => Object.values(area.checklist).forEach(check => delete check.isOpened));
     items = Object.assign({}, baseItems);
+    masks = Object.assign({}, baseMasks);
+    dungeons = Object.assign({}, baseDungeons);
+    quests = Object.assign({}, baseQuests);
     updateGridItemAll();
+    updateGridMaskAll();
+    updateGridDungeonAll();
+    updateGridQuestAll();
     updateMap();
     saveCookie();
 }
 
 function addItemRow() {
+    //Items
     var sender = document.getElementById("itemdiv");
     var r = itemLayout.length;
 
@@ -552,6 +609,111 @@ function addItemRow() {
     saveCookie();
 }
 
+function addMaskRow() {
+    //Masks
+    var sender1 = document.getElementById("maskdiv");
+    var r1 = maskLayout.length;
+
+    maskGrid[r1] = [];
+    maskLayout[r1] = [];
+
+    maskGrid[r1]['row'] = document.createElement("table");
+    maskGrid[r1]['row'].className = "tracker";
+
+    maskGrid[r1].tablerow = document.createElement("tr");
+    maskGrid[r1].tablerow.appendChild(maskGrid[r1]['row']);
+    sender1.appendChild(maskGrid[r1].tablerow);
+
+    var tr1 = document.createElement("tr");
+    maskGrid[r1]['row'].appendChild(tr1);
+
+    maskGrid[r1]['addbutton'] = document.createElement("button");
+    maskGrid[r1]['addbutton'].innerHTML = "+";
+    maskGrid[r1]['addbutton'].style.backgroundColor = "green";
+    maskGrid[r1]['addbutton'].style.color = "white";
+    maskGrid[r1]['addbutton'].onclick = new Function("addItem(" + r1 + ")");
+    maskGrid[r1]['row'].appendChild(maskGrid[r1]['addbutton']);
+
+    maskGrid[r1]['removebutton'] = document.createElement("button");
+    maskGrid[r1]['removebutton'].innerHTML = "-";
+    maskGrid[r1]['removebutton'].style.backgroundColor = "red";
+    maskGrid[r1]['removebutton'].style.color = "white";
+    maskGrid[r1]['removebutton'].onclick = new Function("addItem(" + r1 + ")");
+    maskGrid[r1]['row'].appendChild(maskGrid[r1]['removebutton']);
+
+    saveCookie();
+}
+
+function addDungeonRow() {
+    //Dungeons
+    var sender2 = document.getElementById("dungeondiv");
+    var r2 = dungeonLayout.length;
+
+    dungeonGrid[r2] = [];
+    dungeonLayout[r2] = [];
+
+    dungeonGrid[r2]['row'] = document.createElement("table");
+    dungeonGrid[r2]['row'].className = "tracker";
+
+    dungeonGrid[r2].tablerow = document.createElement("tr");
+    dungeonGrid[r2].tablerow.appendChild(dungeonGrid[r2]['row']);
+    sender2.appendChild(dungeonGrid[r2].tablerow);
+
+    var tr2 = document.createElement("tr");
+    dungeonGrid[r2]['row'].appendChild(tr2);
+
+    dungeonGrid[r2]['addbutton'] = document.createElement("button");
+    dungeonGrid[r2]['addbutton'].innerHTML = "+";
+    dungeonGrid[r2]['addbutton'].style.backgroundColor = "green";
+    dungeonGrid[r2]['addbutton'].style.color = "white";
+    dungeonGrid[r2]['addbutton'].onclick = new Function("addItem(" + r2 + ")");
+    dungeonGrid[r2]['row'].appendChild(dungeonGrid[r2]['addbutton']);
+
+    dungeonGrid[r2]['removebutton'] = document.createElement("button");
+    dungeonGrid[r2]['removebutton'].innerHTML = "-";
+    dungeonGrid[r2]['removebutton'].style.backgroundColor = "red";
+    dungeonGrid[r2]['removebutton'].style.color = "white";
+    dungeonGrid[r2]['removebutton'].onclick = new Function("addItem(" + r2 + ")");
+    dungeonGrid[r2]['row'].appendChild(dungeonGrid[r2]['removebutton']);
+
+    saveCookie();
+}
+
+function addQuestRow() {
+    //Quests
+    var sender3 = document.getElementById("questdiv");
+    var r3 = questLayout.length;
+
+    questGrid[r3] = [];
+    questLayout[r3] = [];
+
+    questGrid[r3]['row'] = document.createElement("table");
+    questGrid[r3]['row'].className = "tracker";
+
+    questGrid[r3].tablerow = document.createElement("tr");
+    questGrid[r3].tablerow.appendChild(questGrid[r3]['row']);
+    sender3.appendChild(questGrid[r3].tablerow);
+
+    var tr3 = document.createElement("tr");
+    questGrid[r3]['row'].appendChild(tr3);
+
+    questGrid[r3]['addbutton'] = document.createElement("button");
+    questGrid[r3]['addbutton'].innerHTML = "+";
+    questGrid[r3]['addbutton'].style.backgroundColor = "green";
+    questGrid[r3]['addbutton'].style.color = "white";
+    questGrid[r3]['addbutton'].onclick = new Function("addItem(" + r3 + ")");
+    questGrid[r3]['row'].appendChild(questGrid[r3]['addbutton']);
+
+    questGrid[r3]['removebutton'] = document.createElement("button");
+    questGrid[r3]['removebutton'].innerHTML = "-";
+    questGrid[r3]['removebutton'].style.backgroundColor = "red";
+    questGrid[r3]['removebutton'].style.color = "white";
+    questGrid[r3]['removebutton'].onclick = new Function("addItem(" + r3 + ")");
+    questGrid[r3]['row'].appendChild(questGrid[r3]['removebutton']);
+
+    saveCookie();
+}
+
 function removeItemRow() {
     var sender = document.getElementById("itemdiv");
     var r = itemLayout.length - 1;
@@ -559,6 +721,42 @@ function removeItemRow() {
     sender.removeChild(itemGrid[r].tablerow);
     itemGrid.splice(r,1);
     itemLayout.splice(r,1);
+
+    saveCookie();
+}
+
+function removeMaskRow() {
+    //Masks
+    var sender1 = document.getElementById("maskdiv");
+    var r1 = maskLayout.length - 1;
+
+    sender1.removeChild(maskGrid[r1].tablerow);
+    maskGrid.splice(r1,1);
+    maskLayout.splice(r1,1);
+
+    saveCookie();
+}
+
+function removeDungeonRow() {
+    //Dungeons
+    var sender2 = document.getElementById("dungeondiv");
+    var r2 = dungeonLayout.length - 1;
+
+    sender2.removeChild(dungeonGrid[r2].tablerow);
+    dungeonGrid.splice(r2,1);
+    dungeonLayout.splice(r2,1);
+
+    saveCookie();
+}
+
+function removeQuestRow() {
+    //Quests
+    var sender3 = document.getElementById("questdiv");
+    var r3 = questLayout.length - 1;
+
+    sender3.removeChild(questGrid[r3].tablerow);
+    questGrid.splice(r3,1);
+    questLayout.splice(r3,1);
 
     saveCookie();
 }
@@ -659,6 +857,7 @@ function updateGridItem(row, index) {
 }
 
 function updateGridItemAll() {
+    //Items
     var r, c;
     for (r = 0; r < itemLayout.length; r++) {
         for (c = 0; c < itemLayout[r].length; c++) {
@@ -686,7 +885,7 @@ function setGridItem(item, row, index) {
     updateGridItem(row, index);
 }
 
-function initGridRow(itemsets) {
+function initGridRowItem(itemsets) {
     while(itemLayout.length > 0) {
         removeItemRow();
     }
@@ -695,6 +894,417 @@ function initGridRow(itemsets) {
     for (r = 0; r < itemsets.length; r++) {
         for (c = 0; c < itemsets[r].length; c++) {
             setGridItem(itemsets[r][c], r, c);
+        }
+    }
+}
+
+
+function addMask(r) {
+    var i = maskLayout[r].length;
+    maskGrid[r][i] = [];
+    maskLayout[r][i] = "blank";
+    maskGrid[r][i].mask = document.createElement("td");
+    maskGrid[r][i].mask.className = "gridmask";
+    maskGrid[r]['row'].appendChild(maskGrid[r][i].mask);
+
+    var tdt = document.createElement("table");
+    tdt.className = "bonk";
+    maskGrid[r][i].mask.appendChild(tdt);
+
+    var tdtr1 = document.createElement("tr");
+    tdt.appendChild(tdtr1);
+    maskGrid[r][i][0] = document.createElement("th");
+    maskGrid[r][i][0].className = "corner";
+    maskGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    maskGrid[r][i][0].onmouseout = new Function("setMOff()");
+    maskGrid[r][i][0].onclick = new Function("gridMaskClick(" + r + "," + i + ",0)");
+    tdtr1.appendChild(maskGrid[r][i][0]);
+    maskGrid[r][i][1] = document.createElement("th");
+    maskGrid[r][i][1].className = "corner";
+    maskGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    maskGrid[r][i][1].onmouseout = new Function("setMOff()");
+    maskGrid[r][i][1].onclick = new Function("gridMaskClick(" + r + "," + i + ",1)");
+    tdtr1.appendChild(maskGrid[r][i][1]);
+
+    var tdtr2 = document.createElement("tr");
+    tdt.appendChild(tdtr2);
+    maskGrid[r][i][2] = document.createElement("th");
+    maskGrid[r][i][2].className = "corner";
+    maskGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    maskGrid[r][i][2].onmouseout = new Function("setMOff()");
+    maskGrid[r][i][2].onclick = new Function("gridMaskClick(" + r + "," + i + ",2)");
+    tdtr2.appendChild(maskGrid[r][i][2]);
+    maskGrid[r][i][3] = document.createElement("th");
+    maskGrid[r][i][3].className = "corner";
+    maskGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    maskGrid[r][i][3].onmouseout = new Function("setMOff()");
+    maskGrid[r][i][3].onclick = new Function("gridMaskClick(" + r + "," + i + ",3)");
+    tdtr1.appendChild(maskGrid[r][i][3]);
+
+    updateGridMask(r, i);
+    saveCookie();
+}
+
+function removeMask(r) {
+    var i = maskLayout[r].length - 1;
+    if (i < 0) {
+        return;
+    }
+    maskGrid[r]['row'].removeChild(maskGrid[r][i].mask);
+    maskGrid[r].splice(i, 1);
+    maskLayout[r].splice(i, 1);
+    saveCookie();
+}
+
+function updateGridMask(row, index) {
+    var mask = maskLayout[row][index];
+    if (editmode) {
+        if (!mask || mask == "blank") {
+            maskGrid[row][index].mask.style.backgroundImage = 'url(images/blank.png)';
+        }
+        else if ((typeof masks[mask]) == "boolean") {
+            maskGrid[row][index].mask.style.backgroundImage = 'url(images/' + mask + '.png)';
+        }
+        else {
+            maskGrid[row][index].mask.style.backgroundImage = 'url(images/' + mask + itemsMax[mask] + '.png)';
+        }
+        maskGrid[row][index].mask.style.border = "1px solid white";
+        maskGrid[row][index].mask.className = "gridmask true";
+        return;
+    }
+
+    maskGrid[row][index].mask.style.border = "0px";
+
+    if (!mask || mask == "blank") {
+        maskGrid[row][index].mask.style.backgroundImage = "";
+        return;
+    }
+
+    if ((typeof masks[mask]) == "boolean") {
+        maskGrid[row][index].mask.style.backgroundImage = 'url(images/' + mask + '.png)';
+    }
+    else {
+        maskGrid[row][index].mask.style.backgroundImage = 'url(images/' + mask + masks[mask] + '.png)';
+    }
+
+    maskGrid[row][index].mask.className = "gridmask " + !!masks[mask];
+
+    if (remains[mask] != undefined) {
+        maskGrid[row][index][3].style.backgroundImage = "";
+    }
+}
+
+function updateGridMaskAll() {
+    var r, c;
+    for (r = 0; r < maskLayout.length; r++) {
+        for (c = 0; c < maskLayout[r].length; c++) {
+            updateGridMask(r, c);
+        }
+        if (editmode) {
+            maskGrid[r]['addbutton'].style.display = "";
+            maskGrid[r]['removebutton'].style.display = "";
+        }
+        else {
+            maskGrid[r]['addbutton'].style.display = "none";
+            maskGrid[r]['removebutton'].style.display = "none";
+        }
+    }
+}
+
+function setGridMask(mask, row, index) {
+    while (!maskLayout[row]) {
+        addMaskRow();
+    }
+    while (!maskLayout[row][index]) {
+        addMask(row);
+    }
+    maskLayout[row][index] = mask;
+    updateGridMask(row, index);
+}
+
+function initGridRowMask(masksets) {
+    while(maskLayout.length > 0) {
+        removeMaskRow();
+    }
+
+    var r, c;
+    for (r = 0; r < masksets.length; r++) {
+        for (c = 0; c < masksets[r].length; c++) {
+            setGridMask(masksets[r][c], r, c);
+        }
+    }
+}
+
+
+function addDungeon(r) {
+    var i = dungeonLayout[r].length;
+    dungeonGrid[r][i] = [];
+    dungeonLayout[r][i] = "blank";
+    dungeonGrid[r][i].dungeon = document.createElement("td");
+    dungeonGrid[r][i].dungeon.className = "griddungeon";
+    dungeonGrid[r]['row'].appendChild(dungeonGrid[r][i].dungeon);
+
+    var tdt = document.createElement("table");
+    tdt.className = "bonk";
+    dungeonGrid[r][i].dungeon.appendChild(tdt);
+
+    var tdtr1 = document.createElement("tr");
+    tdt.appendChild(tdtr1);
+    dungeonGrid[r][i][0] = document.createElement("th");
+    dungeonGrid[r][i][0].className = "corner";
+    dungeonGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    dungeonGrid[r][i][0].onmouseout = new Function("setMOff()");
+    dungeonGrid[r][i][0].onclick = new Function("gridDungeonClick(" + r + "," + i + ",0)");
+    tdtr1.appendChild(dungeonGrid[r][i][0]);
+    dungeonGrid[r][i][1] = document.createElement("th");
+    dungeonGrid[r][i][1].className = "corner";
+    dungeonGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    dungeonGrid[r][i][1].onmouseout = new Function("setMOff()");
+    dungeonGrid[r][i][1].onclick = new Function("gridDungeonClick(" + r + "," + i + ",1)");
+    tdtr1.appendChild(dungeonGrid[r][i][1]);
+
+    var tdtr2 = document.createElement("tr");
+    tdt.appendChild(tdtr2);
+    dungeonGrid[r][i][2] = document.createElement("th");
+    dungeonGrid[r][i][2].className = "corner";
+    dungeonGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    dungeonGrid[r][i][2].onmouseout = new Function("setMOff()");
+    dungeonGrid[r][i][2].onclick = new Function("gridDungeonClick(" + r + "," + i + ",2)");
+    tdtr2.appendChild(dungeonGrid[r][i][2]);
+    dungeonGrid[r][i][3] = document.createElement("th");
+    dungeonGrid[r][i][3].className = "corner";
+    dungeonGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    dungeonGrid[r][i][3].onmouseout = new Function("setMOff()");
+    dungeonGrid[r][i][3].onclick = new Function("gridDungeonClick(" + r + "," + i + ",3)");
+    tdtr1.appendChild(dungeonGrid[r][i][3]);
+
+    updateGridDungeon(r, i);
+    saveCookie();
+}
+
+function removeDungeon(r) {
+    var i = dungeonLayout[r].length - 1;
+    if (i < 0) {
+        return;
+    }
+    dungeonGrid[r]['row'].removeChild(dungeonGrid[r][i].dungeon);
+    dungeonGrid[r].splice(i, 1);
+    dungeonLayout[r].splice(i, 1);
+    saveCookie();
+}
+
+function updateGridDungeon(row, index) {
+    var dungeon = dungeonLayout[row][index];
+    if (editmode) {
+        if (!dungeon || dungeon == "blank") {
+            dungeonGrid[row][index].dungeon.style.backgroundImage = 'url(images/blank.png)';
+        }
+        else if ((typeof dungeons[dungeon]) == "boolean") {
+            dungeonGrid[row][index].dungeon.style.backgroundImage = 'url(images/' + dungeon + '.png)';
+        }
+        else {
+            dungeonGrid[row][index].dungeon.style.backgroundImage = 'url(images/' + dungeon + itemsMax[dungeon] + '.png)';
+        }
+        dungeonGrid[row][index].dungeon.style.border = "1px solid white";
+        dungeonGrid[row][index].dungeon.className = "griddungeon true";
+        return;
+    }
+
+    dungeonGrid[row][index].dungeon.style.border = "0px";
+
+    if (!dungeon || dungeon == "blank") {
+        dungeonGrid[row][index].dungeon.style.backgroundImage = "";
+        return;
+    }
+
+    if ((typeof dungeons[dungeon]) == "boolean") {
+        dungeonGrid[row][index].dungeon.style.backgroundImage = 'url(images/' + dungeon + '.png)';
+    }
+    else {
+        dungeonGrid[row][index].dungeon.style.backgroundImage = 'url(images/' + dungeon + dungeons[dungeon] + '.png)';
+    }
+
+    dungeonGrid[row][index].dungeon.className = "griddungeon " + !!dungeons[dungeon];
+
+    if (remains[dungeon] != undefined) {
+        dungeonGrid[row][index][3].style.backgroundImage = "";
+    }
+}
+
+function updateGridDungeonAll() {
+    var r, c;
+    for (r = 0; r < dungeonLayout.length; r++) {
+        for (c = 0; c < dungeonLayout[r].length; c++) {
+            updateGridDungeon(r, c);
+        }
+        if (editmode) {
+            dungeonGrid[r]['addbutton'].style.display = "";
+            dungeonGrid[r]['removebutton'].style.display = "";
+        }
+        else {
+            dungeonGrid[r]['addbutton'].style.display = "none";
+            dungeonGrid[r]['removebutton'].style.display = "none";
+        }
+    }
+}
+
+function setGridDungeon(dungeon, row, index) {
+    while (!dungeonLayout[row]) {
+        addDungeonRow();
+    }
+    while (!dungeonLayout[row][index]) {
+        addDungeon(row);
+    }
+    dungeonLayout[row][index] = dungeon;
+    updateGridDungeon(row, index);
+}
+
+function initGridRowDungeon(dungeonsets) {
+    while(dungeonLayout.length > 0) {
+        removeDungeonRow();
+    }
+
+    var r, c;
+    for (r = 0; r < dungeonsets.length; r++) {
+        for (c = 0; c < dungeonsets[r].length; c++) {
+            setGridDungeon(dungeonsets[r][c], r, c);
+        }
+    }
+}
+
+
+function addQuest(r) {
+    var i = questLayout[r].length;
+    questGrid[r][i] = [];
+    questLayout[r][i] = "blank";
+    questGrid[r][i].quest = document.createElement("td");
+    questGrid[r][i].quest.className = "gridquest";
+    questGrid[r]['row'].appendChild(questGrid[r][i].quest);
+
+    var tdt = document.createElement("table");
+    tdt.className = "bonk";
+    questGrid[r][i].quest.appendChild(tdt);
+
+    var tdtr1 = document.createElement("tr");
+    tdt.appendChild(tdtr1);
+    questGrid[r][i][0] = document.createElement("th");
+    questGrid[r][i][0].className = "corner";
+    questGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    questGrid[r][i][0].onmouseout = new Function("setMOff()");
+    questGrid[r][i][0].onclick = new Function("gridQuestClick(" + r + "," + i + ",0)");
+    tdtr1.appendChild(questGrid[r][i][0]);
+    questGrid[r][i][1] = document.createElement("th");
+    questGrid[r][i][1].className = "corner";
+    questGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    questGrid[r][i][1].onmouseout = new Function("setMOff()");
+    questGrid[r][i][1].onclick = new Function("gridQuestClick(" + r + "," + i + ",1)");
+    tdtr1.appendChild(questGrid[r][i][1]);
+
+    var tdtr2 = document.createElement("tr");
+    tdt.appendChild(tdtr2);
+    questGrid[r][i][2] = document.createElement("th");
+    questGrid[r][i][2].className = "corner";
+    questGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    questGrid[r][i][2].onmouseout = new Function("setMOff()");
+    questGrid[r][i][2].onclick = new Function("gridQuestClick(" + r + "," + i + ",2)");
+    tdtr2.appendChild(questGrid[r][i][2]);
+    questGrid[r][i][3] = document.createElement("th");
+    questGrid[r][i][3].className = "corner";
+    questGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    questGrid[r][i][3].onmouseout = new Function("setMOff()");
+    questGrid[r][i][3].onclick = new Function("gridQuestClick(" + r + "," + i + ",3)");
+    tdtr1.appendChild(questGrid[r][i][3]);
+
+    updateGridQuest(r, i);
+    saveCookie();
+}
+
+function removeQuest(r) {
+    var i = questLayout[r].length - 1;
+    if (i < 0) {
+        return;
+    }
+    questGrid[r]['row'].removeChild(questGrid[r][i].quest);
+    questGrid[r].splice(i, 1);
+    questLayout[r].splice(i, 1);
+    saveCookie();
+}
+
+function updateGridQuest(row, index) {
+    var quest = questLayout[row][index];
+    if (editmode) {
+        if (!quest || quest == "blank") {
+            questGrid[row][index].quest.style.backgroundImage = 'url(images/blank.png)';
+        }
+        else if ((typeof quests[quest]) == "boolean") {
+            questGrid[row][index].quest.style.backgroundImage = 'url(images/' + quest + '.png)';
+        }
+        else {
+            questGrid[row][index].quest.style.backgroundImage = 'url(images/' + quest + questsMax[quest] + '.png)';
+        }
+        questGrid[row][index].quest.style.border = "1px solid white";
+        questGrid[row][index].quest.className = "gridquest true";
+        return;
+    }
+
+    questGrid[row][index].quest.style.border = "0px";
+
+    if (!quest || quest == "blank") {
+        questGrid[row][index].quest.style.backgroundImage = "";
+        return;
+    }
+
+    if ((typeof quests[quest]) == "boolean") {
+        questGrid[row][index].quest.style.backgroundImage = 'url(images/' + quest + '.png)';
+    }
+    else {
+        questGrid[row][index].quest.style.backgroundImage = 'url(images/' + quest + quests[quest] + '.png)';
+    }
+
+    questGrid[row][index].quest.className = "gridquest " + !!quests[quest];
+
+    if (remains[quest] != undefined) {
+        questGrid[row][index][3].style.backgroundImage = "";
+    }
+}
+
+function updateGridQuestAll() {
+    var r, c;
+    for (r = 0; r < questLayout.length; r++) {
+        for (c = 0; c < questLayout[r].length; c++) {
+            updateGridQuest(r, c);
+        }
+        if (editmode) {
+            questGrid[r]['addbutton'].style.display = "";
+            questGrid[r]['removebutton'].style.display = "";
+        }
+        else {
+            questGrid[r]['addbutton'].style.display = "none";
+            questGrid[r]['removebutton'].style.display = "none";
+        }
+    }
+}
+
+function setGridQuest(quest, row, index) {
+    while (!questLayout[row]) {
+        addQuestRow();
+    }
+    while (!questLayout[row][index]) {
+        addQuest(row);
+    }
+    questLayout[row][index] = quest;
+    updateGridQuest(row, index);
+}
+
+function initGridRowQuest(questsets) {
+    while(questLayout.length > 0) {
+        removeQuestRow();
+    }
+
+    var r, c;
+    for (r = 0; r < questsets.length; r++) {
+        for (c = 0; c < questsets[r].length; c++) {
+            setGridQuest(questsets[r][c], r, c);
         }
     }
 }
@@ -801,6 +1411,276 @@ function gridItemRClick(row, col, corner) {
     saveCookie();
 }
 
+function gridMaskClick(row, col, corner) {
+    if (editmode) {
+        if (selected.mask) {
+            document.getElementById(selected.mask).style.border = "1px solid white";
+            var old = maskLayout[row][col];
+            if (old == selected.mask) {
+                selected = {};
+                return;
+            }
+            maskLayout[row][col] = selected.mask;
+            updateGridMask(row, col);
+            selected = {};
+            document.getElementById(old).style.opacity = 1;
+        }
+        else if (selected.row !== undefined) {
+            maskGrid[selected.row][selected.col].mask.style.border = "1px solid white";
+            var temp = maskLayout[row][col];
+            maskLayout[row][col] = maskLayout[selected.row][selected.col];
+            maskLayout[selected.row][selected.col] = temp;
+            updateGridMask(row, col);
+            updateGridMask(selected.row, selected.col);
+            selected = {};
+        }
+    }
+    else {
+        var mask = maskLayout[row][col];
+        if (remains[mask] !== undefined) {
+            if (corner == 3) {
+                remains[mask]++;
+                if (remains[mask] >= 4) {
+                    remains[mask] = 0;
+                }
+            }
+            else {
+                masks[mask] = !masks[mask];
+            }
+        }
+        else if ((typeof masks[mask]) == "boolean") {
+            masks[mask] = !masks[mask];
+        }
+        else {
+            masks[mask]++;
+            if (masks[mask] > itemsMax[mask]) {
+                masks[mask] = itemsMin[mask];
+            }
+        }
+    }
+    updateMap();
+    updateGridMask(row,col);
+    saveCookie();
+}
+
+function gridMaskRClick(row, col, corner) {
+    if (editmode) {
+        //do nothing
+    }
+    else {
+        var mask = maskLayout[row][col];
+        if (remains[mask] != undefined) {
+            if (corner == 3) {
+                //area list happens here
+                //corner 3 is bottom right
+                if (remains[mask] <= 0) {
+                    remains[mask] = 4;
+                }
+                else {
+                    remains[mask] = remains[mask] - 1;
+                }
+            }
+            else {
+                masks[mask] = !masks[mask];
+            }
+        }
+        else if ((typeof masks[mask]) == "boolean") {
+            masks[mask] = !masks[mask];
+        }
+        else {
+            if (masks[mask] == itemsMin[mask]) {
+                masks[mask] = itemsMax[mask];
+            }
+            else {
+                masks[mask]--;
+            }
+        }
+        updateMap();
+        updateGridMask(row, col);
+    }
+    saveCookie();
+}
+
+function gridDungeonClick(row, col, corner) {
+    if (editmode) {
+        if (selected.dungeon) {
+            document.getElementById(selected.dungeon).style.border = "1px solid white";
+            var old = dungeonLayout[row][col];
+            if (old == selected.dungeon) {
+                selected = {};
+                return;
+            }
+            dungeonLayout[row][col] = selected.dungeon;
+            updateGridDungeon(row, col);
+            selected = {};
+            document.getElementById(old).style.opacity = 1;
+        }
+        else if (selected.row !== undefined) {
+            dungeonGrid[selected.row][selected.col].dungeon.style.border = "1px solid white";
+            var temp = dungeonLayout[row][col];
+            dungeonLayout[row][col] = dungeonLayout[selected.row][selected.col];
+            dungeonLayout[selected.row][selected.col] = temp;
+            updateGridDungeon(row, col);
+            updateGridDungeon(selected.row, selected.col);
+            selected = {};
+        }
+    }
+    else {
+        var dungeon = dungeonLayout[row][col];
+        if (remains[dungeon] !== undefined) {
+            if (corner == 3) {
+                remains[dungeon]++;
+                if (remains[dungeon] >= 4) {
+                    remains[dungeon] = 0;
+                }
+            }
+            else {
+                dungeons[dungeon] = !dungeons[dungeon];
+            }
+        }
+        else if ((typeof dungeons[dungeon]) == "boolean") {
+            dungeons[dungeon] = !dungeons[dungeon];
+        }
+        else {
+            dungeons[dungeon]++;
+            if (dungeons[dungeon] > itemsMax[dungeon]) {
+                dungeons[dungeon] = itemsMin[dungeon];
+            }
+        }
+    }
+    updateMap();
+    updateGridDungeon(row,col);
+    saveCookie();
+}
+
+function gridDungeonRClick(row, col, corner) {
+    if (editmode) {
+        //do nothing
+    }
+    else {
+        var dungeon = dungeonLayout[row][col];
+        if (remains[dungeon] != undefined) {
+            if (corner == 3) {
+                //area list happens here
+                //corner 3 is bottom right
+                if (remains[dungeon] <= 0) {
+                    remains[dungeon] = 4;
+                }
+                else {
+                    remains[dungeon] = remains[dungeon] - 1;
+                }
+            }
+            else {
+                dungeons[dungeon] = !dungeons[dungeon];
+            }
+        }
+        else if ((typeof dungeons[dungeon]) == "boolean") {
+            dungeons[dungeon] = !dungeons[dungeon];
+        }
+        else {
+            if (dungeons[dungeon] == itemsMin[dungeon]) {
+                dungeons[dungeon] = itemsMax[dungeon];
+            }
+            else {
+                dungeons[dungeon]--;
+            }
+        }
+        updateMap();
+        updateGridDungeon(row, col);
+    }
+    saveCookie();
+}
+
+function gridQuestClick(row, col, corner) {
+    if (editmode) {
+        if (selected.quest) {
+            document.getElementById(selected.quest).style.border = "1px solid white";
+            var old = questLayout[row][col];
+            if (old == selected.quest) {
+                selected = {};
+                return;
+            }
+            questLayout[row][col] = selected.quest;
+            updateGridQuest(row, col);
+            selected = {};
+            document.getElementById(old).style.opacity = 1;
+        }
+        else if (selected.row !== undefined) {
+            questGrid[selected.row][selected.col].quest.style.border = "1px solid white";
+            var temp = questLayout[row][col];
+            questLayout[row][col] = questLayout[selected.row][selected.col];
+            questLayout[selected.row][selected.col] = temp;
+            updateGridQuest(row, col);
+            updateGridQuest(selected.row, selected.col);
+            selected = {};
+        }
+    }
+    else {
+        var quest = questLayout[row][col];
+        if (remains[quest] !== undefined) {
+            if (corner == 3) {
+                remains[quest]++;
+                if (remains[quest] >= 4) {
+                    remains[quest] = 0;
+                }
+            }
+            else {
+                quests[quest] = !quests[quest];
+            }
+        }
+        else if ((typeof quests[quest]) == "boolean") {
+            quests[quest] = !quests[quest];
+        }
+        else {
+            quests[quest]++;
+            if (quests[quest] > itemsMax[quest]) {
+                quests[quest] = itemsMin[quest];
+            }
+        }
+    }
+    updateMap();
+    updateGridQuest(row,col);
+    saveCookie();
+}
+
+function gridQuestRClick(row, col, corner) {
+    if (editmode) {
+        //do nothing
+    }
+    else {
+        var quest = questLayout[row][col];
+        if (remains[quest] != undefined) {
+            if (corner == 3) {
+                //area list happens here
+                //corner 3 is bottom right
+                if (remains[quest] <= 0) {
+                    remains[quest] = 4;
+                }
+                else {
+                    remains[quest] = remains[quest] - 1;
+                }
+            }
+            else {
+                quests[quest] = !quests[quest];
+            }
+        }
+        else if ((typeof quests[quest]) == "boolean") {
+            quests[quest] = !quests[quest];
+        }
+        else {
+            if (quests[quest] == itemsMin[quest]) {
+                quests[quest] = itemsMax[quest];
+            }
+            else {
+                quests[quest]--;
+            }
+        }
+        updateMap();
+        updateGridQuest(row, col);
+    }
+    saveCookie();
+}
+
 function updateMap() {
     for (k = 0; k < checks.length; k++) {
         if(!checks[k].isOpened) {
@@ -849,6 +1729,60 @@ function updateMap() {
             }
         }
     }
+    //Masks
+    var masklist = document.getElementById("submaplist").children;
+    for (var mask in masklist) {
+        if (masklist.hasOwnProperty(mask)) {
+            if (areas[areaSelect].checklist[masklist[mask].innerHTML].isOpened) {
+                masklist[mask].className = "DCopened";
+            }
+            else if (areas[areaSelect].checklist[masklist[mask].innerHTML].isAvailable()) {
+                masklist[mask].className = "DCavailable";
+            }
+            /*else if (areas[areaSelect].checklist[masklist[mask].innerHTML].isCheckable()) {
+                masklist[mask].className = "DChidden";
+            }*/
+            else {
+                masklist[mask].className = "DCunavailable";
+            }
+        }
+    }
+    //Dungeons
+    var dungeonlist = document.getElementById("submaplist").children;
+    for (var dungeon in dungeonlist) {
+        if (dungeonlist.hasOwnProperty(dungeon)) {
+            if (areas[areaSelect].checklist[dungeonlist[dungeon].innerHTML].isOpened) {
+                dungeonlist[dungeon].className = "DCopened";
+            }
+            else if (areas[areaSelect].checklist[dungeonlist[dungeon].innerHTML].isAvailable()) {
+                dungeonlist[dungeon].className = "DCavailable";
+            }
+            /*else if (areas[areaSelect].checklist[dungeonlist[dungeon].innerHTML].isCheckable()) {
+                dungeonlist[dungeon].className = "DChidden";
+            }*/
+            else {
+                dungeonlist[dungeon].className = "DCunavailable";
+            }
+        }
+    }
+    //Quests
+    var questlist = document.getElementById("submaplist").children;
+    for (var quest in questlist) {
+        if (questlist.hasOwnProperty(quest)) {
+            if (areas[areaSelect].checklist[questlist[quest].innerHTML].isOpened) {
+                questlist[quest].className = "DCopened";
+            }
+            else if (areas[areaSelect].checklist[questlist[quest].innerHTML].isAvailable()) {
+                questlist[quest].className = "DCavailable";
+            }
+            /*else if (areas[areaSelect].checklist[questlist[quest].innerHTML].isCheckable()) {
+                questlist[quest].className = "DChidden";
+            }*/
+            else {
+                questlist[quest].className = "DCunavailable";
+            }
+        }
+    }
 }
 
 function itemConfigClick(sender) {
@@ -873,6 +1807,81 @@ function itemConfigClick(sender) {
     else {
         sender.style.border = "3px solid yellow";
         selected = {item: item};
+    }
+}
+
+function maskConfigClick(sender) {
+    var mask = sender.id;
+    if (selected.mask) {
+        document.getElementById(selected.mask).style.border = "0px";
+        sender.style.border = "3px solid yellow";
+        selected = {mask: mask};
+    }
+    else if (selected.row !== undefined) {
+        maskGrid[selected.row][selected.col].mask.style.border = "1px solid white";
+        var old = maskLayout[selected.row][selected.col];
+        if (old == mask) {
+            selected = {};
+            return;
+        }
+        maskLayout[selected.row][selected.col] = mask;
+        updateGridMask(selected.row, selected.col);
+        document.getElementById(old).style.opacity = 1;
+        selected = {};
+    }
+    else {
+        sender.style.border = "3px solid yellow";
+        selected = {mask: mask};
+    }
+}
+
+function dungeonConfigClick(sender) {
+    var dungeon = sender.id;
+    if (selected.dungeon) {
+        document.getElementById(selected.dungeon).style.border = "0px";
+        sender.style.border = "3px solid yellow";
+        selected = {dungeon: dungeon};
+    }
+    else if (selected.row !== undefined) {
+        dungeonGrid[selected.row][selected.col].dungeon.style.border = "1px solid white";
+        var old = dungeonLayout[selected.row][selected.col];
+        if (old == dungeon) {
+            selected = {};
+            return;
+        }
+        dungeonLayout[selected.row][selected.col] = dungeon;
+        updateGridDungeon(selected.row, selected.col);
+        document.getElementById(old).style.opacity = 1;
+        selected = {};
+    }
+    else {
+        sender.style.border = "3px solid yellow";
+        selected = {dungeon: dungeon};
+    }
+}
+
+function questConfigClick(sender) {
+    var quest = sender.id;
+    if (selected.quest) {
+        document.getElementById(selected.quest).style.border = "0px";
+        sender.style.border = "3px solid yellow";
+        selected = {quest: quest};
+    }
+    else if (selected.row !== undefined) {
+        questGrid[selected.row][selected.col].quest.style.border = "1px solid white";
+        var old = questLayout[selected.row][selected.col];
+        if (old == quest) {
+            selected = {};
+            return;
+        }
+        questLayout[selected.row][selected.col] = quest;
+        updateGridQuest(selected.row, selected.col);
+        document.getElementById(old).style.opacity = 1;
+        selected = {};
+    }
+    else {
+        sender.style.border = "3px solid yellow";
+        selected = {quest: quest};
     }
 }
 
@@ -997,9 +2006,87 @@ function populateItemConfig() {
     }
 }
 
+function populateMaskConfig() {
+    var grid = document.getElementById("maskconfig");
+    var i = 0;
+    var row;
+    for (var key in masks) {
+        if (i % 10 == 0) {
+            row = document.createElement("tr");
+            grid.appendChild(row);
+        }
+        i++;
+        var rowmask = document.createElement("td");
+        rowmask.className = "corner";
+        rowmask.id = key;
+        rowmask.style.backgroundSize = "100% 100%";
+        rowmask.onclick = new Function("maskConfigClick(this)");
+        if ((typeof masks[key]) == "boolean") {
+            rowmask.style.backgroundImage = 'url(images/' + key + '.png")';
+        }
+        else {
+            rowmask.style.backgroundImage = 'url(images/' + key + itemsMax[key] + '.png")';
+        }
+        row.appendChild(rowmask);
+    }
+}
+
+function populateDungeonConfig() {
+    var grid = document.getElementById("dungeonconfig");
+    var i = 0;
+    var row;
+    for (var key in dungeons) {
+        if (i % 10 == 0) {
+            row = document.createElement("tr");
+            grid.appendChild(row);
+        }
+        i++;
+        var rowdungeon = document.createElement("td");
+        rowdungeon.className = "corner";
+        rowdungeon.id = key;
+        rowdungeon.style.backgroundSize = "100% 100%";
+        rowdungeon.onclick = new Function("dungeonConfigClick(this)");
+        if ((typeof dungeons[key]) == "boolean") {
+            rowdungeon.style.backgroundImage = 'url(images/' + key + '.png")';
+        }
+        else {
+            rowdungeon.style.backgroundImage = 'url(images/' + key + itemsMax[key] + '.png")';
+        }
+        row.appendChild(rowdungeon);
+    }
+}
+
+function populateQuestConfig() {
+    var grid = document.getElementById("questconfig");
+    var i = 0;
+    var row;
+    for (var key in quests) {
+        if (i % 10 == 0) {
+            row = document.createElement("tr");
+            grid.appendChild(row);
+        }
+        i++;
+        var rowquest = document.createElement("td");
+        rowquest.className = "corner";
+        rowquest.id = key;
+        rowquest.style.backgroundSize = "100% 100%";
+        rowquest.onclick = new Function("questConfigClick(this)");
+        if ((typeof quests[key]) == "boolean") {
+            rowquest.style.backgroundImage = 'url(images/' + key + '.png")';
+        }
+        else {
+            rowquest.style.backgroundImage = 'url(images/' + key + itemsMax[key] + '.png")';
+        }
+        row.appendChild(rowquest);
+    }
+}
+
 function init() {
     populateMapDiv();
     populateItemConfig();
+    populateMaskConfig();
+    populateDungeonConfig();
+    populateQuestConfig();
     loadCookie();
     saveCookie();
 }
@@ -1013,6 +2100,39 @@ function preloader() {
         else {
             for (i = itemsMin[item]; i < itemsMax[item]; i++) {
                 img.src = "images/" + item + i + ".png";
+            }
+        }
+    }
+    //Masks
+    for (var mask in masks) {
+        if ((typeof masks[mask]) == "boolean") {
+            img.src = "images/" + mask + ".png";
+        }
+        else {
+            for (i = itemsMin[mask]; i < itemsMax[mask]; i++) {
+                img.src = "images/" + mask + i + ".png";
+            }
+        }
+    }
+    //Dungeons
+    for (var dungeon in dungeons) {
+        if ((typeof dungeons[dungeon]) == "boolean") {
+            img.src = "images/" + dungeon + ".png";
+        }
+        else {
+            for (i = itemsMin[dungeon]; i < itemsMax[dungeon]; i++) {
+                img.src = "images/" + dungeon + i + ".png";
+            }
+        }
+    }
+    //Quests
+    for (var quest in quests) {
+        if ((typeof quests[quest]) == "boolean") {
+            img.src = "images/" + quest + ".png";
+        }
+        else {
+            for (i = itemsMin[quest]; i < itemsMax[quest]; i++) {
+                img.src = "images/" + quest + i + ".png";
             }
         }
     }

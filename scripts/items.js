@@ -21,30 +21,16 @@ var defaultItemGrid = [
         "GreatFairySword",
     ],
     [
-        "MoonsTear",
-        "LandDeed",
-        "SwampDeed",
-        "MountainDeed",
-        "OceanDeed",
-        "ScarecrowSong",
-    ],
-    [
-        "RoomKey",   
-        "LetterToKafei",
-        "PendantOfMemories",
-        "LetterToMama",
-        "HeartPieces",
-        "HeartContainer",
-    ],
-    [
         "RedPotion",
         "GoldDust",
         "Milk",
         "ChateauRomani",
         "MysteryMilk",
         "EmptyBottle",
-        "ZoraEgg",
     ],
+];
+
+var defaultMaskGrid = [
     [
         "PostmanHat",
         "AllNightMask",
@@ -77,6 +63,63 @@ var defaultItemGrid = [
         "GiantsMask",
         "FierceDeityMask",
     ],
+
+];
+
+var defaultDungeonGrid = [
+    [
+        "SwampMap",
+        "SwampCompass",
+        "SwampSmallKey",
+        "SwampBigKey",
+        "SwampStrayFairy",
+    ],
+    [
+        "SnowMap",
+        "SnowCompass",
+        "SnowSmallKey",
+        "SnowBigKey",
+        "SnowStrayFairy",
+    ],
+    [
+        "OceanMap",
+        "OceanCompass",
+        "OceanSmallKey",
+        "OceanBigKey",
+        "OceanStrayFairy",
+    ],
+    [
+        "StoneMap",
+        "StoneCompass",
+        "StoneSmallKey",
+        "StoneBigKey",
+        "StoneStrayFairy",
+    ],
+    [
+        "SwampSkulltulas",
+        "OceanSkulltulas",
+        "TownStrayFairy",
+        "ZoraEgg",
+    ],
+
+];
+
+var defaultQuestGrid = [
+    [
+        "MoonsTear",
+        "LandDeed",
+        "SwampDeed",
+        "MountainDeed",
+        "OceanDeed",
+    ],
+    [
+        "RoomKey",   
+        "LetterToKafei",
+        "PendantOfMemories",
+        "LetterToMama",
+        "HeartPieces",
+        "HeartContainer",
+    ],
     [
         "Sword",
         "HeroShield",
@@ -96,39 +139,6 @@ var defaultItemGrid = [
         "NoteNumFive",
     ],
     [
-        "SwampSkulltulas",
-        "OceanSkulltulas",
-        "TownStrayFairy",
-        "SwampStrayFairy",
-        "SnowStrayFairy",
-        "OceanStrayFairy",
-        "StoneStrayFairy",
-    ],
-    [
-        "SwampMap",
-        "SwampCompass",
-        "SwampSmallKey",
-        "SwampBigKey",
-    ],
-    [
-        "SnowMap",
-        "SnowCompass",
-        "SnowSmallKey",
-        "SnowBigKey",
-    ],
-    [
-        "OceanMap",
-        "OceanCompass",
-        "OceanSmallKey",
-        "OceanBigKey",
-    ],
-    [
-        "StoneMap",
-        "StoneCompass",
-        "StoneSmallKey",
-        "StoneBigKey",
-    ],
-    [
         "SongOfTime",
         "SongOfHealing",
         "SongOfSoaring",
@@ -141,6 +151,7 @@ var defaultItemGrid = [
         "NewWaveBossaNova",
         "ElegyOfEmptiness",
         "OathToOrder",
+        "ScarecrowSong",
     ]
 ];
 
@@ -163,27 +174,17 @@ var baseItems = {
     Hookshot: false,
     GreatFairySword: false,
 
-    MoonsTear: false,
-    LandDeed: false,
-    SwampDeed: false,
-    MountainDeed: false,
-    OceanDeed: false,
-
-    RoomKey: false,
-    LetterToKafei: false,
-    PendantOfMemories: false,
-    LetterToMama: false,
-    HeartPieces: 0,
-    HeartContainer: 0,
-
     RedPotion: false,
     GoldDust: false,
     Milk: false,
     ChateauRomani: false,
     MysteryMilk: false,
     EmptyBottle: 0,
-    ZoraEgg: 0,
 
+    blank: false,
+};
+
+var baseMasks = {
     PostmanHat: false,
     AllNightMask: false,
     BlastMask: false,
@@ -211,6 +212,54 @@ var baseItems = {
     CaptainsHat: false,
     GiantsMask: false,
     FierceDeityMask: false,
+    blank: false,
+};
+
+var baseDungeons = {
+    SwampMap: false,
+    SwampCompass: false,
+    SwampSmallKey: 0,
+    SwampBigKey: false,
+    SwampStrayFairy: 0,
+
+    SnowMap: false,
+    SnowCompass: false,
+    SnowSmallKey: 0,
+    SnowBigKey: false,
+    SnowStrayFairy: 0,
+
+    OceanMap: false,
+    OceanCompass: false,
+    OceanSmallKey: 0,
+    OceanBigKey: false,
+    OceanStrayFairy: 0,
+
+    StoneMap: false,
+    StoneCompass: false,
+    StoneSmallKey: 0,
+    StoneBigKey: false,
+    StoneStrayFairy: 0,
+    
+    SwampSkulltulas: 0,
+    OceanSkulltulas: 0,
+    TownStrayFairy: false,
+    ZoraEgg: 0,
+    blank: false,
+};
+
+var baseQuests = {
+    MoonsTear: false,
+    LandDeed: false,
+    SwampDeed: false,
+    MountainDeed: false,
+    OceanDeed: false,
+
+    RoomKey: false,
+    LetterToKafei: false,
+    PendantOfMemories: false,
+    LetterToMama: false,
+    HeartPieces: 0,
+    HeartContainer: 0,
 
     Sword: 0,
     HeroShield: false,
@@ -228,34 +277,6 @@ var baseItems = {
     NoteNumFour: 0,
     NoteNumFive: 0,
 
-    SwampSkulltulas: 0,
-    OceanSkulltulas: 0,
-    TownStrayFairy: false,
-    SwampStrayFairy: 0,
-    SnowStrayFairy: 0,
-    OceanStrayFairy: 0,
-    StoneStrayFairy: 0,
-
-    SwampMap: false,
-    SwampCompass: false,
-    SwampSmallKey: 0,
-    SwampBigKey: false,
-
-    SnowMap: false,
-    SnowCompass: false,
-    SnowSmallKey: 0,
-    SnowBigKey: false,
-    
-    OceanMap: false,
-    OceanCompass: false,
-    OceanSmallKey: 0,
-    OceanBigKey: false,
-
-    StoneMap: false,
-    StoneCompass: false,
-    StoneSmallKey: 0,
-    StoneBigKey: false,
-
     SongOfTime: true,
     SongOfHealing: false,
     SongOfSoaring: false,
@@ -267,9 +288,8 @@ var baseItems = {
     NewWaveBossaNova: false,
     ElegyOfEmptiness: false,
     OathToOrder: false,
-
-    blank: false,
     ScarecrowSong: true,
+    blank: false,
 };
 
 var itemsMin = {
@@ -307,11 +327,11 @@ var itemsMax = {
     ZoraEggs: 6,
     Sword: 3,
     Magic: 2,
-    NoteNum1: 5,
-    NoteNum2: 5,
-    NoteNum3: 5,
-    NoteNum4: 5,
-    NoteNum5: 5,
+    NoteNum1: 4,
+    NoteNum2: 4,
+    NoteNum3: 4,
+    NoteNum4: 4,
+    NoteNum5: 4,
     SwampSkulltulas: 30,
     OceanSkulltulas: 30,
     SwampStrayFairy: 15,
@@ -325,3 +345,6 @@ var itemsMax = {
 };
 
 var items = Object.assign(baseItems);
+var masks = Object.assign(baseMasks);
+var dungeons = Object.assign(baseDungeons);
+var quests = Object.assign(baseQuests);

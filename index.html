@@ -36,8 +36,24 @@
 		<script src="scripts/main.js"></script>
 
 		<div id='layoutdiv'>
-			<div id="itemdiv" oncontextmenu="gridItemRClick()" class="itemdiv">
-			</div>
+			<table id="itemtable" class="itemtable">
+				<tr>
+					<td>
+						<fieldset><legend>Items</legend><div id="itemdiv" oncontextmenu="gridItemRClick()" class="itemdiv"></div></fieldset>
+					</td>
+					<td>
+						<fieldset><legend>Masks</legend><div id="maskdiv" oncontextmenu="gridMaskRClick()" class="maskdiv"></div></fieldset>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<fieldset><legend>Dungeons</legend><div id="dungeondiv" oncontextmenu="gridDungeonRClick()" class="dungeondiv"></div></fieldset>
+					</td>
+					<td>
+						<fieldset><legend>Quest</legend><div id="questdiv" oncontextmenu="gridQuestRClick()" class="questdiv"></div></fieldset>
+					</td>
+				</tr>
+		</table>
 			<div id="mapdiv" class="mapdiv">
 				<div id="submapdiv" class="submapdiv">
 					<div class="areatitle"><span id='submaparea' style="font-size: 20px;" >Termina</span></div>
@@ -58,8 +74,8 @@
 				<button type="button" onclick="ResetLayout()">Reset Layout</button>
 				<button type="button" onclick="ResetTracker()">Reset Tracker</button>
 				<br>
-				Size<input type="range" name="itemdivsize" value="100" max="200" min="1" onchange="setZoom('itemdiv', this)">
-				<span id="itemdivsize">100%</span><br>
+				Size<input type="range" name="itemtablesize" value="100" max="200" min="1" onchange="setZoom('itemtable', this)">
+				<span id="itemtablesize">100%</span><br>
 			</fieldset>
 			<fieldset>
 				<legend>Map Tracker</legend>
@@ -71,9 +87,9 @@
 				<input type="radio" name="mapposition" value="Below" onclick="setOrder(true)">Below<br>
 				<fieldset>
 					<legend>Item Settings</legend>
-					<input type="checkbox" name="transformmasklogic" checked onclick="setTransLogic(this)">Shuffle Transformation Masks
-					<input type="checkbox" name="maskslogic" checked onclick="setMaskLogic(this)">Shuffle Masks
-					<input type="checkbox" name="piecelogic" checked onclick="setPieceLogic(this)">Shuffle Heart Pieces
+					<input type="checkbox" name="transformmasklogic" onclick="setTransLogic(this)">Shuffle Transformation Masks
+					<input type="checkbox" name="maskslogic" onclick="setMaskLogic(this)">Shuffle Masks
+					<input type="checkbox" name="piecelogic" onclick="setPieceLogic(this)">Shuffle Heart Pieces
 					<input type="checkbox" name="skullslogic" onclick="setSkullsLogic(this)">Tokensanity
 					<input type="checkbox" name="scrubtradelogic" onclick="setScrubTradeLogic(this)">Shuffle Deku Trades
 					<input type="checkbox" name="anjulogic" onclick="setAnjuLogic(this)">Shuffle Anju and Kafei Items
@@ -102,7 +118,10 @@
 			</fieldset>
 		</fieldset>
 
-		<table id="itemconfig" class="itemconfig" style="display:none"></table>
+		<table id="itemconfig" class="itemconfig" style="display:none;"></table>
+		<table id="maskconfig" class="maskconfig" style="display: none;"></table>
+		<table id="dungeonconfig" class="dungeonconfig" style="display: none;"></table>
+		<table id="questconfig" class="questconfig" style="display: none;"></table>
 
 		<script>
 			init();
