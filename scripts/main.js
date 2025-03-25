@@ -45,16 +45,15 @@ var selected = {};
 
 var areaSelect = 0;
 
-function setCookie(obj) {
+function setCookie(obj, name) {
     var d = new Date();
     var expires = "expires=" + d.toUTCString();
     var val = JSON.stringify(obj);
     d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
-    document.cookie = "key=" + val + ";" + expires + ";path=/";
+    document.cookie = name + "=" +  val + ";" + "SameSite=None;" + "Secure;" + expires + ";path=/";
 }
 
-function getCookie() {
-    var name = "key=";
+function getCookie(name) {
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
@@ -68,11 +67,14 @@ function getCookie() {
     return {};
 }
 
-var cookieDefault = {
+var settingsCookieDefault = {
     map: 1,
     iZoom: 100,
     mZoom: 100,
     mPos: 0,
+};
+
+var itemsCookieDefault = {
     remains: defaultRemains,
     items: defaultItemGrid,
     masks: defaultMaskGrid,
@@ -82,113 +84,143 @@ var cookieDefault = {
     obtainedMasks: masks,
     obtainedDungeons: dungeons,
     obtainedQuests: quests,
+};
+
+var checksCookieDefault = {
     checks: serializeChecks(),
     areaChecks: serializeAreaChecks(),
-    tmask: 1,
-    mask: 1,
-    piece: 1,
-    skulls: 1,
-    scrubtrade: 1,
-    anju: 1,
-    gfairy: 1,
-    tingle: 1,
-    notebook: 1,
-    moonitem: 1,
-    deity: 1,
-    mapscompass: 1,
-    skey: 1,
-    bkey: 1,
-    bosses: 1,
-    containers: 1,
+};
+
+var logicCookieDefault = {
+    //tmask: 1,
+    //mask: 1,
+    //piece: 1,
+    //skulls: 1,
+    //scrubtrade: 1,
+    //anju: 1,
+    //gfairy: 1,
+    //tingle: 1,
+    //notebook: 1,
+    //moonitem: 1,
+    //deity: 1,
+    //mapscompass: 1,
+    //skey: 1,
+    //bkey: 1,
+    //bosses: 1,
+    //containers: 1,
     skipnotebook: 1,
 };
 
 var cookielock = false;
-function loadCookie() {
+function loadCookie(name) {
     if(cookielock) {
         return;
     }
     cookielock = true;
 
-    cookieobj = getCookie();
+    cookieobj = getCookie(name);
 
-    Object.keys(cookieDefault).forEach(function(key) {
-        if (cookieobj[key] === undefined) {
-            cookieobj[key] = cookieDefault[key];
-        }
-    });
+    if (name == "settings") {
+        Object.keys(settingsCookieDefault).forEach(function(key) {
+            if (cookieobj[key] === undefined) {
+                cookieobj[key] = settingsCookieDefault[key];
+            }
+        });
 
-    remains = JSON.parse(JSON.stringify(cookieobj.remains));
-    initGridRowItem(JSON.parse(JSON.stringify(cookieobj.items)));
-    initGridRowMask(JSON.parse(JSON.stringify(cookieobj.masks)));
-    initGridRowDungeon(JSON.parse(JSON.stringify(cookieobj.dungeons)));
-    initGridRowQuest(JSON.parse(JSON.stringify(cookieobj.quests)));
-    items = JSON.parse(JSON.stringify(cookieobj.obtainedItems));
-    masks = JSON.parse(JSON.stringify(cookieobj.obtainedMasks));
-    dungeons = JSON.parse(JSON.stringify(cookieobj.obtainedDungeons));
-    quests = JSON.parse(JSON.stringify(cookieobj.obtainedQuests));
-    deserializeChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
-    deserializeAreaChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
+        document.getElementsByName("showmap")[0].checked = !!cookieobj.map;
+        document.getElementsByName("showmap")[0].onchange();
+        document.getElementsByName("itemtablesize")[0].value = cookieobj.iZoom;
+        document.getElementsByName("itemtablesize")[0].onchange();
+        document.getElementsByName("mapdivsize")[0].value = cookieobj.mZoom;
+        document.getElementsByName("mapdivsize")[0].onchange();
 
-    updateGridItemAll();
-    updateGridMaskAll();
-    updateGridDungeonAll();
-    updateGridQuestAll();
+        document.getElementsByName("mapposition")[cookieobj.mPos].click();
+    }
+    else if (name == "items") {
+        Object.keys(itemsCookieDefault).forEach(function(key) {
+            if (cookieobj[key] === undefined) {
+                cookieobj[key] = itemsCookieDefault[key];
+            }
+        });
 
-    document.getElementsByName("showmap")[0].checked = !!cookieobj.map;
-    document.getElementsByName("showmap")[0].onchange();
-    document.getElementsByName("itemtablesize")[0].value = cookieobj.iZoom;
-    document.getElementsByName("itemtablesize")[0].onchange();
-    document.getElementsByName("mapdivsize")[0].value = cookieobj.mZoom;
-    document.getElementsByName("mapdivsize")[0].onchange();
+        remains = JSON.parse(JSON.stringify(cookieobj.remains));
+        initGridRowItem(JSON.parse(JSON.stringify(cookieobj.items)));
+        initGridRowMask(JSON.parse(JSON.stringify(cookieobj.masks)));
+        initGridRowDungeon(JSON.parse(JSON.stringify(cookieobj.dungeons)));
+        initGridRowQuest(JSON.parse(JSON.stringify(cookieobj.quests)));
+        items = JSON.parse(JSON.stringify(cookieobj.obtainedItems));
+        masks = JSON.parse(JSON.stringify(cookieobj.obtainedMasks));
+        dungeons = JSON.parse(JSON.stringify(cookieobj.obtainedDungeons));
+        quests = JSON.parse(JSON.stringify(cookieobj.obtainedQuests));
+        updateGridItemAll();
+        updateGridMaskAll();
+        updateGridDungeonAll();
+        updateGridQuestAll();
 
-    document.getElementsByName("mapposition")[cookieobj.mPos].click();
+    }
+    else if (name == "checks") {
+        Object.keys(checksCookieDefault).forEach(function(key) {
+            if (cookieobj[key] === undefined) {
+                cookieobj[key] = checksCookieDefault[key];
+            }
+        });
 
-    //Item Settings
-    /*
-    document.getElementsByName("transformmasklogic")[0].checked = !!cookieobj.tmask;
-    //document.getElementsByName('transformmasklogic')[0].onchange();
-    document.getElementsByName("maskslogic")[0].checked = !!cookieobj.mask;
-    //document.getElementsByName("maskslogic")[0].onchange();
-    document.getElementsByName("piecelogic")[0].checked = !!cookieobj.piece;
-    //document.getElementsByName("piecelogic")[0].onchange();
-    document.getElementsByName("skullslogic")[0].checked = !!cookieobj.skulls;
-    //document.getElementsByName("skullslogic")[0].onchange();
-    document.getElementsByName("scrubtradelogic")[0].checked = !!cookieobj.scrubtrade;
-    //document.getElementsByName("scrubtradelogic")[0].onchange();
-    document.getElementsByName("anjulogic")[0].checked = !!cookieobj.anju;
-    //document.getElementsByName("anjulogic")[0].onchange();
-    document.getElementsByName("greatfairylogic")[0].checked = !!cookieobj.gfairy;
-    //document.getElementsByName("greatfairylogic")[0].onchange();
-    document.getElementsByName("tinglelogic")[0].checked = !!cookieobj.tingle;
-    //document.getElementsByName("tinglelogic")[0].onchange();
-    document.getElementsByName("notebooklogic")[0].checked = !!cookieobj.notebook;
-    //document.getElementsByName("notebooklogic")[0].onchange();
-    document.getElementsByName("moonitemlogic")[0].checked = !!cookieobj.moonitem;
-    //document.getElementsByName("moonitemlogic")[0].onchange();
-    document.getElementsByName("deitylogic")[0].checked = !!cookieobj.deity;
-    //document.getElementsByName("deitylogic")[0].onchange();
+        deserializeChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
+        deserializeAreaChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
+    }
+    else if (name == "logic") {
+        Object.keys(logicCookieDefault).forEach(function(key) {
+            if (cookieobj[key] === undefined) {
+                cookieobj[key] = logicCookieDefault[key];
+            }
+        });
 
-    //Area Settings
-    document.getElementsByName("mapslogic")[0].checked = !!cookieobj.mapscompass;
-    //document.getElementsByName("mapslogic")[0].onchange();
-    document.getElementsByName("smallkeylogic")[0].checked = !!cookieobj.skey;
-    //document.getElementsByName("smallkeylogic")[0].onchange();
-    document.getElementsByName("bigkeylogic")[0].checked = !!cookieobj.bkey;
-    //document.getElementsByName("bigkeylogic")[0].onchange();
-    document.getElementsByName("remainslogic")[0].checked = !!cookieobj.bosses;
-    //document.getElementsByName("remainslogic")[0].onchange();
-    document.getElementsByName("containerlogic")[0].checked = !!cookieobj.containers;
-    //document.getElementsByName("containerlogic")[0].onchange();
-    */
-    //Tricks and Logic Settings
-    document.getElementsByName("skipbombers")[0].checked = !!cookieobj.skipnotebook;
-    //document.getElementsByName("skipbombers")[0].onchange();
+        //Item Settings
+        /*
+        document.getElementsByName("transformmasklogic")[0].checked = !!cookieobj.tmask;
+        //document.getElementsByName('transformmasklogic')[0].onchange();
+        document.getElementsByName("maskslogic")[0].checked = !!cookieobj.mask;
+        //document.getElementsByName("maskslogic")[0].onchange();
+        document.getElementsByName("piecelogic")[0].checked = !!cookieobj.piece;
+        //document.getElementsByName("piecelogic")[0].onchange();
+        document.getElementsByName("skullslogic")[0].checked = !!cookieobj.skulls;
+        //document.getElementsByName("skullslogic")[0].onchange();
+        document.getElementsByName("scrubtradelogic")[0].checked = !!cookieobj.scrubtrade;
+        //document.getElementsByName("scrubtradelogic")[0].onchange();
+        document.getElementsByName("anjulogic")[0].checked = !!cookieobj.anju;
+        //document.getElementsByName("anjulogic")[0].onchange();
+        document.getElementsByName("greatfairylogic")[0].checked = !!cookieobj.gfairy;
+        //document.getElementsByName("greatfairylogic")[0].onchange();
+        document.getElementsByName("tinglelogic")[0].checked = !!cookieobj.tingle;
+        //document.getElementsByName("tinglelogic")[0].onchange();
+        document.getElementsByName("notebooklogic")[0].checked = !!cookieobj.notebook;
+        //document.getElementsByName("notebooklogic")[0].onchange();
+        document.getElementsByName("moonitemlogic")[0].checked = !!cookieobj.moonitem;
+        //document.getElementsByName("moonitemlogic")[0].onchange();
+        document.getElementsByName("deitylogic")[0].checked = !!cookieobj.deity;
+        //document.getElementsByName("deitylogic")[0].onchange();
+
+        //Area Settings
+        document.getElementsByName("mapslogic")[0].checked = !!cookieobj.mapscompass;
+        //document.getElementsByName("mapslogic")[0].onchange();
+        document.getElementsByName("smallkeylogic")[0].checked = !!cookieobj.skey;
+        //document.getElementsByName("smallkeylogic")[0].onchange();
+        document.getElementsByName("bigkeylogic")[0].checked = !!cookieobj.bkey;
+        //document.getElementsByName("bigkeylogic")[0].onchange();
+        document.getElementsByName("remainslogic")[0].checked = !!cookieobj.bosses;
+        //document.getElementsByName("remainslogic")[0].onchange();
+        document.getElementsByName("containerlogic")[0].checked = !!cookieobj.containers;
+        //document.getElementsByName("containerlogic")[0].onchange();
+        */
+        //Tricks and Logic Settings
+        document.getElementsByName("skipbombers")[0].checked = !!cookieobj.skipnotebook;
+        //document.getElementsByName("skipbombers")[0].onchange();
+    }  
 
     cookielock = false;
 }
 
-function saveCookie() {
+function saveCookie(name) {
     if (cookielock) {
         return;
     }
@@ -197,49 +229,55 @@ function saveCookie() {
 
     cookieobj = {};
 
-    cookieobj.map = document.getElementsByName("showmap")[0].checked ? 1 : 0;
-    cookieobj.iZoom = document.getElementsByName("itemtablesize")[0].value;
-    cookieobj.mZoom = document.getElementsByName("mapdivsize")[0].value;
+    if(name == "settings") {
+        cookieobj.map = document.getElementsByName("showmap")[0].checked ? 1 : 0;
+        cookieobj.iZoom = document.getElementsByName("itemtablesize")[0].value;
+        cookieobj.mZoom = document.getElementsByName("mapdivsize")[0].value;
 
-    cookieobj.mPos = document.getElementsByName("mapposition")[1].checked ? 1 : 0;
+        cookieobj.mPos = document.getElementsByName("mapposition")[1].checked ? 1 : 0;
+    }
+    else if (name == "items") {
+        cookieobj.remains = JSON.parse(JSON.stringify(remains));
+        cookieobj.items = JSON.parse(JSON.stringify(itemLayout));
+        cookieobj.masks = JSON.parse(JSON.stringify(maskLayout));
+        cookieobj.dungeons = JSON.parse(JSON.stringify(dungeonLayout));
+        cookieobj.quests = JSON.parse(JSON.stringify(questLayout));
+        cookieobj.obtainedItems = JSON.parse(JSON.stringify(items));
+        cookieobj.obtainedMasks = JSON.parse(JSON.stringify(masks));
+        cookieobj.obtainedDungeons = JSON.parse(JSON.stringify(dungeons));
+        cookieobj.obtainedQuests = JSON.parse(JSON.stringify(quests));
+    }
+    else if (name == "checks") {
+        cookieobj.checks = JSON.parse(JSON.stringify(serializeChecks()));
+        cookieobj.areaChecks = JSON.parse(JSON.stringify(serializeAreaChecks()));
+    }
+    else if (name == "logic") {
+        //Item Settings
+        /*
+        cookieobj.tmask = document.getElementsByName("transformmasklogic")[0].checked ? 1 : 0;
+        cookieobj.mask = document.getElementsByName("maskslogic")[0].checked ? 1 : 0;
+        cookieobj.piece = document.getElementsByName("piecelogic")[0].checked ? 1 : 0;
+        cookieobj.skulls = document.getElementsByName("skullslogic")[0].checked ? 1 : 0;
+        cookieobj.scrubtrade = document.getElementsByName("scrubtradelogic")[0].checked ? 1 : 0;
+        cookieobj.anju = document.getElementsByName("anjulogic")[0].checked ? 1 : 0;
+        cookieobj.gfairy = document.getElementsByName("greatfairylogic")[0].checked ? 1 : 0;
+        cookieobj.tingle = document.getElementsByName("tinglelogic")[0].checked ? 1 : 0;
+        cookieobj.notebook = document.getElementsByName("notebooklogic")[0].checked ? 1 : 0;
+        cookieobj.moonitem = document.getElementsByName("moonitemlogic")[0].checked ? 1 : 0;
+        cookieobj.deity = document.getElementsByName("deitylogic")[0].checked ? 1 : 0;
 
-    cookieobj.remains = JSON.parse(JSON.stringify(remains));
-    cookieobj.items = JSON.parse(JSON.stringify(itemLayout));
-    cookieobj.masks = JSON.parse(JSON.stringify(maskLayout));
-    cookieobj.dungeons = JSON.parse(JSON.stringify(dungeonLayout));
-    cookieobj.quests = JSON.parse(JSON.stringify(questLayout));
-    cookieobj.obtainedItems = JSON.parse(JSON.stringify(items));
-    cookieobj.obtainedMasks = JSON.parse(JSON.stringify(masks));
-    cookieobj.obtainedDungeons = JSON.parse(JSON.stringify(dungeons));
-    cookieobj.obtainedQuests = JSON.parse(JSON.stringify(quests));
-    cookieobj.checks = JSON.parse(JSON.stringify(serializeChecks()));
-    cookieobj.areaChecks = JSON.parse(JSON.stringify(serializeAreaChecks()));
+        //Area Settings
+        cookieobj.mapscompass = document.getElementsByName("mapslogic")[0].checked ? 1 : 0;
+        cookieobj.skey = document.getElementsByName("smallkeylogic")[0].checked ? 1 : 0;
+        cookieobj.bkey = document.getElementsByName("bigkeylogic")[0].checked ? 1 : 0;
+        cookieobj.bosses = document.getElementsByName("remainslogic")[0].checked ? 1 : 0;
+        cookieobj.containers = document.getElementsByName("containerlogic")[0].checked ? 1 : 0;
+        */
+        //Tricks and Logic Settings
+        cookieobj.skipnotebook = document.getElementsByName("skipbombers")[0].checked ? 1 : 0;
+    }   
 
-    //Item Settings
-    /*
-    cookieobj.tmask = document.getElementsByName("transformmasklogic")[0].checked ? 1 : 0;
-    cookieobj.mask = document.getElementsByName("maskslogic")[0].checked ? 1 : 0;
-    cookieobj.piece = document.getElementsByName("piecelogic")[0].checked ? 1 : 0;
-    cookieobj.skulls = document.getElementsByName("skullslogic")[0].checked ? 1 : 0;
-    cookieobj.scrubtrade = document.getElementsByName("scrubtradelogic")[0].checked ? 1 : 0;
-    cookieobj.anju = document.getElementsByName("anjulogic")[0].checked ? 1 : 0;
-    cookieobj.gfairy = document.getElementsByName("greatfairylogic")[0].checked ? 1 : 0;
-    cookieobj.tingle = document.getElementsByName("tinglelogic")[0].checked ? 1 : 0;
-    cookieobj.notebook = document.getElementsByName("notebooklogic")[0].checked ? 1 : 0;
-    cookieobj.moonitem = document.getElementsByName("moonitemlogic")[0].checked ? 1 : 0;
-    cookieobj.deity = document.getElementsByName("deitylogic")[0].checked ? 1 : 0;
-
-    //Area Settings
-    cookieobj.mapscompass = document.getElementsByName("mapslogic")[0].checked ? 1 : 0;
-    cookieobj.skey = document.getElementsByName("smallkeylogic")[0].checked ? 1 : 0;
-    cookieobj.bkey = document.getElementsByName("bigkeylogic")[0].checked ? 1 : 0;
-    cookieobj.bosses = document.getElementsByName("remainslogic")[0].checked ? 1 : 0;
-    cookieobj.containers = document.getElementsByName("containerlogic")[0].checked ? 1 : 0;
-    */
-    //Tricks and Logic Settings
-    cookieobj.skipnotebook = document.getElementsByName("skipbombers")[0].checked ? 1 : 0;
-
-    setCookie(cookieobj);
+    setCookie(cookieobj, name);
     cookielock = false;
 }
 
@@ -273,7 +311,7 @@ function deserializeAreaChecks(serializedAreas) {
 function toggleCheck(x) {
     checks[x].isOpened = !checks[x].isOpened;
     refreshCheck(x);
-    saveCookie();
+    saveCookie("checks");
 }
 
 function refreshCheck(x) {
@@ -351,7 +389,7 @@ function toggleAreaCheck(sender, d, c) {
     }
 
     updateMap();
-    saveCookie();
+    saveCookie("checks");
 }
 
 function highlightAreaCheck(x) {
@@ -369,103 +407,103 @@ function setOrder(H) {
     else {
         document.getElementById("layoutdiv").classList.add("flexcontainer");
     }
-    saveCookie();
+    saveCookie("settings");
 }
 
 function setTransLogic(sender) {
     transformmasklogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setMaskLogic(sender) {
     maskslogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setPieceLogic(sender) {
     piecelogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setSkullsLogic(sender) {
     skullslogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setScrubTradeLogic(sender) {
     scrubtradelogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setAnjuLogic(sender) {
     anjulogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setGFLogic(sender) {
     greatfairylogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setTingleLogic(sender) {
     tinglelogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setNotebookLogic(sender) {
     notebooklogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setMoonItemLogic(sender) {
     moonitemlogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setFDLogic(sender) {
     deitylogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setMapsLogic(sender) {
     mapslogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setSmallKeyLogic(sender) {
     smallkeylogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setBigKeyLogic(sender) {
     bigkeylogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setRemainsLogic(sender) {
     remainslogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setContainerLogic(sender) {
     containerlogic = sender.value;
     updateMap();
-    saveCookie();
+    saveCookie("logic");
 }
 
 function setSkipBombers(sender) {
@@ -487,7 +525,7 @@ function setZoom(target, sender) {
     document.getElementById(target).style.MozTransform = "scale(" + (sender.value /100) + ")";
     document.getElementById(target).style.MozTransformOrigin = "0 0";
     document.getElementById(target + "size").innerHTML = (sender.value) + "%";
-    saveCookie();
+    saveCookie("settings");
 }
 
 function showSettings(sender) {
@@ -506,7 +544,7 @@ function showSettings(sender) {
         document.getElementById("questconfig").style.display = "none";
         document.getElementById("rowButtons").style.display = "none";
         sender.innerHTML = "Options";
-        saveCookie();
+        saveCookie("settings");
     }
     else {
         var x = document.getElementById("settings");
@@ -571,7 +609,10 @@ function ResetTracker() {
     updateGridDungeonAll();
     updateGridQuestAll();
     updateMap();
-    saveCookie();
+    saveCookie("settings");
+    saveCookie("items");
+    saveCookie("checks");
+    saveCookie("logic");
 }
 
 function addItemRow() {
@@ -606,7 +647,7 @@ function addItemRow() {
     itemGrid[r]['removebutton'].onclick = new Function("addItem(" + r + ")");
     itemGrid[r]['row'].appendChild(itemGrid[r]['removebutton']);
 
-    saveCookie();
+    saveCookie("items");
 }
 
 function addMaskRow() {
@@ -641,7 +682,7 @@ function addMaskRow() {
     maskGrid[r1]['removebutton'].onclick = new Function("addItem(" + r1 + ")");
     maskGrid[r1]['row'].appendChild(maskGrid[r1]['removebutton']);
 
-    saveCookie();
+    saveCookie("items");
 }
 
 function addDungeonRow() {
@@ -676,7 +717,7 @@ function addDungeonRow() {
     dungeonGrid[r2]['removebutton'].onclick = new Function("addItem(" + r2 + ")");
     dungeonGrid[r2]['row'].appendChild(dungeonGrid[r2]['removebutton']);
 
-    saveCookie();
+    saveCookie("items");
 }
 
 function addQuestRow() {
@@ -711,7 +752,7 @@ function addQuestRow() {
     questGrid[r3]['removebutton'].onclick = new Function("addItem(" + r3 + ")");
     questGrid[r3]['row'].appendChild(questGrid[r3]['removebutton']);
 
-    saveCookie();
+    saveCookie("items");
 }
 
 function removeItemRow() {
@@ -722,7 +763,7 @@ function removeItemRow() {
     itemGrid.splice(r,1);
     itemLayout.splice(r,1);
 
-    saveCookie();
+    saveCookie("items");
 }
 
 function removeMaskRow() {
@@ -734,7 +775,7 @@ function removeMaskRow() {
     maskGrid.splice(r1,1);
     maskLayout.splice(r1,1);
 
-    saveCookie();
+    saveCookie("items");
 }
 
 function removeDungeonRow() {
@@ -746,7 +787,7 @@ function removeDungeonRow() {
     dungeonGrid.splice(r2,1);
     dungeonLayout.splice(r2,1);
 
-    saveCookie();
+    saveCookie("items");
 }
 
 function removeQuestRow() {
@@ -758,7 +799,7 @@ function removeQuestRow() {
     questGrid.splice(r3,1);
     questLayout.splice(r3,1);
 
-    saveCookie();
+    saveCookie("items");
 }
 
 function addItem(r) {
@@ -804,7 +845,7 @@ function addItem(r) {
     tdtr1.appendChild(itemGrid[r][i][3]);
 
     updateGridItem(r, i);
-    saveCookie();
+    saveCookie("items");
 }
 
 function removeItem(r) {
@@ -815,7 +856,7 @@ function removeItem(r) {
     itemGrid[r]['row'].removeChild(itemGrid[r][i].item);
     itemGrid[r].splice(i, 1);
     itemLayout[r].splice(i, 1);
-    saveCookie();
+    saveCookie("items");
 }
 
 function updateGridItem(row, index) {
@@ -942,7 +983,7 @@ function addMask(r) {
     tdtr1.appendChild(maskGrid[r][i][3]);
 
     updateGridMask(r, i);
-    saveCookie();
+    saveCookie("items");
 }
 
 function removeMask(r) {
@@ -953,7 +994,7 @@ function removeMask(r) {
     maskGrid[r]['row'].removeChild(maskGrid[r][i].mask);
     maskGrid[r].splice(i, 1);
     maskLayout[r].splice(i, 1);
-    saveCookie();
+    saveCookie("items");
 }
 
 function updateGridMask(row, index) {
@@ -1079,7 +1120,7 @@ function addDungeon(r) {
     tdtr1.appendChild(dungeonGrid[r][i][3]);
 
     updateGridDungeon(r, i);
-    saveCookie();
+    saveCookie("items");
 }
 
 function removeDungeon(r) {
@@ -1090,7 +1131,7 @@ function removeDungeon(r) {
     dungeonGrid[r]['row'].removeChild(dungeonGrid[r][i].dungeon);
     dungeonGrid[r].splice(i, 1);
     dungeonLayout[r].splice(i, 1);
-    saveCookie();
+    saveCookie("items");
 }
 
 function updateGridDungeon(row, index) {
@@ -1216,7 +1257,7 @@ function addQuest(r) {
     tdtr1.appendChild(questGrid[r][i][3]);
 
     updateGridQuest(r, i);
-    saveCookie();
+    saveCookie("items");
 }
 
 function removeQuest(r) {
@@ -1227,7 +1268,7 @@ function removeQuest(r) {
     questGrid[r]['row'].removeChild(questGrid[r][i].quest);
     questGrid[r].splice(i, 1);
     questLayout[r].splice(i, 1);
-    saveCookie();
+    saveCookie("items");
 }
 
 function updateGridQuest(row, index) {
@@ -1370,7 +1411,7 @@ function gridItemClick(row, col, corner) {
     }
     updateMap();
     updateGridItem(row,col);
-    saveCookie();
+    saveCookie("items");
 }
 
 function gridItemRClick(row, col, corner) {
@@ -1408,7 +1449,7 @@ function gridItemRClick(row, col, corner) {
         updateMap();
         updateGridItem(row, col);
     }
-    saveCookie();
+    saveCookie("items");
 }
 
 function gridMaskClick(row, col, corner) {
@@ -1460,7 +1501,7 @@ function gridMaskClick(row, col, corner) {
     }
     updateMap();
     updateGridMask(row,col);
-    saveCookie();
+    saveCookie("items");
 }
 
 function gridMaskRClick(row, col, corner) {
@@ -1498,7 +1539,7 @@ function gridMaskRClick(row, col, corner) {
         updateMap();
         updateGridMask(row, col);
     }
-    saveCookie();
+    saveCookie("items");
 }
 
 function gridDungeonClick(row, col, corner) {
@@ -1543,14 +1584,14 @@ function gridDungeonClick(row, col, corner) {
         }
         else {
             dungeons[dungeon]++;
-            if (dungeons[dungeon] > itemsMax[dungeon]) {
-                dungeons[dungeon] = itemsMin[dungeon];
+            if (dungeons[dungeon] > dungeonMax[dungeon]) {
+                dungeons[dungeon] = dungeonMin[dungeon];
             }
         }
     }
     updateMap();
     updateGridDungeon(row,col);
-    saveCookie();
+    saveCookie("items");
 }
 
 function gridDungeonRClick(row, col, corner) {
@@ -1578,8 +1619,8 @@ function gridDungeonRClick(row, col, corner) {
             dungeons[dungeon] = !dungeons[dungeon];
         }
         else {
-            if (dungeons[dungeon] == itemsMin[dungeon]) {
-                dungeons[dungeon] = itemsMax[dungeon];
+            if (dungeons[dungeon] == dungeonMin[dungeon]) {
+                dungeons[dungeon] = dungeonMax[dungeon];
             }
             else {
                 dungeons[dungeon]--;
@@ -1588,7 +1629,7 @@ function gridDungeonRClick(row, col, corner) {
         updateMap();
         updateGridDungeon(row, col);
     }
-    saveCookie();
+    saveCookie("items");
 }
 
 function gridQuestClick(row, col, corner) {
@@ -1633,14 +1674,14 @@ function gridQuestClick(row, col, corner) {
         }
         else {
             quests[quest]++;
-            if (quests[quest] > itemsMax[quest]) {
-                quests[quest] = itemsMin[quest];
+            if (quests[quest] > questMax[quest]) {
+                quests[quest] = questMin[quest];
             }
         }
     }
     updateMap();
     updateGridQuest(row,col);
-    saveCookie();
+    saveCookie("items");
 }
 
 function gridQuestRClick(row, col, corner) {
@@ -1668,8 +1709,8 @@ function gridQuestRClick(row, col, corner) {
             quests[quest] = !quests[quest];
         }
         else {
-            if (quests[quest] == itemsMin[quest]) {
-                quests[quest] = itemsMax[quest];
+            if (quests[quest] == questMin[quest]) {
+                quests[quest] = questMax[quest];
             }
             else {
                 quests[quest]--;
@@ -1678,7 +1719,7 @@ function gridQuestRClick(row, col, corner) {
         updateMap();
         updateGridQuest(row, col);
     }
-    saveCookie();
+    saveCookie("items");
 }
 
 function updateMap() {
@@ -2087,8 +2128,14 @@ function init() {
     populateMaskConfig();
     populateDungeonConfig();
     populateQuestConfig();
-    loadCookie();
-    saveCookie();
+    loadCookie("settings");
+    loadCookie("items");
+    loadCookie("checks");
+    loadCookie("logic");
+    saveCookie("settings");
+    saveCookie("items");
+    saveCookie("checks");
+    saveCookie("logic");
 }
 
 function preloader() {
@@ -2120,7 +2167,7 @@ function preloader() {
             img.src = "images/" + dungeon + ".png";
         }
         else {
-            for (i = itemsMin[dungeon]; i < itemsMax[dungeon]; i++) {
+            for (i = dungeonMin[dungeon]; i < dungeonMax[dungeon]; i++) {
                 img.src = "images/" + dungeon + i + ".png";
             }
         }
@@ -2131,7 +2178,7 @@ function preloader() {
             img.src = "images/" + quest + ".png";
         }
         else {
-            for (i = itemsMin[quest]; i < itemsMax[quest]; i++) {
+            for (i = questMin[quest]; i < questMax[quest]; i++) {
                 img.src = "images/" + quest + i + ".png";
             }
         }

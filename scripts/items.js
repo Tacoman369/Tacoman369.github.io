@@ -295,17 +295,11 @@ var baseQuests = {
 var itemsMin = {
     Bow: 0,
     Bomb: 0,
-    HeartPieces: 0,
-    HeartContainer: 0,
     EmptyBottle: 0,
+};
+
+var dungeonMin = {
     ZoraEggs: 0,
-    Sword: 0,
-    Magic: 0,
-    NoteNum1: 0,
-    NoteNum2: 0,
-    NoteNum3: 0,
-    NoteNum4: 0,
-    NoteNum5: 0,
     SwampSkulltulas: 0,
     OceanSkulltulas: 0,
     SwampStrayFairy: 0,
@@ -318,20 +312,26 @@ var itemsMin = {
     StoneSmallKey: 0,
 };
 
+var questMin = {
+    HeartPieces: 0,
+    HeartContainer: 0,
+    Sword: 0,
+    Magic: 0,
+    NoteNumOne: 0,
+    NoteNumTwo: 0,
+    NoteNumThree: 0,
+    NoteNumFour: 0,
+    NoteNumFive: 0,
+};
+
 var itemsMax = {
     Bow: 3,
     Bomb: 3,
-    HeartPieces: 48,
-    HeartContainer: 4,
     EmptyBottle: 2,
-    ZoraEggs: 6,
-    Sword: 3,
-    Magic: 2,
-    NoteNum1: 4,
-    NoteNum2: 4,
-    NoteNum3: 4,
-    NoteNum4: 4,
-    NoteNum5: 4,
+};
+
+var dungeonMax = {
+    ZoraEggs: 7,
     SwampSkulltulas: 30,
     OceanSkulltulas: 30,
     SwampStrayFairy: 15,
@@ -342,6 +342,19 @@ var itemsMax = {
     SnowSmallKey: 3,
     OceanSmallKey: 1,
     StoneSmallKey: 4,
+};
+
+
+var questMax = {
+    HeartPieces: 48,
+    HeartContainer: 4,
+    Sword: 3,
+    Magic: 2,
+    NoteNumOne: 5,
+    NoteNumTwo: 5,
+    NoteNumThree: 5,
+    NoteNumFour: 5,
+    NoteNumFive: 5,
 };
 
 var items = Object.assign(baseItems);

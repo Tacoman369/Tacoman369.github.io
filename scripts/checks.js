@@ -58,7 +58,7 @@ function HasRangeAttack() {
 }
 
 function HasExplosives() {
-    return items.Bombs >= 1 || masks.BlastMask;
+    return items.Bomb >= 1 || masks.BlastMask;
 }
 
 function CanUse(item) {
@@ -154,12 +154,14 @@ var areas = [
         y: "45.0%",
         checklist: {
             'Keaton Quiz': { isAvailable: function() { return masks.KeatonMask && piecelogic;}, },
-            'Tree': { isAvailable: function() { return piecelogic;}, },
+            'Tree HP': { isAvailable: function() { return piecelogic;}, },
             'Old Lady': { isAvailable: function() { return Fighting();}},
             'Tingle Clock Town Map': { isAvailable: function() {return tinglelogic;}},
             'Tingle Woodfall Map': { isAvailable: function() {return tinglelogic;}},
             'Postbox': { isAvailable: function() {return masks.PostmanHat && piecelogic;}},
             'Deku Playground (all 3 days)': { isAvailable: function() {return masks.DekuMask && piecelogic;}},
+            'Clock Town Fairy (Deku)': { isAvailable: function() { return masks.DekuMask && dungeons.TownStrayFairy && greatfairylogic;}, },
+            'Clock Town Fairy (Human)': { isAvailable: function() { return dungeons.TownStrayFairy && greatfairylogic;}, },
         },
         isBeatable: function() {
             if (masks.KeatonMask && masks.PostmanHat && masks.DekuMask) {
@@ -177,30 +179,6 @@ var areas = [
         },
     },
     {
-        name: "Clock Town Fairy Fountain",
-        x: "48.5%",
-        y: "43.5%",
-        checklist: {
-            'Clock Town Fairy (Deku)': { isAvailable: function() { return masks.DekuMask && dungeons.TownStrayFairy && greatfairylogic;}, },
-            'Clock Town Fairy (Human)': { isAvailable: function() { return dungeons.TownStrayFairy && greatfairylogic;}, },
-        },
-        isBeatable: function() {
-            if (masks.DekuMask && dungeons.TownStrayFairy) {
-                if (this.canGetCheck() == 'available') {
-                    return 'available';
-                }
-                return 'possible';
-            }
-            else {
-                return 'unavailable';
-            }
-
-        },
-        canGetCheck: function() {
-            return generalCanGetCheck(this.checklist);
-        },
-    },
-    {
         name: "East Clock Town",
         x: "47%",
         y: "50%",
@@ -210,7 +188,7 @@ var areas = [
             'Postman Freedom': { isAvailable: function() { return quests.LetterToMama && anjulogic;}, },
             'Gorman at Bar': { isAvailable: function() { return masks.RomaniMask && masks.DekuMask && masks.GoronMask && masks.ZoraMask && items.Ocarina && piecelogic;}, },
             'Aroma at Bar': { isAvailable: function() { return quests.LetterToMama && masks.KafeiMask && maskslogic;}, },
-            'Honey & Darling (3 Days)': { isAvailable: function() { return (items.Bow >=1) && (items.Bombs >=1) && piecelogic;}, },
+            'Honey & Darling (3 Days)': { isAvailable: function() { return (items.Bow >=1) && (items.Bomb >=1) && piecelogic;}, },
             'Treasure Chest Game': { isAvailable: function() { return masks.GoronMask && piecelogic;}, },
             'Archery 1': { isAvailable: function() { return items.Bow >= 1;}, },
             'Archery 2': { isAvailable: function() { return items.Bow >= 1 && piecelogic;}, },
@@ -226,8 +204,8 @@ var areas = [
     },
     {
         name: "StockPotInn",
-        x: "46.5%",
-        y: "48%",
+        x: "47%",
+        y: "45%",
         checklist: {
             'Reservation': { isAvailable: function() { return masks.GoronMask && anjulogic;}, },
             'Toilet Hand': { isAvailable: function() { return (quests.LetterToMama || quests.LetterToKafei || quests.LandDeed || quests.SwampDeed || quests.MountainDeed || quests.OceanDeed) && piecelogic;}, },
@@ -303,8 +281,8 @@ var areas = [
     },
     {
         name: "Laundry Pool",
-        x: "%",
-        y: "%",
+        x: "47%",
+        y: "55%",
         checklist: {
             'Keaton Mask': { isAvailable: function() { return quests.LetterToKafei;}, },
             'Pendant of Memories': { isAvailable: function() { return quests.LetterToKafei;}, },
@@ -322,8 +300,8 @@ var areas = [
     },
     {
         name: "Termina Field",
-        x: "%",
-        y: "%",
+        x: "53%",
+        y: "55%",
         checklist: {
             'Kamaro': { isAvailable: function() { return canPlay(quests.SongOfHealing);}, },
             'Underwater Chest': { isAvailable: function() { return masks.ZoraMask;}, },
@@ -332,11 +310,11 @@ var areas = [
             'Moons Tear': { isAvailable: function() { return masks.DekuMask || (quests.BombersNotebook && HasRangeAttack());}, },
             'Peahat Grotto Chest': { isAvailable: function() { return Fighting();}, },
             'Dodongo Grotto Chest': { isAvailable: function() { return Fighting();}, },
-            'BioBaba Grotto HP': { isAvailable: function() { return masks.ZoraMask && (items.Bombs >=1 || masks.GoronMask);}, },
+            'BioBaba Grotto HP': { isAvailable: function() { return masks.ZoraMask && (items.Bomb >=1 || masks.GoronMask);}, },
             'Pillar Grotto Chest': { isAvailable: function() { return true;}, },
             'Grass Grotto Chest': { isAvailable: function() { return true;}, },
             'Business Scrub': { isAvailable: function() { return items.Wallet >=1 && masks.DekuMask || (quests.BombersNotebook && HasRangeAttack());}, },
-            'Colored Gossip Stones': { isAvailable: function() { return (items.Bombs >=1 || masks.GoronMask) && ((quests.SonataOfAwakening && masks.DekuMask) || (quests.GoronLullaby && masks.GoronMask) || (quests.NewWaveBossaNova && masks.ZoraMask))  ;}, },
+            'Colored Gossip Stones': { isAvailable: function() { return (items.Bomb >=1 || masks.GoronMask) && ((quests.SonataOfAwakening && masks.DekuMask) || (quests.GoronLullaby && masks.GoronMask) || (quests.NewWaveBossaNova && masks.ZoraMask))  ;}, },
         },
         isBeatable: function() {
             return this.canGetCheck();
@@ -347,8 +325,8 @@ var areas = [
     },
     {
         name: "Road to Southern Swamp",
-        x: "%",
-        y: "%",
+        x: "50%",
+        y: "60%",
         checklist: {
             'Tree HP': { isAvailable: function() { return HasRangeAttack() && piecelogic;}, },
             'Tingle Woodfall Map': { isAvailable: function() { return HasRangeAttack() && tinglelogic;}, },
@@ -367,8 +345,8 @@ var areas = [
     },
     {
         name: "Southern Swamp",
-        x: "%",
-        y: "%",
+        x: "50%",
+        y: "65%",
         checklist: {
             'Scrub Trade': { isAvailable: function() { return quests.LandDeed && scrubtradelogic;}, },
             'Scrub Purchase': { isAvailable: function() { return masks.DekuMask;}, },
@@ -390,8 +368,8 @@ var areas = [
     },
     {
         name: "Deku Palace",
-        x: "%",
-        y: "%",
+        x: "55%",
+        y: "65%",
         checklist: {
             'West Garden HP': { isAvailable: function() { return CanGetToDekuPalace();}, },
             'Imprisoned Monkey': { isAvailable: function() { return CanGetToDekuPalace() && items.Ocarina && quests.MagicBean;}, },
@@ -408,8 +386,8 @@ var areas = [
     },
     {
         name: "Woodfall",
-        x: "%",
-        y: "%",
+        x: "50%",
+        y: "70%",
         checklist: {
             'Entrance Chest': { isAvailable: function() { return CanGetToDekuPalace();}, },
             'Bridge Chest': { isAvailable: function() { return CanGetToDekuPalace() && (Fighting() || HasRangeAttack());}, },
@@ -424,8 +402,8 @@ var areas = [
     },
     {
         name: "Mountain Village",
-        x: "%",
-        y: "%",
+        x: "50%",
+        y: "35%",
         checklist: {
             'Frog Choir': { isAvailable: function() { return WoodfallClear() && SnowheadClear() && BayClear() && masks.DonGeroMask  && piecelogic;}, },
             'Hungry Goron': { isAvailable: function() { return masks.GoronMask && quests.Magic >= 1 && items.Bow >=1 && HasExplosives() && piecelogic;}, },
@@ -444,8 +422,8 @@ var areas = [
     },
     {
         name: "Twin Islands",
-        x: "50%",
-        y: "20%",
+        x: "55%",
+        y: "33%",
         checklist: {
             'Underwater Ramp Chest': { isAvailable: function() { return SnowheadClear() && masks.ZoraMask;}, },
             'Cave Chest': { isAvailable: function() { return SnowheadClear() && masks.ZoraMask;}, },
@@ -465,11 +443,11 @@ var areas = [
     },
     {
         name: "Goron Village",
-        x: "50%",
+        x: "60%",
         y: "25%",
         checklist: {
             'Powder Keg Challenge': { isAvailable: function() { return HasExplosives() && masks.GoronMask && (SnowheadClear() || CanUse(items.FireArrow));}, },
-            'Scrub Purchase': { isAvailable: function() { return HasExplosives() && items.Wallet >= 1 && masks.GoronMask && items.Bombs >= 2;}, },
+            'Scrub Purchase': { isAvailable: function() { return HasExplosives() && items.Wallet >= 1 && masks.GoronMask && items.Bomb >= 2;}, },
             'Scrub Trade': { isAvailable: function() { return HasExplosives() && masks.DekuMask && quests.SwampDeed && scrubtradelogic;}, },
             'Ledge HP': { isAvailable: function() { return HasExplosives() && masks.DekuMask && quests.SwampDeed && piecelogic;}, },
             'Lens Cave Chest': { isAvailable: function() { return HasExplosives() && CanUse(items.LensOfTruth);}, },
@@ -486,8 +464,8 @@ var areas = [
     },
     {
         name: "Milk Road",
-        x: "50%",
-        y: "30%",
+        x: "43%",
+        y: "55%",
         checklist: {
             'Tingle Milk Road Map': { isAvailable: function() { return HasRangeAttack() && tinglelogic;}, },
             'Tingle Great Bay Map': { isAvailable: function() { return HasRangeAttack() && tinglelogic;}, },
@@ -503,8 +481,8 @@ var areas = [
     },
     {
         name: "Romani Ranch",
-        x: "%",
-        y: "%",
+        x: "40%",
+        y: "60%",
         checklist: {
             'Alien Defense': { isAvailable: function() { return items.PowderKeg && masks.GoronMask && items.Bow >= 1;}, },
             'Cremia Escort': { isAvailable: function() { return items.PowderKeg && masks.GoronMask && items.Bow >= 1 && piecelogic;}, },
@@ -522,8 +500,8 @@ var areas = [
     },
     {
         name: "Great Bay Coast",
-        x: "%",
-        y: "%",
+        x: "30%",
+        y: "50%",
         checklist: {
             'Fisherman Game': { isAvailable: function() { return BayClear() && piecelogic;}, },
             'Ledge HP': { isAvailable: function() { return canPlay(quests.EponasSong) && items.Hookshot && HasBottle() && quests.MagicBean && piecelogic;}, },
@@ -544,8 +522,8 @@ var areas = [
     },
     {
         name: "Pinnacle Rock",
-        x: "%",
-        y: "%",
+        x: "18%",
+        y: "48%",
         checklist: {
             'Seahorse HP': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Seahorse && quests.Magic >= 1 && piecelogic;}, },
             'Upper Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Seahorse && quests.Magic >= 1;}, },
@@ -563,8 +541,8 @@ var areas = [
     },
     {
         name: 'Zora Cape',
-        x: "%",
-        y: "%",
+        x: "28%",
+        y: "60%",
         checklist: {
             'Like Like HP': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && piecelogic;}, },
             'Ledge Chest (No Tree)': { isAvailable: function() { return canPlay(quests.EponasSong) && items.Hookshot;}, },
@@ -582,8 +560,8 @@ var areas = [
     },
     {
         name: 'Zora Hall',
-        x: "%",
-        y: "%",
+        x: "25%",
+        y: "59%",
         checklist: {
             'Evan HP': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && piecelogic;}, },
             'Scrub Trade': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && quests.MountainDeed;}, },
@@ -599,8 +577,8 @@ var areas = [
     },
     {
         name: 'Road To Ikana/Graveyard',
-        x: "%",
-        y: "%",
+        x: "60%",
+        y: "49%",
         checklist: {
             'Road to Ikana Pillar Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && items.Hookshot;}, },
             'Road to Ikana Grotto Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.GoronMask;}, },
@@ -620,8 +598,8 @@ var areas = [
     },
     {
         name: 'Ikana Canyon',
-        x: "%",
-        y: "%",
+        x: "70%",
+        y: "48%",
         checklist: {
             'Ledge HP': { isAvailable: function() { return EnterIkana() && quests.OceanDeed && masks.DekuMask;}, },
             'Secret Shrine Grotto': { isAvailable: function() { return EnterIkana() && masks.ZoraMask;}, },
@@ -639,8 +617,8 @@ var areas = [
     },
     {
         name: 'Secret Shrine',
-        x: "%",
-        y: "%",
+        x: "70%",
+        y: "40%",
         checklist: {
             'Dinolfos Chest': { isAvailable: function() { return EnterIkana() && CanUse(items.LightArrow);}, },
             'Wizzrobe Chest': { isAvailable: function() { return EnterIkana() && CanUse(items.LightArrow);}, },
@@ -657,8 +635,8 @@ var areas = [
     },
     {
         name: 'Stone Tower',
-        x: "%",
-        y: "%",
+        x: "80%",
+        y: "42%",
         checklist: {
             'Left Inverted Chest': { isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && quests.MagicBean && (HasBottle() || canPlay(quests.SongOfStorms));}, },
             'Center Inverted Chest': { isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && quests.MagicBean && (HasBottle() || canPlay(quests.SongOfStorms));}, },
@@ -673,8 +651,8 @@ var areas = [
     },
     {
         name: 'Woodfall Temple',
-        x: "%",
-        y: "%",
+        x: "47%",
+        y: "75%",
         checklist: {
             'Small Key Chest': { isAvailable: function() { return EnterWoodfallTemple();}, },
             'Bow Chest': { isAvailable: function() { return EnterWoodfallTemple() && dungeons.SwampSmallKey >= 1;}, },
@@ -693,8 +671,8 @@ var areas = [
     },
     {
         name: 'Snowhead Temple',
-        x: "%",
-        y: "%",
+        x: "46%",
+        y: "19%",
         checklist: {
             'Bridge Room Frozen Chest': { isAvailable: function() { return EnterSnowheadTemple() && CanUse(items.FireArrow);}, },
             'Map Chest': { isAvailable: function() { return EnterSnowheadTemple();}, },
@@ -715,8 +693,8 @@ var areas = [
     },
     {
         name: 'Great Bay Temple',
-        x: "%",
-        y: "%",
+        x: "10%",
+        y: "55%",
         checklist: {
             'Map Chest': { isAvailable: function() { return EnterGreatBayTemple();}, },
             'Compass Chest': { isAvailable: function() { return EnterGreatBayTemple();}, },
@@ -734,8 +712,8 @@ var areas = [
     },
     {
         name: 'Stone Tower Temple',
-        x: "%",
-        y: "%",
+        x: "84%",
+        y: "42%",
         checklist: {
             'Map Chest': { isAvailable: function() { return EnterStoneTower();}, },
             'Armos Room Chest': { isAvailable: function() { return EnterStoneTower() && HasExplosives() && (quests.MirrorShield || CanUse(items.LightArrow));}, },
@@ -757,8 +735,8 @@ var areas = [
     },
     {
         name: 'Pirate Fortress',
-        x: "%",
-        y: "%",
+        x: "32%",
+        y: "40%",
         checklist: {
             'Exterior Log Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && quests.Magic >= 1;}, },
             'Exterior Sand Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && quests.Magic >= 1;}, },
@@ -786,8 +764,8 @@ var areas = [
     },
     {
         name: 'Beneath The Well',
-        x: "%",
-        y: "%",
+        x: "75%",
+        y: "40%",
         checklist: {
             'Left Path Chest': { isAvailable: function() { return EnterIkana() && HasBottle() && masks.GibdoMask && CanUse(items.LensOfTruth);}, },
             'Right Path Chest': { isAvailable: function() { return EnterIkana() && HasBottle() && masks.GibdoMask && CanUse(items.FireArrow);}, },
@@ -802,8 +780,8 @@ var areas = [
     },
     {
         name: 'Ikana Castle',
-        x: "%",
-        y: "%",
+        x: "74%",
+        y: "47%",
         checklist: {
             'Pillar HP': { isAvailable: function() { return EnterIkanaCastle() && masks.DekuMask;}, },
             'Elegy of Emptiness': { isAvailable: function() { return EnterIkanaCastle() && masks.DekuMask && quests.MirrorShield && items.PowderKeg && masks.GoronMask;}, },
@@ -817,8 +795,8 @@ var areas = [
     },
     {
         name: 'The Moon',
-        x: "%",
-        y: "%",
+        x: "20%",
+        y: "20%",
         checklist: {
             'Deku Bonus HP': { isAvailable: function() { return EnterMoon() && masks.DekuMask && TotalMasks(1) && moonitemlogic;}, },
             'Goron Bonus HP': { isAvailable: function() { return EnterMoon() && masks.GoronMask && TotalMasks(2) && moonitemlogic;}, },
@@ -837,8 +815,8 @@ var areas = [
     },
     {
         name: 'Swamp Skulltula House',
-        x: "%",
-        y: "%",
+        x: "47%",
+        y: "67%",
         checklist: {
             'Main Room Water Spider': { isAvailable: function() { return masks.DekuMask && HasRangeAttack() && Fighting() && skullslogic;}, },
             'Main Room Lower Left Soil': { isAvailable: function() { return masks.DekuMask && HasRangeAttack() && Fighting() && HasBottle() && skullslogic;}, },
@@ -881,8 +859,8 @@ var areas = [
     },
     {
         name: 'Ocean Skulltula House',
-        x: "%",
-        y: "%",
+        x: "33%",
+        y: "55%",
         checklist: {
             'Entrance Left Wall': { isAvailable: function() { return canPlay(quests.EponasSong) && HasExplosives() && masks.GoronMask && (items.Hookshot || masks.ZoraMask) && skullslogic;}, },
             'Entrance Right Wall': { isAvailable: function() { return canPlay(quests.EponasSong) && HasExplosives() && masks.GoronMask && (items.Hookshot || masks.ZoraMask) && skullslogic;}, },
@@ -931,10 +909,10 @@ var areas = [
 var checks = [
     {
         name: 'Bombers Hideout Chest',
-        x: "%",
-        y: "%",
+        x: "53%",
+        y: "45%",
         isAvailable: function() {
-            if (items.Bombs >=1 && quests.BombersNotebook){
+            if (items.Bomb >=1 && quests.BombersNotebook){
                 return "available";
             }
             return "unavailable";
@@ -942,16 +920,16 @@ var checks = [
     },
     {
         name: 'Mystery Woods Grotto Chest',
-        x: "%",
-        y: "%",
+        x: "53%",
+        y: "60%",
         isAvailable: function() {
             return "available";
         },
     },
     {
         name: 'Woodfall Great Fairy',
-        x: "%",
-        y: "%",
+        x: "52%",
+        y: "75%",
         isAvailable: function() {
             if (dungeons.SwampStrayFairy >= 15 && greatfairylogic) {
                 return "available";
@@ -961,8 +939,8 @@ var checks = [
     },
     {
         name: 'Road to Snowhead Grotto',
-        x: "%",
-        y: "%",
+        x: "46%",
+        y: "25%",
         isAvailable: function() {
             if (HasExplosives() && masks.GoronMask && masks.MaskOfTruth && quests.Magic >= 1) {
                 return "available";
@@ -972,10 +950,10 @@ var checks = [
     },
     {
         name: 'Road to Snowhead Pillar HP',
-        x: "%",
-        y: "%",
+        x: "47%",
+        y: "28%",
         isAvailable: function() {
-            if (piecelogic && HasExplosives() && masks.GoronMask && masks.MaskOfTruth && CanUse(items.LensOfTruth) && items.Hookshot && canPlay(quests.ScarecrowSong)) {
+            if (piecelogic && HasExplosives() && masks.GoronMask && CanUse(items.LensOfTruth) && items.Hookshot && canPlay(quests.ScarecrowSong)) {
                 return "available";
             }
             return "unavailable";
@@ -983,8 +961,8 @@ var checks = [
     },
     {
         name: 'Snowhead Great Fairy',
-        x: "%",
-        y: "%",
+        x: "49%",
+        y: "21%",
         isAvailable: function() {
             if (dungeons.SnowStrayFairy >= 15 && greatfairylogic) {
                 return "available";
@@ -994,8 +972,8 @@ var checks = [
     },
     {
         name: 'Great Bay Great Fairy',
-        x: "%",
-        y: "%",
+        x: "25%",
+        y: "64%",
         isAvailable: function() {
             if (dungeons.OceanStrayFairy >= 15 && greatfairylogic) {
                 return "available";
@@ -1005,8 +983,8 @@ var checks = [
     },
     {
         name: 'Ikana Great Fairy',
-        x: "%",
-        y: "%",
+        x: "77%",
+        y: "45%",
         isAvailable: function() {
             if (dungeons.StoneStrayFairy >= 15 && greatfairylogic) {
                 return "available";
@@ -1016,8 +994,8 @@ var checks = [
     },
     {
         name: 'Oath to Order',
-        x: "%",
-        y: "%",
+        x: "50%",
+        y: "85%",
         isAvailable: function() {
             if (WoodfallClear() || SnowheadClear() || BayClear() || StoneClear()) {
                 return "available";
