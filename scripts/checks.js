@@ -231,7 +231,7 @@ var areas = [
             'Rosa Sisters': { isAvailable: function() { return masks.KamaroMask;}, },
             'Swordsman School': { isAvailable: function() { return quests.Sword >= 1;}, },
             'Postman Game': { isAvailable: function() { return masks.BunnyHood;}, },
-            'All Night Mask': { isAvailable: function() { return items.Wallet >= 2;}, },
+            'All Night Mask': { isAvailable: function() { return dungeons.Wallet >= 2;}, },
             'Bomb Bag': { isAvailable: function() { return true;}, },
             'Big Bomb Bag': { isAvailable: function() { return Fighting();}, },
         },
@@ -253,8 +253,8 @@ var areas = [
             'Straw Roof Chest': { isAvailable: function() { return items.Hookshot || (masks.DekuMask && quests.MoonsTear);}, },
             'Final Day Chest': { isAvailable: function() { return items.Hookshot || (masks.DekuMask && quests.MoonsTear);}, },
             'Bank 1': { isAvailable: function() { return true;}, },
-            'Bank 2': { isAvailable: function() { return items.Wallet >=1;}, },
-            'Bank 3': { isAvailable: function() { return items.Wallet >=2;}, },
+            'Bank 2': { isAvailable: function() { return dungeons.Wallet >=1;}, },
+            'Bank 3': { isAvailable: function() { return dungeons.Wallet >=2;}, },
         },
         isBeatable: function() {
             return this.canGetCheck();
@@ -306,14 +306,14 @@ var areas = [
             'Kamaro': { isAvailable: function() { return canPlay(quests.SongOfHealing);}, },
             'Underwater Chest': { isAvailable: function() { return masks.ZoraMask;}, },
             'Grass Chest': { isAvailable: function() { return true;}, },
-            'Stump Chest': { isAvailable: function() { return items.Hookshot || (quests.MagicBean && HasBottle());}, },
+            'Stump Chest': { isAvailable: function() { return items.Hookshot || (items.MagicBean && HasBottle());}, },
             'Moons Tear': { isAvailable: function() { return masks.DekuMask || (quests.BombersNotebook && HasRangeAttack());}, },
             'Peahat Grotto Chest': { isAvailable: function() { return Fighting();}, },
             'Dodongo Grotto Chest': { isAvailable: function() { return Fighting();}, },
             'BioBaba Grotto HP': { isAvailable: function() { return masks.ZoraMask && (items.Bomb >=1 || masks.GoronMask);}, },
             'Pillar Grotto Chest': { isAvailable: function() { return true;}, },
             'Grass Grotto Chest': { isAvailable: function() { return true;}, },
-            'Business Scrub': { isAvailable: function() { return items.Wallet >=1 && masks.DekuMask || (quests.BombersNotebook && HasRangeAttack());}, },
+            'Business Scrub': { isAvailable: function() { return dungeons.Wallet >=1 && masks.DekuMask || (quests.BombersNotebook && HasRangeAttack());}, },
             'Colored Gossip Stones': { isAvailable: function() { return (items.Bomb >=1 || masks.GoronMask) && ((quests.SonataOfAwakening && masks.DekuMask) || (quests.GoronLullaby && masks.GoronMask) || (quests.NewWaveBossaNova && masks.ZoraMask))  ;}, },
         },
         isBeatable: function() {
@@ -372,7 +372,7 @@ var areas = [
         y: "65%",
         checklist: {
             'West Garden HP': { isAvailable: function() { return CanGetToDekuPalace();}, },
-            'Imprisoned Monkey': { isAvailable: function() { return CanGetToDekuPalace() && items.Ocarina && quests.MagicBean;}, },
+            'Imprisoned Monkey': { isAvailable: function() { return CanGetToDekuPalace() && items.Ocarina && items.MagicBean;}, },
             'Bean Seller': { isAvailable: function() { return CanGetToDekuPalace();}, },
             'Bean Grotto Chest': { isAvailable: function() { return CanGetToDekuPalace() && (items.Hookshot || HasBottle());}, },
             'Butler Race': { isAvailable: function() { return WoodfallClear() && HasBottle();}, },
@@ -409,8 +409,8 @@ var areas = [
             'Hungry Goron': { isAvailable: function() { return masks.GoronMask && quests.Magic >= 1 && items.Bow >=1 && HasExplosives() && piecelogic;}, },
             'Waterfall Chest': { isAvailable: function() { return SnowheadClear() && CanUse(items.LensOfTruth);}, },
             'Darmani': { isAvailable: function() { return CanUse(items.LensOfTruth) && canPlay(quests.SongOfHealing) && items.Bow >= 1 && HasExplosives() && transformmasklogic;}, },
-            'Smith Day 1': { isAvailable: function() { return HasExplosives() && items.Wallet >=1 && quests.Sword >= 1 && (CanUse(items.FireArrow) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth))) ;}, },
-            'Smith Day 2': { isAvailable: function() { return HasExplosives() && items.GoldDust && items.Wallet >=1 && quests.Sword >= 1 && ((CanUse(items.FireArrow)) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth)));}, },
+            'Smith Day 1': { isAvailable: function() { return HasExplosives() && dungeons.Wallet >=1 && quests.Sword >= 1 && (CanUse(items.FireArrow) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth))) ;}, },
+            'Smith Day 2': { isAvailable: function() { return HasExplosives() && items.GoldDust && dungeons.Wallet >=1 && quests.Sword >= 1 && ((CanUse(items.FireArrow)) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth)));}, },
             'Spring Water Grotto Chest': { isAvailable: function() { return SnowheadClear();}, },
         },
         isBeatable: function() {
@@ -447,7 +447,7 @@ var areas = [
         y: "25%",
         checklist: {
             'Powder Keg Challenge': { isAvailable: function() { return HasExplosives() && masks.GoronMask && (SnowheadClear() || CanUse(items.FireArrow));}, },
-            'Scrub Purchase': { isAvailable: function() { return HasExplosives() && items.Wallet >= 1 && masks.GoronMask && items.Bomb >= 2;}, },
+            'Scrub Purchase': { isAvailable: function() { return HasExplosives() && dungeons.Wallet >= 1 && masks.GoronMask && items.Bomb >= 2;}, },
             'Scrub Trade': { isAvailable: function() { return HasExplosives() && masks.DekuMask && quests.SwampDeed && scrubtradelogic;}, },
             'Ledge HP': { isAvailable: function() { return HasExplosives() && masks.DekuMask && quests.SwampDeed && piecelogic;}, },
             'Lens Cave Chest': { isAvailable: function() { return HasExplosives() && CanUse(items.LensOfTruth);}, },
@@ -504,7 +504,7 @@ var areas = [
         y: "50%",
         checklist: {
             'Fisherman Game': { isAvailable: function() { return BayClear() && piecelogic;}, },
-            'Ledge HP': { isAvailable: function() { return canPlay(quests.EponasSong) && items.Hookshot && HasBottle() && quests.MagicBean && piecelogic;}, },
+            'Ledge HP': { isAvailable: function() { return canPlay(quests.EponasSong) && items.Hookshot && HasBottle() && items.MagicBean && piecelogic;}, },
             'Mikau': { isAvailable: function() { return canPlay(quests.EponasSong) && canPlay(quests.SongOfHealing) && transformmasklogic;}, },
             'Tingle Great Bay Map': { isAvailable: function() { return canPlay(quests.EponasSong) && HasRangeAttack() && tinglelogic;}, },
             'Tingle Stone Tower Map': { isAvailable: function() { return canPlay(quests.EponasSong) && HasRangeAttack() && tinglelogic;}, },
@@ -525,12 +525,12 @@ var areas = [
         x: "18%",
         y: "48%",
         checklist: {
-            'Seahorse HP': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Seahorse && quests.Magic >= 1 && piecelogic;}, },
-            'Upper Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Seahorse && quests.Magic >= 1;}, },
-            'Lower Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Seahorse && quests.Magic >= 1;}, },
-            'Zora Egg 1': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Seahorse && quests.Magic >= 1 && HasBottle();}, },
-            'Zora Egg 2': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Seahorse && quests.Magic >= 1 && HasBottle();}, },
-            'Zora Egg 3': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Seahorse && quests.Magic >= 1 && HasBottle();}, },
+            'Seahorse HP': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && quests.Magic >= 1 && piecelogic;}, },
+            'Upper Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && quests.Magic >= 1;}, },
+            'Lower Chest': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && quests.Magic >= 1;}, },
+            'Zora Egg 1': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && quests.Magic >= 1 && HasBottle();}, },
+            'Zora Egg 2': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && quests.Magic >= 1 && HasBottle();}, },
+            'Zora Egg 3': { isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && quests.Magic >= 1 && HasBottle();}, },
         },
         isBeatable: function() {
            return this.canGetCheck();
@@ -604,7 +604,7 @@ var areas = [
             'Ledge HP': { isAvailable: function() { return EnterIkana() && quests.OceanDeed && masks.DekuMask;}, },
             'Secret Shrine Grotto': { isAvailable: function() { return EnterIkana() && masks.ZoraMask;}, },
             'Scrub Trade': { isAvailable: function() { return EnterIkana() && quests.OceanDeed;}, },
-            'Scrub Purchase': { isAvailable: function() { return EnterIkana() && HasBottle() && items.Wallet >= 1;}, },
+            'Scrub Purchase': { isAvailable: function() { return EnterIkana() && HasBottle() && dungeons.Wallet >= 1;}, },
             'Tingle Stone Tower Map': { isAvailable: function() { return EnterIkana() && HasRangeAttack();}, },
             'Tingle Clock Town Map': { isAvailable: function() { return EnterIkana() && HasRangeAttack();}, },
         },
@@ -638,9 +638,9 @@ var areas = [
         x: "80%",
         y: "42%",
         checklist: {
-            'Left Inverted Chest': { isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && quests.MagicBean && (HasBottle() || canPlay(quests.SongOfStorms));}, },
-            'Center Inverted Chest': { isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && quests.MagicBean && (HasBottle() || canPlay(quests.SongOfStorms));}, },
-            'Right Inverted Chest': { isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && quests.MagicBean && (HasBottle() || canPlay(quests.SongOfStorms));}, },
+            'Left Inverted Chest': { isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && items.MagicBean && (HasBottle() || canPlay(quests.SongOfStorms));}, },
+            'Center Inverted Chest': { isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && items.MagicBean && (HasBottle() || canPlay(quests.SongOfStorms));}, },
+            'Right Inverted Chest': { isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && items.MagicBean && (HasBottle() || canPlay(quests.SongOfStorms));}, },
         },
         isBeatable: function() {
             return this.canGetCheck();
@@ -804,7 +804,7 @@ var areas = [
             'Link Garo Chest': { isAvailable: function() { return EnterMoon() && TotalMasks(4) && Fighting() && items.Hookshot && moonitemlogic;}, },
             'Link Iron Knuckle Chest': { isAvailable: function() { return EnterMoon() && TotalMasks(4) && Fighting() && items.Hookshot && moonitemlogic;}, },
             'Link Bonus HP': { isAvailable: function() { return EnterMoon() && TotalMasks(4) && Fighting() && items.Hookshot && items.Bombchu && items.Bow >= 1 && moonitemlogic;}, },
-            'Fierce Deity Mask': { isAvailable: function() { return EnterMoon() && TotalMasks(21) && masks.GoronMask && masks.ZoraMask && masks.DekuMask && Fighting() && items.Hookshot && items.Bombchu && items.Bow >= 1 && deitylogic;}, },
+            'Fierce Deity Mask': { isAvailable: function() { return EnterMoon() && TotalMasks(20) && masks.GoronMask && masks.ZoraMask && masks.DekuMask && Fighting() && items.Hookshot && items.Bombchu && items.Bow >= 1 && deitylogic;}, },
         },
         isBeatable: function() {
             return this.canGetCheck();

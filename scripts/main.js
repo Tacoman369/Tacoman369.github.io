@@ -339,7 +339,7 @@ function unhighlightArea(x) {
 
 function clickArea(d) {
     document.getElementById("area" + areaSelect).style.backgroundImage = 'url(images/poi.png)';
-    areaSelect = 0;
+    areaSelect = d;
     document.getElementById("area" + areaSelect).style.backgroundImage = 'url(images/highlighted.png)';
 
     document.getElementById("submaparea").innerHTML = areas[areaSelect].name;
@@ -550,7 +550,7 @@ function showSettings(sender) {
         var x = document.getElementById("settings");
         if (!x.style.display || x.style.display == "none") {
             x.style.display = "initial";
-            sender.innerHTML = "X";
+            sender.innerHTML = "CLOSE";
         }
         else {
             x.style.display = "none";
@@ -1767,60 +1767,6 @@ function updateMap() {
             }*/
             else {
                 itemlist[item].className = "DCunavailable";
-            }
-        }
-    }
-    //Masks
-    var masklist = document.getElementById("submaplist").children;
-    for (var mask in masklist) {
-        if (masklist.hasOwnProperty(mask)) {
-            if (areas[areaSelect].checklist[masklist[mask].innerHTML].isOpened) {
-                masklist[mask].className = "DCopened";
-            }
-            else if (areas[areaSelect].checklist[masklist[mask].innerHTML].isAvailable()) {
-                masklist[mask].className = "DCavailable";
-            }
-            /*else if (areas[areaSelect].checklist[masklist[mask].innerHTML].isCheckable()) {
-                masklist[mask].className = "DChidden";
-            }*/
-            else {
-                masklist[mask].className = "DCunavailable";
-            }
-        }
-    }
-    //Dungeons
-    var dungeonlist = document.getElementById("submaplist").children;
-    for (var dungeon in dungeonlist) {
-        if (dungeonlist.hasOwnProperty(dungeon)) {
-            if (areas[areaSelect].checklist[dungeonlist[dungeon].innerHTML].isOpened) {
-                dungeonlist[dungeon].className = "DCopened";
-            }
-            else if (areas[areaSelect].checklist[dungeonlist[dungeon].innerHTML].isAvailable()) {
-                dungeonlist[dungeon].className = "DCavailable";
-            }
-            /*else if (areas[areaSelect].checklist[dungeonlist[dungeon].innerHTML].isCheckable()) {
-                dungeonlist[dungeon].className = "DChidden";
-            }*/
-            else {
-                dungeonlist[dungeon].className = "DCunavailable";
-            }
-        }
-    }
-    //Quests
-    var questlist = document.getElementById("submaplist").children;
-    for (var quest in questlist) {
-        if (questlist.hasOwnProperty(quest)) {
-            if (areas[areaSelect].checklist[questlist[quest].innerHTML].isOpened) {
-                questlist[quest].className = "DCopened";
-            }
-            else if (areas[areaSelect].checklist[questlist[quest].innerHTML].isAvailable()) {
-                questlist[quest].className = "DCavailable";
-            }
-            /*else if (areas[areaSelect].checklist[questlist[quest].innerHTML].isCheckable()) {
-                questlist[quest].className = "DChidden";
-            }*/
-            else {
-                questlist[quest].className = "DCunavailable";
             }
         }
     }

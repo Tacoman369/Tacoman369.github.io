@@ -99,6 +99,8 @@ var defaultDungeonGrid = [
         "SwampSkulltulas",
         "OceanSkulltulas",
         "TownStrayFairy",
+        "Wallet",
+        "Seahorse",
         "ZoraEgg",
     ],
 
@@ -243,6 +245,8 @@ var baseDungeons = {
     SwampSkulltulas: 0,
     OceanSkulltulas: 0,
     TownStrayFairy: false,
+    Seahorse: false,
+    Wallet: 0,
     ZoraEgg: 0,
     blank: false,
 };
@@ -310,6 +314,7 @@ var dungeonMin = {
     SnowSmallKey: 0,
     OceanSmallKey: 0,
     StoneSmallKey: 0,
+    Wallet: 0,
 };
 
 var questMin = {
@@ -342,6 +347,7 @@ var dungeonMax = {
     SnowSmallKey: 3,
     OceanSmallKey: 1,
     StoneSmallKey: 4,
+    Wallet: 2,
 };
 
 
