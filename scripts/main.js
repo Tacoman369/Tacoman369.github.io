@@ -7,24 +7,24 @@ var defaultRemains = {
 };
 var Remains = defaultRemains;
 //logic vars
-var transformmasklogic = false;
-var maskslogic = false;
-var piecelogic = false;
-var skullslogic = false;
-var scrubtradelogic = false;
-var anjulogic = false;
-var greatfairylogic = false;
-var tinglelogic = false;
-var notebooklogic = false;
-var moonitemlogic = false;
-var deitylogic = false;
-var mapslogic = false;
-var smallkeylogic = false;
-var bigkeylogic = false;
-var remainslogic = false;
-var containerlogic = false;
+var transformmasklogic;
+var maskslogic;
+var piecelogic;
+var skullslogic;
+var scrubtradelogic;
+var anjulogic;
+var greatfairylogic;
+var tinglelogic;
+var notebooklogic;
+var moonitemlogic;
+var deitylogic;
+var mapslogic;
+var smallkeylogic;
+var bigkeylogic;
+var remainslogic;
+var containerlogic;
 //trick vars
-var skipbombers = false;
+var skipbombers;
 
 var mouseOverItem = false;
 var mouseLastOverR;
@@ -354,12 +354,12 @@ function clickArea(d) {
         if (areas[areaSelect].checklist[key].isOpened) {
             s.className = "DCopened";
         }
+        else if (!areas[areaSelect].checklist[key].isLogic()) {
+            s.className = "DChidden";
+        }
         else if (areas[areaSelect].checklist[key].isAvailable()) {
             s.className = "DCavailable";
         }
-        /*else if (areas[areaSelect].check[key].isCheckable()) {
-            s.className = "DChidden";
-        }*/
         else {
             s.className = "DCunavailable";
         }
@@ -378,12 +378,12 @@ function toggleAreaCheck(sender, d, c) {
     if (areas[d].checklist[c].isOpened) {
         sender.className = "DCopened";
     }
+    else if (!areas[d].checklist[c].isLogic()) {
+        sender.className = "DChidden";
+    }
     else if (areas[d].checklist[c].isAvailable()) {
         sender.className = "DCavailable";
     }
-    /*else if (areas[d].checklist[c].isCheckable()) {
-        sender.className = "DChidden";
-    }*/
     else {
         sender.className = "DCunavailable";
     }
@@ -410,109 +410,172 @@ function setOrder(H) {
     saveCookie("settings");
 }
 
-function setTransLogic(sender) {
-    transformmasklogic = sender.value;
+function setTransLogic() {
+    //transformmasklogic = sender.value;
+    if (document.getElementById("transformmasklogictoggle").checked) {
+        transformmasklogic = true;
+    }
+    else { transformmasklogic = false;}
     updateMap();
     saveCookie("logic");
 }
 
-function setMaskLogic(sender) {
-    maskslogic = sender.value;
+function setMaskLogic() {
+    if (document.getElementById("maskslogictoggle").checked) {
+        maskslogic = true;
+    }
+    else { maskslogic = false;}
+    //maskslogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setPieceLogic(sender) {
-    piecelogic = sender.value;
+function setPieceLogic() {
+    if (document.getElementById("piecelogictoggle").checked) {
+        piecelogic = true;
+    }
+    else { piecelogic = false;}
+    //piecelogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setSkullsLogic(sender) {
-    skullslogic = sender.value;
+function setSkullsLogic() {
+    if (document.getElementById("skullslogictoggle").checked) {
+        skullslogic = true;
+    }
+    else { skullslogic = false;}
+    //skullslogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setScrubTradeLogic(sender) {
-    scrubtradelogic = sender.value;
+function setScrubTradeLogic() {
+    if (document.getElementById("scrubtradelogictoggle").checked) {
+        scrubtradelogic = true;
+    }
+    else { scrubtradelogic = false;}
+    //scrubtradelogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setAnjuLogic(sender) {
-    anjulogic = sender.value;
+function setAnjuLogic() {
+    if (document.getElementById("anjulogictoggle").checked) {
+        anjulogic = true;
+    }
+    else { anjulogic = false;}
+    //anjulogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setGFLogic(sender) {
-    greatfairylogic = sender.value;
+function setGFLogic() {
+    if (document.getElementById("greatfairylogictoggle").checked) {
+        greatfairylogic = true;
+    }
+    else { greatfairylogic = false;}
+    ///greatfairylogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setTingleLogic(sender) {
-    tinglelogic = sender.value;
+function setTingleLogic() {
+    if (document.getElementById("tinglelogictoggle").checked) {
+        tinglelogic = true;
+    }
+    else { tinglelogic = false;}
+    //tinglelogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setNotebookLogic(sender) {
-    notebooklogic = sender.value;
+function setNotebookLogic() {
+    if (document.getElementById("notebooklogictoggle").checked) {
+        notebooklogic = true;
+    }
+    else { notebooklogic = false;}
+    //notebooklogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setMoonItemLogic(sender) {
-    moonitemlogic = sender.value;
+function setMoonItemLogic() {
+    if (document.getElementById("moonitemlogictoggle").checked) {
+        moonitemlogic = true;
+    }
+    else { moonitemlogic = false;}
+    //moonitemlogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setFDLogic(sender) {
-    deitylogic = sender.value;
+function setFDLogic() {
+    if (document.getElementById("deitylogictoggle").checked) {
+        deitylogic = true;
+    }
+    else { deitylogic = false;}
+    //deitylogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setMapsLogic(sender) {
-    mapslogic = sender.value;
+function setMapsLogic() {
+    if (document.getElementById("mapslogictoggle").checked) {
+        mapslogic = true;
+    }
+    else { mapslogic = false;}
+    //mapslogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setSmallKeyLogic(sender) {
-    smallkeylogic = sender.value;
+function setSmallKeyLogic() {
+    if (document.getElementById("smallkeylogictoggle").checked) {
+        smallkeylogic = true;
+    }
+    else { smallkeylogic = false;}
+    //smallkeylogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setBigKeyLogic(sender) {
-    bigkeylogic = sender.value;
+function setBigKeyLogic() {
+    if (document.getElementById("bigkeylogictoggle").checked) {
+        bigkeylogic = true;
+    }
+    else { bigkeylogic = false;}
+    //bigkeylogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setRemainsLogic(sender) {
-    remainslogic = sender.value;
+function setRemainsLogic() {
+    if (document.getElementById("remainslogictoggle").checked) {
+        remainslogic = true;
+    }
+    else { remainslogic = false;}
+    //remainslogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setContainerLogic(sender) {
-    containerlogic = sender.value;
+function setContainerLogic() {
+    if (document.getElementById("containerlogictoggle").checked) {
+        containerlogic = true;
+    }
+    else { containerlogic = false;}
+    //containerlogic = sender.value;
     updateMap();
     saveCookie("logic");
 }
 
-function setSkipBombers(sender) {
-    if (sender.checked) {
+function setSkipBombers() {
+    if (document.getElementById("skipbomberstoggle").checked) {
         skipbombers = true;
     }
-    else {
-        skipbombers = false;
-    }
+    else { skipbombers = false;}
+    
     updateGridItemAll();
     updateGridMaskAll();
     updateGridDungeonAll();
@@ -1759,12 +1822,12 @@ function updateMap() {
             if (areas[areaSelect].checklist[itemlist[item].innerHTML].isOpened) {
                 itemlist[item].className = "DCopened";
             }
+            else if (!areas[areaSelect].checklist[itemlist[item].innerHTML].isLogic()) {
+                itemlist[item].className = "DChidden";
+            }
             else if (areas[areaSelect].checklist[itemlist[item].innerHTML].isAvailable()) {
                 itemlist[item].className = "DCavailable";
             }
-            /*else if (areas[areaSelect].checklist[itemlist[item].innerHTML].isCheckable()) {
-                itemlist[item].className = "DChidden";
-            }*/
             else {
                 itemlist[item].className = "DCunavailable";
             }
@@ -1951,12 +2014,13 @@ function populateMapDiv() {
         if (areas[areaSelect].checklist[key1].isOpened) {
             l.className = "DCopened";
         }
+        else if (!areas[areaSelect].checklist[key1].isLogic()) {
+            length.className = "DChidden";
+        }
         else if (areas[areaSelect].checklist[key1].isAvailable()) {
             length.className = "DCavailable";
         }
-        /*else if (areas[areaSelect].checklist[key1].isCheckable()) {
-            length.className = "DChidden";
-        }*/
+        
         else {
             l.className = "DCunavailable";
         }

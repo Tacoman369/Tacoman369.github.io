@@ -60,6 +60,18 @@
 					<hr style="margin-top: 4px; margin-bottom: 4px;">
 					<ul id="submaplist" style="margin-top: 4px; margin-bottom: 4px; overflow-y: auto; height: 232px;"></ul>
 				</div>
+				<div id="submapindex" class="submapindex">
+					<div class="indextitle"><span style="font-size: 20px;">Index</span></div>
+					<hr style="margin-top: 4px; margin-bottom: 4px;">
+					<div><div class="box red"></div> = Unavailable</div>
+					<br>
+					<div><div class="box green"></div> = Available</div>
+					<br>
+					<div><div class="box blurple"></div> = Not Randomized</div>
+					<br>
+					<div><div class="box gray"></div> = Completed</div>
+					<br>
+				</div>
 			</div>
 		</div>
 
@@ -87,32 +99,32 @@
 				<input type="radio" name="mapposition" value="Below" onclick="setOrder(true)">Below<br>
 				<fieldset>
 					<legend>Item Settings</legend>
-					<input type="checkbox" name="transformmasklogic" onclick="setTransLogic(this)">Shuffle Transformation Masks
-					<input type="checkbox" name="maskslogic" onclick="setMaskLogic(this)">Shuffle Masks
-					<input type="checkbox" name="piecelogic" onclick="setPieceLogic(this)">Shuffle Heart Pieces
-					<input type="checkbox" name="skullslogic" onclick="setSkullsLogic(this)">Tokensanity
-					<input type="checkbox" name="scrubtradelogic" onclick="setScrubTradeLogic(this)">Shuffle Deku Trades
-					<input type="checkbox" name="anjulogic" onclick="setAnjuLogic(this)">Shuffle Anju and Kafei Items
-					<input type="checkbox" name="greatfairylogic" onclick="setGFLogic(this)">Shuffle Great Fairy Items
-					<input type="checkbox" name="tinglelogic" onclick="setTingleLogic(this)">Shuffle Tingle Maps
-					<input type="checkbox" name="notebooklogic" onclick="setNotebookLogic(this)">Shuffle Bomber's Notebook
-					<input type="checkbox" name="moonitemlogic" onclick="setMoonItemLogic(this)">Shuffle Moon Items
-					<input type="checkbox" name="deitylogic" onclick="setFDLogic(this)">Shuffle Fierce Deity Mask<br>
+					<input type="checkbox" id="transformmasklogictoggle" name="transformmasklogic" onclick="setTransLogic()">Shuffle Transformation Masks
+					<input type="checkbox" id="maskslogictoggle" name="maskslogic" onclick="setMaskLogic()">Shuffle Masks
+					<input type="checkbox" id="piecelogictoggle" name="piecelogic" onclick="setPieceLogic()">Shuffle Heart Pieces
+					<input type="checkbox" id="skullslogictoggle" name="skullslogic" onclick="setSkullsLogic()">Tokensanity
+					<input type="checkbox" id="scrubtradelogictoggle" name="scrubtradelogic" onclick="setScrubTradeLogic()">Shuffle Deku Trades
+					<input type="checkbox" id="anjulogictoggle" name="anjulogic" onclick="setAnjuLogic()">Shuffle Anju and Kafei Items
+					<input type="checkbox" id="greatfairylogictoggle" name="greatfairylogic" onclick="setGFLogic()">Shuffle Great Fairy Items
+					<input type="checkbox" id="tinglelogictoggle" name="tinglelogic" onclick="setTingleLogic()">Shuffle Tingle Maps
+					<input type="checkbox" id="notebooklogictoggle" name="notebooklogic" onclick="setNotebookLogic()">Shuffle Bomber's Notebook
+					<input type="checkbox" id="moonitemlogictoggle" name="moonitemlogic" onclick="setMoonItemLogic()">Shuffle Moon Items
+					<input type="checkbox" id="deitylogictoggle" name="deitylogic" onclick="setFDLogic()">Shuffle Fierce Deity Mask<br>
 				</fieldset>
 				<fieldset>
 					<legend>Dungeon Settings</legend>
-					<input type="checkbox" name="mapslogic" onclick="setMapsLogic(this)">Maps and Compasses
-					<input type="checkbox" name="smallkeylogic" onclick="setSmallKeyLogic(this)">Keysanity(Small)
-					<input type="checkbox" name="bigkeylogic" onclick="setBigKeyLogic(this)">Keysanity(Boss)
-					<input type="checkbox" name="remainslogic" onclick="setRemainsLogic(this)">Boss Remains
-					<input type="checkbox" name="containerlogic" onclick="setContainerLogic(this)">
+					<input type="checkbox" id="mapslogictoggle" name="mapslogic" onclick="setMapsLogic()">Maps and Compasses
+					<input type="checkbox" id="smallkeylogictoggle" name="smallkeylogic" onclick="setSmallKeyLogic()">Keysanity(Small)
+					<input type="checkbox" id="bigkeylogictoggle" name="bigkeylogic" onclick="setBigKeyLogic()">Keysanity(Boss)
+					<input type="checkbox" id="remainslogictoggle" name="remainslogic" onclick="setRemainsLogic()">Boss Remains
+					<input type="checkbox" id="containerlogictoggle" name="containerlogic" onclick="setContainerLogic()">
 					<div class="tooltip">Heart Containers
 						<span class="tooltiptext">Shuffle Heart Container Rewards</span>
 					</div>					
 				</fieldset>
 				<fieldset>
 					<legend>Custom Logic</legend>
-					<input type="checkbox" name="skipbombers" onclick="setSkipBombers(this)"><div class="tooltip">Skip Bombers Minigame
+					<input type="checkbox" id="skipbomberstoggle" name="skipbombers" onclick="setSkipBombers()"><div class="tooltip">Skip Bombers Minigame
 						<span class="tooltiptext">Sets Bombers Code to 12345</span></div>
 				</fieldset>
 			</fieldset>

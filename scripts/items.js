@@ -1,12 +1,14 @@
 var defaultItemGrid = [
     [
-        "Ocarina",
+        "Sword",
+        "Shield",
         "Bow",
         "FireArrow",
         "IceArrow",
         "LightArrow",
     ],
     [
+        "Magic",
         "Bomb",
         "Bombchu",
         "DekuStick",
@@ -14,6 +16,7 @@ var defaultItemGrid = [
         "MagicBean",
     ],
     [
+        "Wallet",
         "PowderKeg",
         "PictographBox",
         "LensOfTruth",
@@ -68,11 +71,19 @@ var defaultMaskGrid = [
 
 var defaultDungeonGrid = [
     [
+        "SwampSkulltulas",
+        "OceanSkulltulas",
+        "TownStrayFairy",
+        "Seahorse",
+        "ZoraEgg",
+    ],
+    [
         "SwampMap",
         "SwampCompass",
         "SwampSmallKey",
         "SwampBigKey",
         "SwampStrayFairy",
+        "OdolwaRemains",
     ],
     [
         "SnowMap",
@@ -80,6 +91,7 @@ var defaultDungeonGrid = [
         "SnowSmallKey",
         "SnowBigKey",
         "SnowStrayFairy",
+        "GohtRemains",
     ],
     [
         "OceanMap",
@@ -87,6 +99,7 @@ var defaultDungeonGrid = [
         "OceanSmallKey",
         "OceanBigKey",
         "OceanStrayFairy",
+        "GyorgRemains",
     ],
     [
         "StoneMap",
@@ -94,16 +107,8 @@ var defaultDungeonGrid = [
         "StoneSmallKey",
         "StoneBigKey",
         "StoneStrayFairy",
+        "TwinmoldRemains",
     ],
-    [
-        "SwampSkulltulas",
-        "OceanSkulltulas",
-        "TownStrayFairy",
-        "Wallet",
-        "Seahorse",
-        "ZoraEgg",
-    ],
-
 ];
 
 var defaultQuestGrid = [
@@ -123,16 +128,6 @@ var defaultQuestGrid = [
         "HeartContainer",
     ],
     [
-        "Sword",
-        "HeroShield",
-        "MirrorShield",
-        "OdolwaRemains",
-        "GohtRemains",
-        "GyorgRemains",
-        "TwinmoldRemains",
-    ],
-    [
-        "Magic",
         "BombersNotebook",
         "NoteNumOne",
         "NoteNumTwo",
@@ -141,6 +136,7 @@ var defaultQuestGrid = [
         "NoteNumFive",
     ],
     [
+        "Ocarina",
         "SongOfTime",
         "SongOfHealing",
         "SongOfSoaring",
@@ -158,7 +154,6 @@ var defaultQuestGrid = [
 ];
 
 var baseItems = {
-    Ocarina: false,
     Bow: 0,
     FireArrow: false,
     IceArrow: false,
@@ -182,6 +177,11 @@ var baseItems = {
     ChateauRomani: false,
     MysteryMilk: false,
     EmptyBottle: 0,
+
+    Sword: 0,
+    Shield: 0,
+    Magic: 0,
+    Wallet: 0,
 
     blank: false,
 };
@@ -218,36 +218,40 @@ var baseMasks = {
 };
 
 var baseDungeons = {
+    SwampSkulltulas: 0,
+    OceanSkulltulas: 0,
+    TownStrayFairy: false,
+    Seahorse: false,
+    ZoraEgg: 0,
+    
     SwampMap: false,
     SwampCompass: false,
     SwampSmallKey: 0,
     SwampBigKey: false,
     SwampStrayFairy: 0,
+    OdolwaRemains: false,
 
     SnowMap: false,
     SnowCompass: false,
     SnowSmallKey: 0,
     SnowBigKey: false,
     SnowStrayFairy: 0,
+    GohtRemains: false,
 
     OceanMap: false,
     OceanCompass: false,
     OceanSmallKey: 0,
     OceanBigKey: false,
     OceanStrayFairy: 0,
+    GyorgRemains: false,
 
     StoneMap: false,
     StoneCompass: false,
     StoneSmallKey: 0,
     StoneBigKey: false,
     StoneStrayFairy: 0,
-    
-    SwampSkulltulas: 0,
-    OceanSkulltulas: 0,
-    TownStrayFairy: false,
-    Seahorse: false,
-    Wallet: 0,
-    ZoraEgg: 0,
+    TwinmoldRemains: false,
+
     blank: false,
 };
 
@@ -265,15 +269,6 @@ var baseQuests = {
     HeartPieces: 0,
     HeartContainer: 0,
 
-    Sword: 0,
-    HeroShield: false,
-    MirrorShield: false,
-    OdolwaRemains: false,
-    GohtRemains: false,
-    GyorgRemains: false,
-    TwinmoldRemains: false,
-
-    Magic: 0,
     BombersNotebook: false,
     NoteNumOne: 0,
     NoteNumTwo: 0,
@@ -281,6 +276,7 @@ var baseQuests = {
     NoteNumFour: 0,
     NoteNumFive: 0,
 
+    Ocarina: false,
     SongOfTime: true,
     SongOfHealing: false,
     SongOfSoaring: false,
@@ -300,10 +296,14 @@ var itemsMin = {
     Bow: 0,
     Bomb: 0,
     EmptyBottle: 0,
+    Wallet: 0,
+    Sword: 0,
+    Magic: 0,
+    Shield: 0,
 };
 
 var dungeonMin = {
-    ZoraEggs: 0,
+    ZoraEgg: 0,
     SwampSkulltulas: 0,
     OceanSkulltulas: 0,
     SwampStrayFairy: 0,
@@ -314,14 +314,11 @@ var dungeonMin = {
     SnowSmallKey: 0,
     OceanSmallKey: 0,
     StoneSmallKey: 0,
-    Wallet: 0,
 };
 
 var questMin = {
     HeartPieces: 0,
     HeartContainer: 0,
-    Sword: 0,
-    Magic: 0,
     NoteNumOne: 0,
     NoteNumTwo: 0,
     NoteNumThree: 0,
@@ -333,10 +330,14 @@ var itemsMax = {
     Bow: 3,
     Bomb: 3,
     EmptyBottle: 2,
+    Wallet: 3,
+    Sword: 3,
+    Magic: 2,
+    Shield: 2,
 };
 
 var dungeonMax = {
-    ZoraEggs: 7,
+    ZoraEgg: 7,
     SwampSkulltulas: 30,
     OceanSkulltulas: 30,
     SwampStrayFairy: 15,
@@ -347,15 +348,12 @@ var dungeonMax = {
     SnowSmallKey: 3,
     OceanSmallKey: 1,
     StoneSmallKey: 4,
-    Wallet: 2,
 };
 
 
 var questMax = {
     HeartPieces: 48,
     HeartContainer: 4,
-    Sword: 3,
-    Magic: 2,
     NoteNumOne: 5,
     NoteNumTwo: 5,
     NoteNumThree: 5,

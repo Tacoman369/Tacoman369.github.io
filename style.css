@@ -220,6 +220,51 @@ label{
     margin-left: 20px;
 }
 
+.submapindex{
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    background-color: black;
+    border: #fff;
+    border-style: solid;
+    border-width: 2px;
+    position:absolute;
+    width: 240px;
+    height: 270px;
+    margin-top: 460px;
+    margin-left: 270px;
+}
+
+.indextitle{
+    text-align: center;
+}
+
+.box {
+    float: left;
+    height: 20px;
+    width: 20px;
+    margin-bottom: 15px;
+    border: 1px solid black;
+    clear: both;
+  }
+  
+  .red {
+    background-color: red;
+  }
+  
+  .green {
+    background-color: green;
+  }
+  
+  .blurple {
+    background-color: blueviolet;
+  }
+
+  .gray {
+    background-color: gray;
+  }
+
 .check{
     width: 16px;
     height: 16px;
@@ -235,7 +280,7 @@ label{
 }
 
 .hidden{
-    background-color: black;
+    background-color: blueviolet;
 }
 
 .available{
@@ -255,7 +300,7 @@ label{
 }
 
 .DChidden{
-    color:black;
+    color:blueviolet;
 }
 
 .DCavailable{
