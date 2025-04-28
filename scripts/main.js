@@ -92,23 +92,23 @@ var checksCookieDefault = {
 };
 
 var logicCookieDefault = {
-    //tmask: 1,
-    //mask: 1,
-    //piece: 1,
-    //skulls: 1,
-    //scrubtrade: 1,
-    //anju: 1,
-    //gfairy: 1,
-    //tingle: 1,
-    //notebook: 1,
-    //moonitem: 1,
-    //deity: 1,
-    //mapscompass: 1,
-    //skey: 1,
-    //bkey: 1,
-    //bosses: 1,
-    //containers: 1,
-    skipnotebook: 1,
+    tmask: false,
+    mask: false,
+    piece: false,
+    skulls: false,
+    scrubtrade: false,
+    anju: false,
+    gfairy: false,
+    tingle: false,
+    notebook: false,
+    moonitem: false,
+    deity: false,
+    mapscompass: false,
+    skey: false,
+    bkey: false,
+    bosses: false,
+    containers: false,
+    skipnotebook: false,
 };
 
 var cookielock = false;
@@ -176,45 +176,28 @@ function loadCookie(name) {
         });
 
         //Item Settings
-        /*
-        document.getElementsByName("transformmasklogic")[0].checked = !!cookieobj.tmask;
-        //document.getElementsByName('transformmasklogic')[0].onchange();
-        document.getElementsByName("maskslogic")[0].checked = !!cookieobj.mask;
-        //document.getElementsByName("maskslogic")[0].onchange();
-        document.getElementsByName("piecelogic")[0].checked = !!cookieobj.piece;
-        //document.getElementsByName("piecelogic")[0].onchange();
-        document.getElementsByName("skullslogic")[0].checked = !!cookieobj.skulls;
-        //document.getElementsByName("skullslogic")[0].onchange();
-        document.getElementsByName("scrubtradelogic")[0].checked = !!cookieobj.scrubtrade;
-        //document.getElementsByName("scrubtradelogic")[0].onchange();
-        document.getElementsByName("anjulogic")[0].checked = !!cookieobj.anju;
-        //document.getElementsByName("anjulogic")[0].onchange();
-        document.getElementsByName("greatfairylogic")[0].checked = !!cookieobj.gfairy;
-        //document.getElementsByName("greatfairylogic")[0].onchange();
-        document.getElementsByName("tinglelogic")[0].checked = !!cookieobj.tingle;
-        //document.getElementsByName("tinglelogic")[0].onchange();
-        document.getElementsByName("notebooklogic")[0].checked = !!cookieobj.notebook;
-        //document.getElementsByName("notebooklogic")[0].onchange();
-        document.getElementsByName("moonitemlogic")[0].checked = !!cookieobj.moonitem;
-        //document.getElementsByName("moonitemlogic")[0].onchange();
-        document.getElementsByName("deitylogic")[0].checked = !!cookieobj.deity;
-        //document.getElementsByName("deitylogic")[0].onchange();
-
+        
+        document.getElementById("transformmasklogictoggle").checked = cookieobj.tmask ? true : false;
+        document.getElementById("maskslogictoggle").checked = cookieobj.mask ? 1 : 0;
+        document.getElementById("piecelogictoggle").checked = cookieobj.piece ? 1 : 0;
+        document.getElementById("skullslogictoggle").checked = cookieobj.skulls ? 1 : 0;
+        document.getElementById("scrubtradelogictoggle").checked = cookieobj.scrubtrade ? 1 : 0;
+        document.getElementById("anjulogictoggle").checked = cookieobj.anju ? 1 : 0;
+        document.getElementById("greatfairylogictoggle").checked = cookieobj.gfairy ? 1 : 0;
+        document.getElementById("tinglelogictoggle").checked = cookieobj.tingle ? 1 : 0;
+        document.getElementById("notebooklogictoggle").checked = cookieobj.notebook ? 1 : 0;
+        document.getElementById("moonitemlogictoggle").checked = cookieobj.moonitem ? 1 : 0;
+        document.getElementById("deitylogictoggle").checked = cookieobj.deity ? 1 : 0;
+        
         //Area Settings
-        document.getElementsByName("mapslogic")[0].checked = !!cookieobj.mapscompass;
-        //document.getElementsByName("mapslogic")[0].onchange();
-        document.getElementsByName("smallkeylogic")[0].checked = !!cookieobj.skey;
-        //document.getElementsByName("smallkeylogic")[0].onchange();
-        document.getElementsByName("bigkeylogic")[0].checked = !!cookieobj.bkey;
-        //document.getElementsByName("bigkeylogic")[0].onchange();
-        document.getElementsByName("remainslogic")[0].checked = !!cookieobj.bosses;
-        //document.getElementsByName("remainslogic")[0].onchange();
-        document.getElementsByName("containerlogic")[0].checked = !!cookieobj.containers;
-        //document.getElementsByName("containerlogic")[0].onchange();
-        */
+        document.getElementById("mapslogictoggle").checked = cookieobj.mapscompass ? 1 : 0;
+        document.getElementById("smallkeylogictoggle").checked = cookieobj.skey ? 1 : 0;
+        document.getElementById("bigkeylogictoggle").checked = cookieobj.bkey ? 1 : 0;
+        document.getElementById("remainslogictoggle").checked = cookieobj.bosses ? 1 : 0;
+        document.getElementById("containerlogictoggle").checked = cookieobj.containers ? 1 : 0;
+        
         //Tricks and Logic Settings
-        document.getElementsByName("skipbombers")[0].checked = !!cookieobj.skipnotebook;
-        //document.getElementsByName("skipbombers")[0].onchange();
+        document.getElementById("skipbomberstoggle").checked = cookieobj.skipnotebook ? 1 : 0;
     }  
 
     cookielock = false;
@@ -253,28 +236,26 @@ function saveCookie(name) {
     }
     else if (name == "logic") {
         //Item Settings
-        /*
-        cookieobj.tmask = document.getElementsByName("transformmasklogic")[0].checked ? 1 : 0;
-        cookieobj.mask = document.getElementsByName("maskslogic")[0].checked ? 1 : 0;
-        cookieobj.piece = document.getElementsByName("piecelogic")[0].checked ? 1 : 0;
-        cookieobj.skulls = document.getElementsByName("skullslogic")[0].checked ? 1 : 0;
-        cookieobj.scrubtrade = document.getElementsByName("scrubtradelogic")[0].checked ? 1 : 0;
-        cookieobj.anju = document.getElementsByName("anjulogic")[0].checked ? 1 : 0;
-        cookieobj.gfairy = document.getElementsByName("greatfairylogic")[0].checked ? 1 : 0;
-        cookieobj.tingle = document.getElementsByName("tinglelogic")[0].checked ? 1 : 0;
-        cookieobj.notebook = document.getElementsByName("notebooklogic")[0].checked ? 1 : 0;
-        cookieobj.moonitem = document.getElementsByName("moonitemlogic")[0].checked ? 1 : 0;
-        cookieobj.deity = document.getElementsByName("deitylogic")[0].checked ? 1 : 0;
+        cookieobj.tmask = document.getElementById("transformmasklogictoggle").checked;
+        cookieobj.mask = document.getElementById("maskslogictoggle").checked;
+        cookieobj.piece = document.getElementById("piecelogictoggle").checked;
+        cookieobj.skulls = document.getElementById("skullslogictoggle").checked
+        cookieobj.scrubtrade = document.getElementById("scrubtradelogictoggle").checked;
+        cookieobj.anju = document.getElementById("anjulogictoggle").checked;
+        cookieobj.gfairy = document.getElementById("greatfairylogictoggle").checked;
+        cookieobj.tingle = document.getElementById("tinglelogictoggle").checked;
+        cookieobj.notebook = document.getElementById("notebooklogictoggle").checked;
+        cookieobj.moonitem = document.getElementById("moonitemlogictoggle").checked;
+        cookieobj.deity = document.getElementById("deitylogictoggle").checked;
 
         //Area Settings
-        cookieobj.mapscompass = document.getElementsByName("mapslogic")[0].checked ? 1 : 0;
-        cookieobj.skey = document.getElementsByName("smallkeylogic")[0].checked ? 1 : 0;
-        cookieobj.bkey = document.getElementsByName("bigkeylogic")[0].checked ? 1 : 0;
-        cookieobj.bosses = document.getElementsByName("remainslogic")[0].checked ? 1 : 0;
-        cookieobj.containers = document.getElementsByName("containerlogic")[0].checked ? 1 : 0;
-        */
+        cookieobj.mapscompass = document.getElementById("mapslogictoggle").checked;
+        cookieobj.skey = document.getElementById("smallkeylogictoggle").checked;
+        cookieobj.bkey = document.getElementById("bigkeylogictoggle").checked;
+        cookieobj.bosses = document.getElementById("remainslogictoggle").checked;
+        cookieobj.containers = document.getElementById("containerlogictoggle").checked;
         //Tricks and Logic Settings
-        cookieobj.skipnotebook = document.getElementsByName("skipbombers")[0].checked ? 1 : 0;
+        cookieobj.skipnotebook = document.getElementById("skipbomberstoggle").checked;
     }   
 
     setCookie(cookieobj, name);
@@ -1787,7 +1768,7 @@ function gridQuestRClick(row, col, corner) {
 
 function updateMap() {
     for (k = 0; k < checks.length; k++) {
-        if(!checks[k].isOpened) {
+        if(checks[k].isOpened) {
             document.getElementById(k).className = "mapspan check " + checks[k].isAvailable();
         }
     }
@@ -2146,6 +2127,9 @@ function init() {
     saveCookie("items");
     saveCookie("checks");
     saveCookie("logic");
+    if (navigator.maxTouchPoints > 1) {
+        document.getElementsByName("mapposition") = "Below";
+    }
 }
 
 function preloader() {
