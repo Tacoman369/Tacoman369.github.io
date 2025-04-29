@@ -95,8 +95,8 @@
 				Size<input type="range" name="mapdivsize" value="100" max="200" min="1" onchange="setZoom('mapdiv', this)">
 				<span id="mapdivsize">100%</span><br>
 				Position:
-				<input type="radio" name="mapposition" value="Side" checked onclick="setOrder(false)">Side
-				<input type="radio" name="mapposition" value="Below" onclick="setOrder(true)">Below<br>
+				<input type="radio" id="mappositiontoggle" name="mapposition" value="Side" onclick="setOrder(false)">Side
+				<input type="radio" id="mappositiontoggle" name="mapposition" value="Below" onclick="setOrder(true)">Below<br>
 				<fieldset>
 					<legend>Item Settings</legend>
 					<input type="checkbox" id="transformmasklogictoggle" name="transformmasklogic" onclick="setTransLogic()">Shuffle Transformation Masks

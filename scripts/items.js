@@ -352,7 +352,7 @@ var dungeonMax = {
 
 
 var questMax = {
-    HeartPieces: 48,
+    HeartPieces: 52,
     HeartContainer: 4,
     NoteNumOne: 5,
     NoteNumTwo: 5,

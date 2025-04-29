@@ -111,7 +111,7 @@ function EnterStoneTower() {
 }
 
 function EnterIkanaCastle() {
-    return (EnterIkana() && (HasBottle() && masks.GibdoMask && CanUse(items.FireArrow)) || items.Shield > 2 || CanUse(items.LightArrow));
+    return (EnterIkana() && (HasBottle() && masks.GibdoMask && CanUse(items.FireArrow)) || items.Shield >= 2 || CanUse(items.LightArrow));
 }
 
 function EnterMoon() {
@@ -374,11 +374,11 @@ var areas = [
                 isLogic: function() { return true;},
             },
             'Bank 2': { 
-                isAvailable: function() { return items.Wallet >=1;}, 
+                isAvailable: function() { return items.Wallet >=2;}, 
                 isLogic: function() { return true;},
             },
             'Bank 3': { 
-                isAvailable: function() { return items.Wallet >=2;}, 
+                isAvailable: function() { return items.Wallet >=3;}, 
                 isLogic: function() { return true;},
             },
         },
@@ -1286,19 +1286,19 @@ var areas = [
                 isLogic: function() { return mapslogic;},
             },
             'Armos Room Chest': { 
-                isAvailable: function() { return EnterStoneTower() && HasExplosives() && (items.Shield > 2 || CanUse(items.LightArrow));}, 
+                isAvailable: function() { return EnterStoneTower() && HasExplosives() && (items.Shield >= 2 || CanUse(items.LightArrow));}, 
                 isLogic: function() { return smallkeylogic;},
             },
             'Bridge Switch Chest': { 
-                isAvailable: function() { return EnterStoneTower() && HasExplosives() && (items.Shield > 2 || CanUse(items.LightArrow)) && dungeons.StoneSmallKey >= 1;}, 
+                isAvailable: function() { return EnterStoneTower() && HasExplosives() && (items.Shield >= 2 || CanUse(items.LightArrow)) && dungeons.StoneSmallKey >= 1;}, 
                 isLogic: function() { return smallkeylogic;},
             },
             'Compass Chest': { 
-                isAvailable: function() { return EnterStoneTower() && HasExplosives() && (items.Shield > 2 || CanUse(items.LightArrow)) && dungeons.StoneSmallKey >= 1;}, 
+                isAvailable: function() { return EnterStoneTower() && HasExplosives() && (items.Shield >= 2 || CanUse(items.LightArrow)) && dungeons.StoneSmallKey >= 1;}, 
                 isLogic: function() { return mapslogic;},
             },
             'Light Arrow Chest': { 
-                isAvailable: function() { return EnterStoneTower() && HasExplosives() && (items.Shield > 2 || CanUse(items.LightArrow)) && dungeons.StoneSmallKey >= 2;}, 
+                isAvailable: function() { return EnterStoneTower() && HasExplosives() && (items.Shield >= 2 || CanUse(items.LightArrow)) && dungeons.StoneSmallKey >= 2;}, 
                 isLogic: function() { return true;},
             },
             'Inverted Updraft Chest': { 
@@ -1441,7 +1441,7 @@ var areas = [
                 isLogic: function() { return piecelogic;},
             },
             'Elegy of Emptiness': { 
-                isAvailable: function() { return EnterIkanaCastle() && masks.DekuMask && items.Shield > 2 && items.PowderKeg && masks.GoronMask;}, 
+                isAvailable: function() { return EnterIkanaCastle() && masks.DekuMask && items.Shield >= 2 && items.PowderKeg && masks.GoronMask;}, 
                 isLogic: function() { return true;},
             },
         },

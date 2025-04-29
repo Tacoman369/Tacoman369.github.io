@@ -2127,8 +2127,14 @@ function init() {
     saveCookie("items");
     saveCookie("checks");
     saveCookie("logic");
-    if (navigator.maxTouchPoints > 1) {
-        document.getElementsByName("mapposition") = "Below";
+    // Check if the user is accessing the page on a mobile device
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    if (isMobile) {
+        document.getElementById("mappositiontoggle").checked = true;
+    }
+    else {
+        document.getElementById("mappositiontoggle").checked = false;
     }
 }
 
