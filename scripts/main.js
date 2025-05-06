@@ -27,6 +27,9 @@ var containerlogic;
 var skipbombers;
 
 var mouseOverItem = false;
+var mouseOverMask = false;
+var mouseOverDungeon = false;
+var mouseOverQuest = false;
 var mouseLastOverR;
 var mouseLastOverC;
 var mouseLastOverCor;
@@ -862,13 +865,13 @@ function addItem(r) {
     tdt.appendChild(tdtr1);
     itemGrid[r][i][0] = document.createElement("th");
     itemGrid[r][i][0].className = "corner";
-    itemGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    itemGrid[r][i][0].onmouseover = new Function("setMOverItem(" + r + "," + i + ",0)");
     itemGrid[r][i][0].onmouseout = new Function("setMOff()");
     itemGrid[r][i][0].onclick = new Function("gridItemClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(itemGrid[r][i][0]);
     itemGrid[r][i][1] = document.createElement("th");
     itemGrid[r][i][1].className = "corner";
-    itemGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    itemGrid[r][i][1].onmouseover = new Function("setMOverItem(" + r + "," + i + ",1)");
     itemGrid[r][i][1].onmouseout = new Function("setMOff()");
     itemGrid[r][i][1].onclick = new Function("gridItemClick(" + r + "," + i + ",1)");
     tdtr1.appendChild(itemGrid[r][i][1]);
@@ -877,13 +880,13 @@ function addItem(r) {
     tdt.appendChild(tdtr2);
     itemGrid[r][i][2] = document.createElement("th");
     itemGrid[r][i][2].className = "corner";
-    itemGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    itemGrid[r][i][2].onmouseover = new Function("setMOverItem(" + r + "," + i + ",2)");
     itemGrid[r][i][2].onmouseout = new Function("setMOff()");
     itemGrid[r][i][2].onclick = new Function("gridItemClick(" + r + "," + i + ",2)");
     tdtr2.appendChild(itemGrid[r][i][2]);
     itemGrid[r][i][3] = document.createElement("th");
     itemGrid[r][i][3].className = "corner";
-    itemGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    itemGrid[r][i][3].onmouseover = new Function("setMOverItem(" + r + "," + i + ",3)");
     itemGrid[r][i][3].onmouseout = new Function("setMOff()");
     itemGrid[r][i][3].onclick = new Function("gridItemClick(" + r + "," + i + ",3)");
     tdtr1.appendChild(itemGrid[r][i][3]);
@@ -1000,13 +1003,13 @@ function addMask(r) {
     tdt.appendChild(tdtr1);
     maskGrid[r][i][0] = document.createElement("th");
     maskGrid[r][i][0].className = "corner";
-    maskGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    maskGrid[r][i][0].onmouseover = new Function("setMOverMask(" + r + "," + i + ",0)");
     maskGrid[r][i][0].onmouseout = new Function("setMOff()");
     maskGrid[r][i][0].onclick = new Function("gridMaskClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(maskGrid[r][i][0]);
     maskGrid[r][i][1] = document.createElement("th");
     maskGrid[r][i][1].className = "corner";
-    maskGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    maskGrid[r][i][1].onmouseover = new Function("setMOverMask(" + r + "," + i + ",1)");
     maskGrid[r][i][1].onmouseout = new Function("setMOff()");
     maskGrid[r][i][1].onclick = new Function("gridMaskClick(" + r + "," + i + ",1)");
     tdtr1.appendChild(maskGrid[r][i][1]);
@@ -1015,13 +1018,13 @@ function addMask(r) {
     tdt.appendChild(tdtr2);
     maskGrid[r][i][2] = document.createElement("th");
     maskGrid[r][i][2].className = "corner";
-    maskGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    maskGrid[r][i][2].onmouseover = new Function("setMOverMask(" + r + "," + i + ",2)");
     maskGrid[r][i][2].onmouseout = new Function("setMOff()");
     maskGrid[r][i][2].onclick = new Function("gridMaskClick(" + r + "," + i + ",2)");
     tdtr2.appendChild(maskGrid[r][i][2]);
     maskGrid[r][i][3] = document.createElement("th");
     maskGrid[r][i][3].className = "corner";
-    maskGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    maskGrid[r][i][3].onmouseover = new Function("setMOverMask(" + r + "," + i + ",3)");
     maskGrid[r][i][3].onmouseout = new Function("setMOff()");
     maskGrid[r][i][3].onclick = new Function("gridMaskClick(" + r + "," + i + ",3)");
     tdtr1.appendChild(maskGrid[r][i][3]);
@@ -1137,13 +1140,13 @@ function addDungeon(r) {
     tdt.appendChild(tdtr1);
     dungeonGrid[r][i][0] = document.createElement("th");
     dungeonGrid[r][i][0].className = "corner";
-    dungeonGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    dungeonGrid[r][i][0].onmouseover = new Function("setMOverDungeon(" + r + "," + i + ",0)");
     dungeonGrid[r][i][0].onmouseout = new Function("setMOff()");
     dungeonGrid[r][i][0].onclick = new Function("gridDungeonClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(dungeonGrid[r][i][0]);
     dungeonGrid[r][i][1] = document.createElement("th");
     dungeonGrid[r][i][1].className = "corner";
-    dungeonGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    dungeonGrid[r][i][1].onmouseover = new Function("setMOverDungeon(" + r + "," + i + ",1)");
     dungeonGrid[r][i][1].onmouseout = new Function("setMOff()");
     dungeonGrid[r][i][1].onclick = new Function("gridDungeonClick(" + r + "," + i + ",1)");
     tdtr1.appendChild(dungeonGrid[r][i][1]);
@@ -1152,13 +1155,13 @@ function addDungeon(r) {
     tdt.appendChild(tdtr2);
     dungeonGrid[r][i][2] = document.createElement("th");
     dungeonGrid[r][i][2].className = "corner";
-    dungeonGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    dungeonGrid[r][i][2].onmouseover = new Function("setMOverDungeon(" + r + "," + i + ",2)");
     dungeonGrid[r][i][2].onmouseout = new Function("setMOff()");
     dungeonGrid[r][i][2].onclick = new Function("gridDungeonClick(" + r + "," + i + ",2)");
     tdtr2.appendChild(dungeonGrid[r][i][2]);
     dungeonGrid[r][i][3] = document.createElement("th");
     dungeonGrid[r][i][3].className = "corner";
-    dungeonGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    dungeonGrid[r][i][3].onmouseover = new Function("setMOverDungeon(" + r + "," + i + ",3)");
     dungeonGrid[r][i][3].onmouseout = new Function("setMOff()");
     dungeonGrid[r][i][3].onclick = new Function("gridDungeonClick(" + r + "," + i + ",3)");
     tdtr1.appendChild(dungeonGrid[r][i][3]);
@@ -1274,13 +1277,13 @@ function addQuest(r) {
     tdt.appendChild(tdtr1);
     questGrid[r][i][0] = document.createElement("th");
     questGrid[r][i][0].className = "corner";
-    questGrid[r][i][0].onmouseover = new Function("setMOver(" + r + "," + i + ",0)");
+    questGrid[r][i][0].onmouseover = new Function("setMOverQuest(" + r + "," + i + ",0)");
     questGrid[r][i][0].onmouseout = new Function("setMOff()");
     questGrid[r][i][0].onclick = new Function("gridQuestClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(questGrid[r][i][0]);
     questGrid[r][i][1] = document.createElement("th");
     questGrid[r][i][1].className = "corner";
-    questGrid[r][i][1].onmouseover = new Function("setMOver(" + r + "," + i + ",1)");
+    questGrid[r][i][1].onmouseover = new Function("setMOverQuest(" + r + "," + i + ",1)");
     questGrid[r][i][1].onmouseout = new Function("setMOff()");
     questGrid[r][i][1].onclick = new Function("gridQuestClick(" + r + "," + i + ",1)");
     tdtr1.appendChild(questGrid[r][i][1]);
@@ -1289,13 +1292,13 @@ function addQuest(r) {
     tdt.appendChild(tdtr2);
     questGrid[r][i][2] = document.createElement("th");
     questGrid[r][i][2].className = "corner";
-    questGrid[r][i][2].onmouseover = new Function("setMOver(" + r + "," + i + ",2)");
+    questGrid[r][i][2].onmouseover = new Function("setMOverQuest(" + r + "," + i + ",2)");
     questGrid[r][i][2].onmouseout = new Function("setMOff()");
     questGrid[r][i][2].onclick = new Function("gridQuestClick(" + r + "," + i + ",2)");
     tdtr2.appendChild(questGrid[r][i][2]);
     questGrid[r][i][3] = document.createElement("th");
     questGrid[r][i][3].className = "corner";
-    questGrid[r][i][3].onmouseover = new Function("setMOver(" + r + "," + i + ",3)");
+    questGrid[r][i][3].onmouseover = new Function("setMOverQuest(" + r + "," + i + ",3)");
     questGrid[r][i][3].onmouseout = new Function("setMOff()");
     questGrid[r][i][3].onclick = new Function("gridQuestClick(" + r + "," + i + ",3)");
     tdtr1.appendChild(questGrid[r][i][3]);
@@ -1394,7 +1397,7 @@ function initGridRowQuest(questsets) {
     }
 }
 
-function setMOver(row, col, corner) {
+function setMOverItem(row, col, corner) {
     //keep track of what was moused over
     mouseLastOverCor = corner;
     mouseLastOverR = row;
@@ -1402,8 +1405,35 @@ function setMOver(row, col, corner) {
     mouseOverItem = true;
 }
 
+function setMOverMask(row, col, corner) {
+    //keep track of what was moused over
+    mouseLastOverCor = corner;
+    mouseLastOverR = row;
+    mouseLastOverC = col;
+    mouseOverMask = true;
+}
+
+function setMOverDungeon(row, col, corner) {
+    //keep track of what was moused over
+    mouseLastOverCor = corner;
+    mouseLastOverR = row;
+    mouseLastOverC = col;
+    mouseOverDungeon = true;
+}
+
+function setMOverQuest(row, col, corner) {
+    //keep track of what was moused over
+    mouseLastOverCor = corner;
+    mouseLastOverR = row;
+    mouseLastOverC = col;
+    mouseOverQuest = true;
+}
+
 function setMOff() {
     mouseOverItem = false;
+    mouseOverMask = false;
+    mouseOverDungeon = false;
+    mouseOverQuest = false;
 }
 
 function gridItemClick(row, col, corner) {
@@ -2128,14 +2158,18 @@ function init() {
     saveCookie("checks");
     saveCookie("logic");
     // Check if the user is accessing the page on a mobile device
-    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    if (isMobile) {
-        document.getElementById("mappositiontoggle").checked = true;
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
-    else {
-        document.getElementById("mappositiontoggle").checked = false;
-    }
+    //Set "Below" if user is on mobile
+    window.onload = function() {
+        if (isMobileDevice()){
+            const belowRadio = document.getElementById("mappositionbelow");
+            if (belowRadio) {
+                belowRadio.checked = true;
+            }
+        }
+    };
 }
 
 function preloader() {

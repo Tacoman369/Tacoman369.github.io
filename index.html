@@ -20,6 +20,30 @@
 							e.preventDefault();
 						}
 					}
+					if(mouseOverMask == true){
+						//Want context menu in edit mode.
+						if(!editmode) {
+							//call method that handles right click
+							gridMaskRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							e.preventDefault();
+						}
+					}
+					if(mouseOverDungeon == true){
+						//Want context menu in edit mode.
+						if(!editmode) {
+							//call method that handles right click
+							gridDungeonRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							e.preventDefault();
+						}
+					}
+					if(mouseOverQuest == true){
+						//Want context menu in edit mode.
+						if(!editmode) {
+							//call method that handles right click
+							gridQuestRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							e.preventDefault();
+						}
+					}
 				}, false);
 			} 
 			else {
@@ -27,6 +51,24 @@
 					if(mouseOverItem == true){
 						if(!editmode) {
 							gridItemRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							window.event.returnValue = false;
+						}
+					}
+					if(mouseOverMask == true){
+						if(!editmode) {
+							gridMaskRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							window.event.returnValue = false;
+						}
+					}
+					if(mouseOverDungeon == true){
+						if(!editmode) {
+							gridDungeonRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
+							window.event.returnValue = false;
+						}
+					}
+					if(mouseOverQuest == true){
+						if(!editmode) {
+							gridQuestRClick(mouseLastOverR, mouseLastOverC, mouseLastOverCor);
 							window.event.returnValue = false;
 						}
 					}
@@ -95,8 +137,8 @@
 				Size<input type="range" name="mapdivsize" value="100" max="200" min="1" onchange="setZoom('mapdiv', this)">
 				<span id="mapdivsize">100%</span><br>
 				Position:
-				<input type="radio" id="mappositiontoggle" name="mapposition" value="Side" onclick="setOrder(false)">Side
-				<input type="radio" id="mappositiontoggle" name="mapposition" value="Below" onclick="setOrder(true)">Below<br>
+				<input type="radio" id="mappositionside" name="mapposition" value="Side" onclick="setOrder(false)">Side
+				<input type="radio" id="mappositionbelow" name="mapposition" value="Below" onclick="setOrder(true)">Below<br>
 				<fieldset>
 					<legend>Item Settings</legend>
 					<input type="checkbox" id="transformmasklogictoggle" name="transformmasklogic" onclick="setTransLogic()">Shuffle Transformation Masks
