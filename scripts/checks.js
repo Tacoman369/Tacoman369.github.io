@@ -325,7 +325,7 @@ var areas = [
                 isLogic: function() { return piecelogic;},
             },
             'All Night Mask': { 
-                isAvailable: function() { return items.Wallet >= 2;}, 
+                isAvailable: function() { return items.Wallet >= 3;}, 
                 isLogic: function() { return maskslogic;},
             },
             'Bomb Bag': { 
@@ -494,7 +494,7 @@ var areas = [
                 isLogic: function() { return true;},
             },
             'Business Scrub': { 
-                isAvailable: function() { return items.Wallet >=1 && masks.DekuMask || (quests.BombersNotebook && HasRangeAttack());}, 
+                isAvailable: function() { return items.Wallet >=2 && masks.DekuMask || (quests.BombersNotebook && HasRangeAttack());}, 
                 isLogic: function() { return scrubtradelogic;},
             },
             'Colored Gossip Stones': { 
@@ -678,11 +678,11 @@ var areas = [
                 isLogic: function() { return transformmasklogic;},
             },
             'Smith Day 1': { 
-                isAvailable: function() { return HasExplosives() && items.Wallet >=1 && items.Sword >= 1 && (CanUse(items.FireArrow) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth))) ;}, 
+                isAvailable: function() { return HasExplosives() && items.Wallet >=2 && items.Sword >= 1 && (CanUse(items.FireArrow) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth))) ;}, 
                 isLogic: function() { return true;},
             },
             'Smith Day 2': { 
-                isAvailable: function() { return HasExplosives() && items.GoldDust && items.Wallet >=1 && items.Sword >= 1 && ((CanUse(items.FireArrow)) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth)));}, 
+                isAvailable: function() { return HasExplosives() && items.GoldDust && items.Wallet >=2 && items.Sword >= 1 && ((CanUse(items.FireArrow)) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth)));}, 
                 isLogic: function() { return true;},
             },
             'Spring Water Grotto Chest': { 
@@ -752,7 +752,7 @@ var areas = [
                 isLogic: function() { return true;},
             },
             'Scrub Purchase': { 
-                isAvailable: function() { return HasExplosives() && items.Wallet >= 1 && masks.GoronMask && items.Bomb >= 2;}, 
+                isAvailable: function() { return HasExplosives() && items.Wallet >= 2 && masks.GoronMask && items.Bomb >= 2;}, 
                 isLogic: function() { return true;},
             },
             'Scrub Trade': { 
@@ -805,7 +805,7 @@ var areas = [
                 isLogic: function() { return true;},
             },
             'Mystery Milk': { 
-                isAvailable: function() { return HasBottle();}, 
+                isAvailable: function() { return items.MysteryMilk && masks.TroupeLeaderMask;}, 
                 isLogic: function() { return true;},
             },
         },
@@ -1068,7 +1068,7 @@ var areas = [
                 isLogic: function() { return scrubtradelogic;},
             },
             'Scrub Purchase': { 
-                isAvailable: function() { return EnterIkana() && HasBottle() && items.Wallet >= 1;}, 
+                isAvailable: function() { return EnterIkana() && HasBottle() && items.Wallet >= 2;}, 
                 isLogic: function() { return true;},
             },
             'Tingle Stone Tower Map': { 
