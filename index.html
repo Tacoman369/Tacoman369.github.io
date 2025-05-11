@@ -4,6 +4,10 @@
 		<title>Majora's Mask 3D Map and Item Tracker</title>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="style.css" type="text/css">
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
 	</head>
 	<body>
 		<script src="scripts/checks.js"></script>
@@ -124,9 +128,10 @@
 			<legend>Options</legend>
 			<fieldset>
 				<legend>Item Tracker</legend>
-				<button type="button" onclick="EditMode()">EditMode</button>
+				<!--<button type="button" onclick="EditMode()">EditMode</button> -->
 				<button type="button" onclick="ResetLayout()">Reset Layout</button>
 				<button type="button" onclick="ResetTracker()">Reset Tracker</button>
+				<button type="button" onclick="ResetLogic()">Reset Logic</button>
 				<br>
 				Size<input type="range" name="itemtablesize" value="100" max="200" min="1" onchange="setZoom('itemtable', this)">
 				<span id="itemtablesize">100%</span><br>
@@ -182,7 +187,7 @@
 		</script>
 
 		<footer style="bottom: 0; width: 100%; text-align: center; position: relative; color: gray;">
-			Majora's Mask 3D Randomizer Item and Map Tracker v0.1
+			Majora's Mask 3D Randomizer Item and Map Tracker v0.2
 		</footer>
 	</body>
 </html>
