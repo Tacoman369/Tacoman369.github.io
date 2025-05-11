@@ -50,21 +50,22 @@ var areaSelect = 0;
 
 function setCookie(obj, name) {
     var d = new Date();
+    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
     var expires = "expires=" + d.toUTCString();
     var val = JSON.stringify(obj);
-    d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
     document.cookie = name + "=" +  val + ";" + "SameSite=None;" + "Secure;" + expires + ";path=/";
 }
 
 function getCookie(name) {
+    var cname = name + "=";
     var ca = document.cookie.split(";");
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == " ") {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
-            return JSON.parse(c.substring(name.length, c.length));
+        if (c.indexOf(cname) == 0) {
+            return JSON.parse(c.substring(cname.length, c.length));
         }
     }
     return {};
@@ -168,8 +169,9 @@ function loadCookie(name) {
             }
         });
 
-        deserializeChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
+        deserializeChecks(JSON.parse(JSON.stringify(cookieobj.checks)));
         deserializeAreaChecks(JSON.parse(JSON.stringify(cookieobj.areaChecks)));
+        updateMap();
     }
     else if (name == "logic") {
         Object.keys(logicCookieDefault).forEach(function(key) {
@@ -180,7 +182,7 @@ function loadCookie(name) {
 
         //Item Settings
         
-        document.getElementById("transformmasklogictoggle").checked = cookieobj.tmask ? true : false;
+        document.getElementById("transformmasklogictoggle").checked = cookieobj.tmask ? 1 : 0;
         document.getElementById("maskslogictoggle").checked = cookieobj.mask ? 1 : 0;
         document.getElementById("piecelogictoggle").checked = cookieobj.piece ? 1 : 0;
         document.getElementById("skullslogictoggle").checked = cookieobj.skulls ? 1 : 0;
@@ -201,6 +203,7 @@ function loadCookie(name) {
         
         //Tricks and Logic Settings
         document.getElementById("skipbomberstoggle").checked = cookieobj.skipnotebook ? 1 : 0;
+        updateMap();
     }  
 
     cookielock = false;
@@ -259,6 +262,27 @@ function saveCookie(name) {
         cookieobj.containers = document.getElementById("containerlogictoggle").checked;
         //Tricks and Logic Settings
         cookieobj.skipnotebook = document.getElementById("skipbomberstoggle").checked;
+
+        //Set logic values according to cookie values (or not)
+        if(cookieobj.tmask) {setTransLogic();}
+        if(cookieobj.mask)  {setMaskLogic();}
+        if(cookieobj.piece) {setPieceLogic();}
+        if(cookieobj.skulls) {setSkullsLogic();}
+        if(cookieobj.scrubtrade) {setScrubTradeLogic();}
+        if(cookieobj.anju) {setAnjuLogic();}
+        if(cookieobj.gfairy) {setGFLogic();}
+        if(cookieobj.tingle) {setTingleLogic();}
+        if(cookieobj.notebook) {setNotebookLogic();}
+        if(cookieobj.moonitem) {setMoonItemLogic();}
+        if(cookieobj.deity) {setFDLogic();}
+
+        if(cookieobj.mapscompass) {setMapsLogic();}
+        if(cookieobj.skey) {setSmallKeyLogic();}
+        if(cookieobj.bkey) {setBigKeyLogic();}
+        if(cookieobj.bosses) {setRemainsLogic();}
+        if(cookieobj.containers) {setContainerLogic();}
+
+        if(cookieobj.skipnotebook) {setSkipBombers();}
     }   
 
     setCookie(cookieobj, name);
@@ -285,7 +309,7 @@ function deserializeAreaChecks(serializedAreas) {
         var area = areas[i];
         var serializedArea = serializedAreas[i];
         var checkNames = Object.keys(area.checklist);
-        for (var j = 0; j > checkNames.length; j++) {
+        for (var j = 0; j < checkNames.length; j++) {
             area.checklist[checkNames[j]].isOpened = serializedArea[j];
         }
     }
@@ -642,6 +666,12 @@ function ResetLayout() {
     updateGridDungeonAll();
     initGridRowQuest(defaultQuestGrid);
     updateGridQuestAll();
+    document.getElementsByName("showmap")[0].checked = true;
+    document.getElementsByName("showmap")[0].onchange();
+    document.getElementsByName("itemtablesize")[0].value = 100;
+    document.getElementsByName("itemtablesize")[0].onchange();
+    document.getElementsByName("mapdivsize")[0].value = 100;
+    document.getElementsByName("mapdivsize")[0].onchange();
 }
 
 function ResetTracker() {
@@ -660,6 +690,56 @@ function ResetTracker() {
     saveCookie("items");
     saveCookie("checks");
     saveCookie("logic");
+}
+
+function ResetLogic() {
+    //Set all checkboxes to false
+
+    //Item Settings
+    document.getElementById("transformmasklogictoggle").checked = false;
+    document.getElementById("maskslogictoggle").checked = false;
+    document.getElementById("piecelogictoggle").checked = false;
+    document.getElementById("skullslogictoggle").checked = false;
+    document.getElementById("scrubtradelogictoggle").checked = false;
+    document.getElementById("anjulogictoggle").checked = false;
+    document.getElementById("greatfairylogictoggle").checked = false;
+    document.getElementById("tinglelogictoggle").checked = false;
+    document.getElementById("notebooklogictoggle").checked = false;
+    document.getElementById("moonitemlogictoggle").checked = false;
+    document.getElementById("deitylogictoggle").checked = false;
+    
+    //Area Settings
+    document.getElementById("mapslogictoggle").checked = false;
+    document.getElementById("smallkeylogictoggle").checked = false;
+    document.getElementById("bigkeylogictoggle").checked = false;
+    document.getElementById("remainslogictoggle").checked = false;
+    document.getElementById("containerlogictoggle").checked = false;
+    
+    //Tricks and Logic Settings
+    document.getElementById("skipbomberstoggle").checked = false;
+
+    //set logic flags to false
+    setTransLogic();
+    setMaskLogic();
+    setPieceLogic();
+    setSkullsLogic();
+    setScrubTradeLogic();
+    setAnjuLogic();
+    setGFLogic();
+    setTingleLogic();
+    setNotebookLogic();
+    setMoonItemLogic();
+    setFDLogic();
+
+    setMapsLogic();
+    setSmallKeyLogic();
+    setBigKeyLogic();
+    setRemainsLogic();
+    setContainerLogic();
+
+    setSkipBombers();
+    //update map to reflect changes
+    updateMap();   
 }
 
 function addItemRow() {
@@ -869,27 +949,6 @@ function addItem(r) {
     itemGrid[r][i][0].onmouseout = new Function("setMOff()");
     itemGrid[r][i][0].onclick = new Function("gridItemClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(itemGrid[r][i][0]);
-    itemGrid[r][i][1] = document.createElement("th");
-    itemGrid[r][i][1].className = "corner";
-    itemGrid[r][i][1].onmouseover = new Function("setMOverItem(" + r + "," + i + ",1)");
-    itemGrid[r][i][1].onmouseout = new Function("setMOff()");
-    itemGrid[r][i][1].onclick = new Function("gridItemClick(" + r + "," + i + ",1)");
-    tdtr1.appendChild(itemGrid[r][i][1]);
-
-    var tdtr2 = document.createElement("tr");
-    tdt.appendChild(tdtr2);
-    itemGrid[r][i][2] = document.createElement("th");
-    itemGrid[r][i][2].className = "corner";
-    itemGrid[r][i][2].onmouseover = new Function("setMOverItem(" + r + "," + i + ",2)");
-    itemGrid[r][i][2].onmouseout = new Function("setMOff()");
-    itemGrid[r][i][2].onclick = new Function("gridItemClick(" + r + "," + i + ",2)");
-    tdtr2.appendChild(itemGrid[r][i][2]);
-    itemGrid[r][i][3] = document.createElement("th");
-    itemGrid[r][i][3].className = "corner";
-    itemGrid[r][i][3].onmouseover = new Function("setMOverItem(" + r + "," + i + ",3)");
-    itemGrid[r][i][3].onmouseout = new Function("setMOff()");
-    itemGrid[r][i][3].onclick = new Function("gridItemClick(" + r + "," + i + ",3)");
-    tdtr1.appendChild(itemGrid[r][i][3]);
 
     updateGridItem(r, i);
     saveCookie("items");
@@ -940,7 +999,7 @@ function updateGridItem(row, index) {
     itemGrid[row][index].item.className = "griditem " + !!items[item];
 
     if (remains[item] != undefined) {
-        itemGrid[row][index][3].style.backgroundImage = "";
+        itemGrid[row][index][0].style.backgroundImage = "";
     }
 }
 
@@ -1007,27 +1066,6 @@ function addMask(r) {
     maskGrid[r][i][0].onmouseout = new Function("setMOff()");
     maskGrid[r][i][0].onclick = new Function("gridMaskClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(maskGrid[r][i][0]);
-    maskGrid[r][i][1] = document.createElement("th");
-    maskGrid[r][i][1].className = "corner";
-    maskGrid[r][i][1].onmouseover = new Function("setMOverMask(" + r + "," + i + ",1)");
-    maskGrid[r][i][1].onmouseout = new Function("setMOff()");
-    maskGrid[r][i][1].onclick = new Function("gridMaskClick(" + r + "," + i + ",1)");
-    tdtr1.appendChild(maskGrid[r][i][1]);
-
-    var tdtr2 = document.createElement("tr");
-    tdt.appendChild(tdtr2);
-    maskGrid[r][i][2] = document.createElement("th");
-    maskGrid[r][i][2].className = "corner";
-    maskGrid[r][i][2].onmouseover = new Function("setMOverMask(" + r + "," + i + ",2)");
-    maskGrid[r][i][2].onmouseout = new Function("setMOff()");
-    maskGrid[r][i][2].onclick = new Function("gridMaskClick(" + r + "," + i + ",2)");
-    tdtr2.appendChild(maskGrid[r][i][2]);
-    maskGrid[r][i][3] = document.createElement("th");
-    maskGrid[r][i][3].className = "corner";
-    maskGrid[r][i][3].onmouseover = new Function("setMOverMask(" + r + "," + i + ",3)");
-    maskGrid[r][i][3].onmouseout = new Function("setMOff()");
-    maskGrid[r][i][3].onclick = new Function("gridMaskClick(" + r + "," + i + ",3)");
-    tdtr1.appendChild(maskGrid[r][i][3]);
 
     updateGridMask(r, i);
     saveCookie("items");
@@ -1078,7 +1116,7 @@ function updateGridMask(row, index) {
     maskGrid[row][index].mask.className = "gridmask " + !!masks[mask];
 
     if (remains[mask] != undefined) {
-        maskGrid[row][index][3].style.backgroundImage = "";
+        maskGrid[row][index][0].style.backgroundImage = "";
     }
 }
 
@@ -1144,28 +1182,7 @@ function addDungeon(r) {
     dungeonGrid[r][i][0].onmouseout = new Function("setMOff()");
     dungeonGrid[r][i][0].onclick = new Function("gridDungeonClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(dungeonGrid[r][i][0]);
-    dungeonGrid[r][i][1] = document.createElement("th");
-    dungeonGrid[r][i][1].className = "corner";
-    dungeonGrid[r][i][1].onmouseover = new Function("setMOverDungeon(" + r + "," + i + ",1)");
-    dungeonGrid[r][i][1].onmouseout = new Function("setMOff()");
-    dungeonGrid[r][i][1].onclick = new Function("gridDungeonClick(" + r + "," + i + ",1)");
-    tdtr1.appendChild(dungeonGrid[r][i][1]);
-
-    var tdtr2 = document.createElement("tr");
-    tdt.appendChild(tdtr2);
-    dungeonGrid[r][i][2] = document.createElement("th");
-    dungeonGrid[r][i][2].className = "corner";
-    dungeonGrid[r][i][2].onmouseover = new Function("setMOverDungeon(" + r + "," + i + ",2)");
-    dungeonGrid[r][i][2].onmouseout = new Function("setMOff()");
-    dungeonGrid[r][i][2].onclick = new Function("gridDungeonClick(" + r + "," + i + ",2)");
-    tdtr2.appendChild(dungeonGrid[r][i][2]);
-    dungeonGrid[r][i][3] = document.createElement("th");
-    dungeonGrid[r][i][3].className = "corner";
-    dungeonGrid[r][i][3].onmouseover = new Function("setMOverDungeon(" + r + "," + i + ",3)");
-    dungeonGrid[r][i][3].onmouseout = new Function("setMOff()");
-    dungeonGrid[r][i][3].onclick = new Function("gridDungeonClick(" + r + "," + i + ",3)");
-    tdtr1.appendChild(dungeonGrid[r][i][3]);
-
+    
     updateGridDungeon(r, i);
     saveCookie("items");
 }
@@ -1195,10 +1212,16 @@ function updateGridDungeon(row, index) {
         }
         dungeonGrid[row][index].dungeon.style.border = "1px solid white";
         dungeonGrid[row][index].dungeon.className = "griddungeon true";
+        
         return;
     }
 
     dungeonGrid[row][index].dungeon.style.border = "0px";
+    //ToDo:Fix tooltips
+    //var ss = document.createElement("span");
+    //ss.className = "tooltip";
+    //ss.innerHTML = dungeon;
+    //dungeonGrid[row][index].dungeon.appendChild(ss);
 
     if (!dungeon || dungeon == "blank") {
         dungeonGrid[row][index].dungeon.style.backgroundImage = "";
@@ -1215,7 +1238,7 @@ function updateGridDungeon(row, index) {
     dungeonGrid[row][index].dungeon.className = "griddungeon " + !!dungeons[dungeon];
 
     if (remains[dungeon] != undefined) {
-        dungeonGrid[row][index][3].style.backgroundImage = "";
+        dungeonGrid[row][index][0].style.backgroundImage = "";
     }
 }
 
@@ -1281,27 +1304,6 @@ function addQuest(r) {
     questGrid[r][i][0].onmouseout = new Function("setMOff()");
     questGrid[r][i][0].onclick = new Function("gridQuestClick(" + r + "," + i + ",0)");
     tdtr1.appendChild(questGrid[r][i][0]);
-    questGrid[r][i][1] = document.createElement("th");
-    questGrid[r][i][1].className = "corner";
-    questGrid[r][i][1].onmouseover = new Function("setMOverQuest(" + r + "," + i + ",1)");
-    questGrid[r][i][1].onmouseout = new Function("setMOff()");
-    questGrid[r][i][1].onclick = new Function("gridQuestClick(" + r + "," + i + ",1)");
-    tdtr1.appendChild(questGrid[r][i][1]);
-
-    var tdtr2 = document.createElement("tr");
-    tdt.appendChild(tdtr2);
-    questGrid[r][i][2] = document.createElement("th");
-    questGrid[r][i][2].className = "corner";
-    questGrid[r][i][2].onmouseover = new Function("setMOverQuest(" + r + "," + i + ",2)");
-    questGrid[r][i][2].onmouseout = new Function("setMOff()");
-    questGrid[r][i][2].onclick = new Function("gridQuestClick(" + r + "," + i + ",2)");
-    tdtr2.appendChild(questGrid[r][i][2]);
-    questGrid[r][i][3] = document.createElement("th");
-    questGrid[r][i][3].className = "corner";
-    questGrid[r][i][3].onmouseover = new Function("setMOverQuest(" + r + "," + i + ",3)");
-    questGrid[r][i][3].onmouseout = new Function("setMOff()");
-    questGrid[r][i][3].onclick = new Function("gridQuestClick(" + r + "," + i + ",3)");
-    tdtr1.appendChild(questGrid[r][i][3]);
 
     updateGridQuest(r, i);
     saveCookie("items");
@@ -1352,7 +1354,7 @@ function updateGridQuest(row, index) {
     questGrid[row][index].quest.className = "gridquest " + !!quests[quest];
 
     if (remains[quest] != undefined) {
-        questGrid[row][index][3].style.backgroundImage = "";
+        questGrid[row][index][0].style.backgroundImage = "";
     }
 }
 
