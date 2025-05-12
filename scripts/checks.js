@@ -207,7 +207,7 @@ var areas = [
     },
     {
         name: "East Clock Town",
-        x: "47%",
+        x: "53%",
         y: "50%",
         checklist: {
             'Chest': {
@@ -264,7 +264,7 @@ var areas = [
     },
     {
         name: "StockPotInn",
-        x: "47%",
+        x: "53%",
         y: "45%",
         checklist: {
             'Reservation': { 
@@ -309,7 +309,7 @@ var areas = [
     },
     {
         name: "West Clock Town",
-        x: "53%",
+        x: "47%",
         y: "50%",
         checklist: {
             'Rosa Sisters': { 
@@ -968,6 +968,10 @@ var areas = [
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Hookshot && items.Magic >= 1;}, 
                 isLogic: function() { return piecelogic;},
             },
+            'Grotto Chest': {
+                isAvailable: function() { return canPlay(quests.EponasSong) && items.Hookshot && items.Magic >= 1 && (HasExplosives() || items.GoronMask);},
+                isLogic: function() { return true;},
+            },
         },
         isBeatable: function() {
             return this.canGetCheck();
@@ -1078,6 +1082,14 @@ var areas = [
             'Tingle Clock Town Map': { 
                 isAvailable: function() { return EnterIkana() && HasRangeAttack();}, 
                 isLogic: function() { return tinglelogic;},
+            },
+            'Pamelas Father': {
+                isAvailable: function() { return EnterIkana() && quests.SongOfStorms && quests.SongOfHealing;},
+                isLogic: function() { return maskslogic;},
+            },
+            'Poe Hut HP': {
+                isAvailable: function() { return EnterIkana() && Fighting() && items.Bow >= 1;},
+                isLogic: function() { return piecelogic;},
             },
         },
         isBeatable: function() {
@@ -1382,20 +1394,24 @@ var areas = [
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && (HasRangeAttack() || masks.StoneMask);}, 
                 isLogic: function() { return true;},
             },
+            'Tank Chest': {
+                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && (HasRangeAttack() || masks.StoneMask);},
+                isLogic: function() { return true;},
+            },
             'Barrel Maze Zora Egg': { 
-                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot;}, 
+                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot && HasBottle();}, 
                 isLogic: function() { return true;},
             },
             'Lava Room Zora Egg': { 
-                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot;}, 
+                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot && HasBottle();}, 
                 isLogic: function() { return true;},
             },
             'Guard Room Zora Egg': { 
-                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot;}, 
+                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot && HasBottle();}, 
                 isLogic: function() { return true;},
             },
             'Hookshot Room Zora Egg': { 
-                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot;}, 
+                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot && HasBottle();}, 
                 isLogic: function() { return true;},
             },
         },
@@ -1778,7 +1794,7 @@ var areas = [
 var checks = [
     {
         name: 'Bombers Hideout Chest',
-        x: "53%",
+        x: "47%",
         y: "45%",
         isAvailable: function() {
             if (items.Bomb >=1 && quests.BombersNotebook){
