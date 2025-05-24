@@ -1272,7 +1272,7 @@ var areas = [
                 isAvailable: function() { return EnterGreatBayTemple() && CanUse(items.FireArrow) && dungeons.OceanSmallKey >= 1;},
                 isLogic: function() { return true;},
             },
-            'Goht Remains': { 
+            'Gyorg Remains': { 
                 isAvailable: function() { return EnterGreatBayTemple() && CanUse(items.FireArrow) && CanUse(items.IceArrow) && dungeons.OceanSmallKey >= 1 && dungeons.OceanBigKey;}, 
                 isLogic: function() { return remainslogic;},
             },

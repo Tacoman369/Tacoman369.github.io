@@ -2169,6 +2169,7 @@ function init() {
             const belowRadio = document.getElementById("mappositionbelow");
             if (belowRadio) {
                 belowRadio.checked = true;
+                setOrder(true);
             }
         }
     };
