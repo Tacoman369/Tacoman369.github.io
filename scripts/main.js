@@ -7,6 +7,7 @@ var defaultRemains = {
 };
 var Remains = defaultRemains;
 //logic vars
+var ocarinalogic;
 var transformmasklogic;
 var maskslogic;
 var piecelogic;
@@ -96,6 +97,7 @@ var checksCookieDefault = {
 };
 
 var logicCookieDefault = {
+    ocashuffle: false,
     tmask: false,
     mask: false,
     piece: false,
@@ -181,7 +183,7 @@ function loadCookie(name) {
         });
 
         //Item Settings
-        
+        document.getElementById("ocarinalogictoggle").checked = cookieobj.ocashuffle ? 1 : 0;
         document.getElementById("transformmasklogictoggle").checked = cookieobj.tmask ? 1 : 0;
         document.getElementById("maskslogictoggle").checked = cookieobj.mask ? 1 : 0;
         document.getElementById("piecelogictoggle").checked = cookieobj.piece ? 1 : 0;
@@ -242,6 +244,7 @@ function saveCookie(name) {
     }
     else if (name == "logic") {
         //Item Settings
+        cookieobj.ocashuffle = document.getElementById("ocarinalogictoggle").checked;
         cookieobj.tmask = document.getElementById("transformmasklogictoggle").checked;
         cookieobj.mask = document.getElementById("maskslogictoggle").checked;
         cookieobj.piece = document.getElementById("piecelogictoggle").checked;
@@ -264,6 +267,7 @@ function saveCookie(name) {
         cookieobj.skipnotebook = document.getElementById("skipbomberstoggle").checked;
 
         //Set logic values according to cookie values (or not)
+        if(cookieobj.ocashuffle) {setOcarinaLogic();}
         if(cookieobj.tmask) {setTransLogic();}
         if(cookieobj.mask)  {setMaskLogic();}
         if(cookieobj.piece) {setPieceLogic();}
@@ -416,6 +420,15 @@ function setOrder(H) {
         document.getElementById("layoutdiv").classList.add("flexcontainer");
     }
     saveCookie("settings");
+}
+
+function setOcarinaLogic() {
+    if (document.getElementById("ocarinalogictoggle").checked) {
+        ocarinalogic = true;
+    }
+    else { ocarinalogic = false;}
+    updateMap();
+    saveCookie("logic");
 }
 
 function setTransLogic() {
@@ -696,6 +709,7 @@ function ResetLogic() {
     //Set all checkboxes to false
 
     //Item Settings
+    document.getElementById("ocarinalogictoggle").checked = false;
     document.getElementById("transformmasklogictoggle").checked = false;
     document.getElementById("maskslogictoggle").checked = false;
     document.getElementById("piecelogictoggle").checked = false;
@@ -719,6 +733,7 @@ function ResetLogic() {
     document.getElementById("skipbomberstoggle").checked = false;
 
     //set logic flags to false
+    setOcarinaLogic();
     setTransLogic();
     setMaskLogic();
     setPieceLogic();
