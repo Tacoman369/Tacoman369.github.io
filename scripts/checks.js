@@ -394,6 +394,10 @@ var areas = [
         x: "50%",
         y: "50%",
         checklist: {
+            'Ocarina of Time': {
+                isAvailable: function() { return HasRangeAttack();},
+                isLogic: function() { return ocarinalogic;},
+            },
             'Song of Healing': { 
                 isAvailable: function() { return true;}, 
                 isLogic: function() { return true;},
@@ -678,11 +682,11 @@ var areas = [
                 isLogic: function() { return transformmasklogic;},
             },
             'Smith Day 1': { 
-                isAvailable: function() { return HasExplosives() && items.Wallet >=2 && items.Sword >= 1 && (CanUse(items.FireArrow) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth))) ;}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && items.Wallet >=2 && items.Sword >= 1 && (CanUse(items.FireArrow) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth))) ;}, 
                 isLogic: function() { return true;},
             },
             'Smith Day 2': { 
-                isAvailable: function() { return HasExplosives() && items.GoldDust && items.Wallet >=2 && items.Sword >= 1 && ((CanUse(items.FireArrow)) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth)));}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && items.GoldDust && items.Wallet >=2 && items.Sword >= 1 && ((CanUse(items.FireArrow)) || SnowheadClear() || (HasBottle() && CanUse(items.LensOfTruth)));}, 
                 isLogic: function() { return true;},
             },
             'Spring Water Grotto Chest': { 
@@ -711,7 +715,7 @@ var areas = [
                 isLogic: function() { return true;},
             },
             'Lullaby Intro': { 
-                isAvailable: function() { return HasExplosives() && masks.GoronMask && (HasBottle() || CanUse(items.FireArrow));}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && masks.GoronMask && (HasBottle() || CanUse(items.FireArrow));}, 
                 isLogic: function() { return true;},
             },
             'Tingle Snowhead Map': { 
@@ -727,11 +731,11 @@ var areas = [
                 isLogic: function() { return true;},
             },
             'Racetrack Grotto Chest': { 
-                isAvailable: function() { return HasExplosives() && masks.MaskOfTruth && ((items.Hookshot && canPlay(quests.ScarecrowSong) || GoronMask));}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && masks.MaskOfTruth && ((items.Hookshot && canPlay(quests.ScarecrowSong) || GoronMask));}, 
                 isLogic: function() { return true;},
             },
             'Hot Spring Water Grotto Chest': { 
-                isAvailable: function() { return HasExplosives() && ((HasBottle() && CanUse(items.LensOfTruth)) || CanUse(items.FireArrow) || SnowheadClear());}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && ((HasBottle() && CanUse(items.LensOfTruth)) || CanUse(items.FireArrow) || SnowheadClear());}, 
                 isLogic: function() { return true;},
             },
         },
@@ -748,35 +752,35 @@ var areas = [
         y: "25%",
         checklist: {
             'Powder Keg Challenge': { 
-                isAvailable: function() { return HasExplosives() && masks.GoronMask && (SnowheadClear() || CanUse(items.FireArrow));}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && masks.GoronMask && (SnowheadClear() || CanUse(items.FireArrow));}, 
                 isLogic: function() { return true;},
             },
             'Scrub Purchase': { 
-                isAvailable: function() { return HasExplosives() && items.Wallet >= 2 && masks.GoronMask && items.Bomb >= 2;}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && items.Wallet >= 2 && masks.GoronMask && items.Bomb >= 2;}, 
                 isLogic: function() { return true;},
             },
             'Scrub Trade': { 
-                isAvailable: function() { return HasExplosives() && masks.DekuMask && quests.SwampDeed;}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && masks.DekuMask && quests.SwampDeed;}, 
                 isLogic: function() { return scrubtradelogic;},
             },
             'Ledge HP': { 
-                isAvailable: function() { return HasExplosives() && masks.DekuMask && quests.SwampDeed;}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && masks.DekuMask && quests.SwampDeed;}, 
                 isLogic: function() { return piecelogic;},
             },
             'Lens Cave Chest': { 
-                isAvailable: function() { return HasExplosives() && CanUse(items.LensOfTruth);}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && CanUse(items.LensOfTruth);}, 
                 isLogic: function() { return true;},
             },
             'Lens Cave Rock Chest': { 
-                isAvailable: function() { return HasExplosives();}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives();}, 
                 isLogic: function() { return true;},
             },
             'Lens Cave Lens Chest': { 
-                isAvailable: function() { return HasExplosives();}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives();}, 
                 isLogic: function() { return true;},
             },
             'Goron Lullaby': { 
-                isAvailable: function() { return HasExplosives() && masks.GoronMask && ((HasBottle() && CanUse(items.LensOfTruth)) || CanUse(items.FireArrow));}, 
+                isAvailable: function() { return items.Bow >=1 && HasExplosives() && masks.GoronMask && ((HasBottle() && CanUse(items.LensOfTruth)) || CanUse(items.FireArrow));}, 
                 isLogic: function() { return true;},
             },
         },
@@ -1836,7 +1840,7 @@ var checks = [
         x: "46%",
         y: "25%",
         isAvailable: function() {
-            if (HasExplosives() && masks.GoronMask && masks.MaskOfTruth && items.Magic >= 1) {
+            if (items.Bow >=1 && HasExplosives() && masks.GoronMask && masks.MaskOfTruth && items.Magic >= 1) {
                 return "available";
             }
             return "unavailable";
@@ -1848,7 +1852,7 @@ var checks = [
         x: "47%",
         y: "28%",
         isAvailable: function() {
-            if (piecelogic && HasExplosives() && masks.GoronMask && CanUse(items.LensOfTruth) && items.Hookshot && canPlay(quests.ScarecrowSong)) {
+            if (piecelogic && items.Bow >=1 && HasExplosives() && masks.GoronMask && CanUse(items.LensOfTruth) && items.Hookshot && canPlay(quests.ScarecrowSong)) {
                 return "available";
             }
             return "unavailable";
