@@ -24,6 +24,8 @@ var smallkeylogic;
 var bigkeylogic;
 var remainslogic;
 var containerlogic;
+var songslogic;
+var eggslogic;
 //trick vars
 var skipbombers;
 
@@ -114,6 +116,8 @@ var logicCookieDefault = {
     bkey: false,
     bosses: false,
     containers: false,
+	songs: false,
+	eggs: false,
     skipnotebook: false,
 };
 
@@ -202,6 +206,8 @@ function loadCookie(name) {
         document.getElementById("bigkeylogictoggle").checked = cookieobj.bkey ? 1 : 0;
         document.getElementById("remainslogictoggle").checked = cookieobj.bosses ? 1 : 0;
         document.getElementById("containerlogictoggle").checked = cookieobj.containers ? 1 : 0;
+		document.getElementById("eggslogictoggle").checked = cookieobj.eggs ? 1 : 0 ;
+		document.getElementById("songslogictoggle").checked = cookieobj.songs ? 1 : 0;
         
         //Tricks and Logic Settings
         document.getElementById("skipbomberstoggle").checked = cookieobj.skipnotebook ? 1 : 0;
@@ -263,6 +269,8 @@ function saveCookie(name) {
         cookieobj.bkey = document.getElementById("bigkeylogictoggle").checked;
         cookieobj.bosses = document.getElementById("remainslogictoggle").checked;
         cookieobj.containers = document.getElementById("containerlogictoggle").checked;
+		cookieobj.songs = document.getElementById("songslogictoggle").checked;
+		cookieobj.eggs = document.getElementById("eggslogictoggle").checked;
         //Tricks and Logic Settings
         cookieobj.skipnotebook = document.getElementById("skipbomberstoggle").checked;
 
@@ -285,6 +293,8 @@ function saveCookie(name) {
         if(cookieobj.bkey) {setBigKeyLogic();}
         if(cookieobj.bosses) {setRemainsLogic();}
         if(cookieobj.containers) {setContainerLogic();}
+		if(cookieobj.eggs) {setEggsLogic();}
+		if(cookieobj.songs) {setSongsLogic();}
 
         if(cookieobj.skipnotebook) {setSkipBombers();}
     }   
@@ -591,6 +601,24 @@ function setContainerLogic() {
     saveCookie("logic");
 }
 
+function setSongsLogic() {
+	if (document.getElementById("songslogictoggle").checked) {
+		songslogic = true;
+	}
+	else { songslogic = false;}
+	updateMap();
+	saveCookie("logic");
+}
+
+function setEggsLogic() {
+	if (document.getElementById("eggslogictoggle").checked) {
+		eggslogic = true;
+	}
+	else { eggslogic = false;}
+	updateMap();
+	saveCookie("logic");
+}
+
 function setSkipBombers() {
     if (document.getElementById("skipbomberstoggle").checked) {
         skipbombers = true;
@@ -728,6 +756,8 @@ function ResetLogic() {
     document.getElementById("bigkeylogictoggle").checked = false;
     document.getElementById("remainslogictoggle").checked = false;
     document.getElementById("containerlogictoggle").checked = false;
+	document.getElementById("songslogictoggle").checked = false;
+	document.getElementById("eggslogictoggle").checked = false;
     
     //Tricks and Logic Settings
     document.getElementById("skipbomberstoggle").checked = false;
@@ -751,6 +781,8 @@ function ResetLogic() {
     setBigKeyLogic();
     setRemainsLogic();
     setContainerLogic();
+	setSongsLogic();
+	setEggsLogic();
 
     setSkipBombers();
     //update map to reflect changes

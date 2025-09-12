@@ -400,7 +400,7 @@ var areas = [
             },
             'Song of Healing': { 
                 isAvailable: function() { return true;}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
             'Deku Mask': { 
                 isAvailable: function() { return true;}, 
@@ -565,7 +565,7 @@ var areas = [
             },
             'Song of Soaring': { 
                 isAvailable: function() { return quests.Ocarina;}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
             'Tourist Center Roof': { 
                 isAvailable: function() { return masks.DekuMask && quests.LandDeed;}, 
@@ -613,7 +613,7 @@ var areas = [
                 isLogic: function() { return piecelogic;},},
             'Imprisoned Monkey': { 
                 isAvailable: function() { return CanGetToDekuPalace() && quests.Ocarina && items.MagicBean;}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
             'Bean Seller': { 
                 isAvailable: function() { return CanGetToDekuPalace();}, 
@@ -716,7 +716,7 @@ var areas = [
             },
             'Lullaby Intro': { 
                 isAvailable: function() { return items.Bow >=1 && HasExplosives() && masks.GoronMask && (HasBottle() || CanUse(items.FireArrow));}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
             'Tingle Snowhead Map': { 
                 isAvailable: function() { return items.Bow >= 1 && HasExplosives();}, 
@@ -781,7 +781,7 @@ var areas = [
             },
             'Goron Lullaby': { 
                 isAvailable: function() { return items.Bow >=1 && HasExplosives() && masks.GoronMask && ((HasBottle() && CanUse(items.LensOfTruth)) || CanUse(items.FireArrow));}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
         },
         isBeatable: function() {
@@ -835,7 +835,7 @@ var areas = [
             },
             'Romanis Game': { 
                 isAvailable: function() { return items.PowderKeg && masks.GoronMask && items.Bow >= 1;}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
             'Dog Race Winner': { 
                 isAvailable: function() { return masks.MaskOfTruth;}, 
@@ -884,7 +884,7 @@ var areas = [
             },
             'Baby Zoras': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && HasBottle() && dungeons.ZoraEgg >= 7;}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
             'Lab Fish': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && HasBottle();}, 
@@ -925,15 +925,15 @@ var areas = [
             },
             'Zora Egg 1': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && items.Magic >= 1 && HasBottle();}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return eggslogic;},
             },
             'Zora Egg 2': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && items.Magic >= 1 && HasBottle();}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return eggslogic;},
             },
             'Zora Egg 3': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && dungeons.Seahorse && items.Magic >= 1 && HasBottle();}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return eggslogic;},
             },
         },
         isBeatable: function() {
@@ -1040,7 +1040,7 @@ var areas = [
             },
             'Day 1 Grave Tablet': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.CaptainsHat && Fighting();}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
             'Day 2 Iron Knuckle Chest': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.CaptainsHat && Fighting();}, 
@@ -1395,28 +1395,28 @@ var areas = [
                 isLogic: function() { return true;},
             },
             'Guard Room Chest': { 
-                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && (HasRangeAttack() || masks.StoneMask);}, 
+                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Hookshot && items.Magic >= 1 && (HasRangeAttack() || masks.StoneMask);}, 
                 isLogic: function() { return true;},
             },
             'Tank Chest': {
-                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && (HasRangeAttack() || masks.StoneMask);},
+                isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Hookshot && items.Magic >= 1 && (HasRangeAttack() || masks.StoneMask);},
                 isLogic: function() { return true;},
             },
             'Barrel Maze Zora Egg': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot && HasBottle();}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return eggslogic;},
             },
             'Lava Room Zora Egg': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot && HasBottle();}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return eggslogic;},
             },
             'Guard Room Zora Egg': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot && HasBottle();}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return eggslogic;},
             },
             'Hookshot Room Zora Egg': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && masks.GoronMask && items.Magic >= 1 && items.Hookshot && HasBottle();}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return eggslogic;},
             },
         },
         isBeatable: function() {
@@ -1462,7 +1462,7 @@ var areas = [
             },
             'Elegy of Emptiness': { 
                 isAvailable: function() { return EnterIkanaCastle() && masks.DekuMask && items.Shield >= 2 && items.PowderKeg && masks.GoronMask;}, 
-                isLogic: function() { return true;},
+                isLogic: function() { return songslogic;},
             },
         },
         isBeatable: function() {
@@ -1905,6 +1905,6 @@ var checks = [
             }
             return "unavailable";
         },
-        isLogic: function() { return true;},
+        isLogic: function() { return songslogic;},
     },
 ];
