@@ -110,10 +110,6 @@ function EnterStoneTower() {
     return (EnterIkana() && masks.ZoraMask && masks.GoronMask && canPlay(quests.ElegyOfEmptiness));
 }
 
-function EnterIkanaCastle() {
-    return (EnterIkana() && (HasBottle() && masks.GibdoMask && CanUse(items.FireArrow)) || items.Shield >= 2 || CanUse(items.LightArrow));
-}
-
 function EnterMoon() {
     return dungeons.OdolwaRemains && dungeons.GohtRemains && dungeons.GyorgRemains && dungeons.TwinmoldRemains && canPlay(quests.OathToOrder);
 }
@@ -1457,11 +1453,11 @@ var areas = [
         y: "47%",
         checklist: {
             'Pillar HP': { 
-                isAvailable: function() { return EnterIkanaCastle() && masks.DekuMask;}, 
+                isAvailable: function() { return (canPlay(quests.EponasSong) && masks.GaroMask || masks.GibdoMask && items.Hookshot && CanUse(items.IceArrow)) && ((HasBottle() && masks.GibdoMask && CanUse(items.FireArrow) && items.Shield >= 2) || CanUse(items.LightArrow)) && masks.DekuMask;}, 
                 isLogic: function() { return piecelogic;},
             },
             'Elegy of Emptiness': { 
-                isAvailable: function() { return EnterIkanaCastle() && masks.DekuMask && items.Shield >= 2 && items.PowderKeg && masks.GoronMask;}, 
+                isAvailable: function() { return (canPlay(quests.EponasSong) && masks.GaroMask || masks.GibdoMask && items.Hookshot && CanUse(items.IceArrow)) && ((HasBottle() && masks.GibdoMask && CanUse(items.FireArrow) && items.Shield >= 2) || CanUse(items.LightArrow)) && masks.DekuMask && items.PowderKeg && masks.GoronMask;}, 
                 isLogic: function() { return songslogic;},
             },
         },
