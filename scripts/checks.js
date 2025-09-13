@@ -63,7 +63,7 @@ function HasExplosives() {
 
 function CanUse(item) {
     if (item == items.LensOfTruth) { return (items.LensOfTruth && items.Magic >= 1); }
-    else if (item == masks.GiantMask) { return (masks.GiantMask && items.Magic >= 1); }
+    else if (item == masks.GiantsMask) { return (masks.GiantsMask && items.Magic >= 1); }
     else if (item == items.FireArrow) { return (items.FireArrow && items.Magic >= 1 && items.Bow >= 1);}
     else if (item == items.IceArrow) { return (items.IceArrow && items.Magic >= 1 && items.Bow >= 1);}
     else if (item == items.LightArrow) { return (items.LightArrow && items.Magic >= 1 && items.Bow >= 1);}
@@ -87,7 +87,7 @@ function BayClear() {
 }
 
 function StoneClear() {
-    return (EnterStoneTower() && dungeons.StoneSmallKey >= 3 && CanUse(items.LightArrow) && dungeons.StoneBigKey && masks.GiantMask);
+    return (EnterStoneTower() && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 4 && dungeons.StoneBigKey && CanUse(masks.GiantsMask));
 }
 
 function EnterWoodfallTemple() {
@@ -136,7 +136,7 @@ function TotalMasks(total) {
     if (masks.GibdoMask)        {TotalMasks++;}
     if (masks.GaroMask)         {TotalMasks++;}
     if (masks.CaptainsHat)      {TotalMasks++;}
-    if (masks.GiantMask)        {TotalMasks++;}
+    if (masks.GiantsMask)        {TotalMasks++;}
     if (masks.FierceDeityMask)  {TotalMasks++;}
     
     if (TotalMasks >= total) {return true;}
@@ -1105,23 +1105,23 @@ var areas = [
         y: "40%",
         checklist: {
             'Dinolfos Chest': { 
-                isAvailable: function() { return EnterIkana() && CanUse(items.LightArrow);}, 
+                isAvailable: function() { return EnterIkana() && WoodfallClear() && CanUse(items.LightArrow);}, 
                 isLogic: function() { return true;},
             },
             'Wizzrobe Chest': { 
-                isAvailable: function() { return EnterIkana() && CanUse(items.LightArrow);}, 
+                isAvailable: function() { return EnterIkana() && SnowheadClear() && CanUse(items.LightArrow);}, 
                 isLogic: function() { return true;},
             },
             'Wart Chest': { 
-                isAvailable: function() { return EnterIkana() && CanUse(items.LightArrow);}, 
+                isAvailable: function() { return EnterIkana() && BayClear() && CanUse(items.LightArrow);}, 
                 isLogic: function() { return true;},
             },
             'Garo Chest': { 
-                isAvailable: function() { return EnterIkana() && CanUse(items.LightArrow);}, 
+                isAvailable: function() { return EnterIkana() && StoneClear() && CanUse(items.LightArrow);}, 
                 isLogic: function() { return true;},
             },
             'Final Chest': { 
-                isAvailable: function() { return EnterIkana && CanUse(items.LightArrow);}, 
+                isAvailable: function() { return EnterIkana() && WoodfallClear() && SnowheadClear() && BayClear() && StoneClear() && CanUse(items.LightArrow);}, 
                 isLogic: function() { return piecelogic;},
             },
         },
@@ -1326,11 +1326,11 @@ var areas = [
                 isLogic: function() { return bigkeylogic;},
             },
             'Twinmold Remains': { 
-                isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 4 && dungeons.StoneBigKey;}, 
+                isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && (dungeons.StoneSmallKey >= 4) && dungeons.StoneBigKey && CanUse(masks.GiantsMask);}, 
                 isLogic: function() { return remainslogic;},
             },
             'Heart Container': { 
-                isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 4 && dungeons.StoneBigKey;},
+                isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && (dungeons.StoneSmallKey >= 4) && dungeons.StoneBigKey && CanUse(masks.GiantsMask);},
                 isLogic: function() { return containerlogic;}, 
             },
         },
@@ -1453,11 +1453,11 @@ var areas = [
         y: "47%",
         checklist: {
             'Pillar HP': { 
-                isAvailable: function() { return (canPlay(quests.EponasSong) && masks.GaroMask || masks.GibdoMask && items.Hookshot && CanUse(items.IceArrow)) && ((HasBottle() && masks.GibdoMask && CanUse(items.FireArrow) && items.Shield >= 2) || CanUse(items.LightArrow)) && masks.DekuMask;}, 
+                isAvailable: function() { return (canPlay(quests.EponasSong) && (masks.GaroMask || masks.GibdoMask) && items.Hookshot && (CanUse(items.IceArrow))) && ((HasBottle() && masks.GibdoMask && CanUse(items.FireArrow) && items.Shield >= 2) || CanUse(items.LightArrow)) && masks.DekuMask;}, 
                 isLogic: function() { return piecelogic;},
             },
             'Elegy of Emptiness': { 
-                isAvailable: function() { return (canPlay(quests.EponasSong) && masks.GaroMask || masks.GibdoMask && items.Hookshot && CanUse(items.IceArrow)) && ((HasBottle() && masks.GibdoMask && CanUse(items.FireArrow) && items.Shield >= 2) || CanUse(items.LightArrow)) && masks.DekuMask && items.PowderKeg && masks.GoronMask;}, 
+                isAvailable: function() { return (canPlay(quests.EponasSong) && (masks.GaroMask || masks.GibdoMask) && items.Hookshot && (CanUse(items.IceArrow))) && ((HasBottle() && masks.GibdoMask && CanUse(items.FireArrow) && items.Shield >= 2) || CanUse(items.LightArrow)) && masks.DekuMask && items.PowderKeg && masks.GoronMask;}, 
                 isLogic: function() { return songslogic;},
             },
         },
