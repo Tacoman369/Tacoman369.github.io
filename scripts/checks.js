@@ -2,17 +2,20 @@
 function generalCanGetCheck(checklist) {
     var canGet = 0;
     var unopened = 0;
+    var inlogic = 0;
+    var numchecks = 0;
     for (var key in checklist) {
         if (checklist.hasOwnProperty(key)) {
             if (!checklist[key].isOpened) {
                 unopened++;
             }
-            if (!checklist[key].isOpened && checklist[key].isAvailable()) {
+            if (!checklist[key].isOpened && checklist[key].isAvailable() && checklist[key].isLogic()) {
                 canGet++;   
             }
-            /*if (checklist[key].isCheckable(key)){
-                checkable++;
-            }*/
+            if (!checklist[key].isLogic()) {
+                inlogic++;
+            }
+            numchecks++;
         }
     }
     if (unopened == 0) {
@@ -22,14 +25,16 @@ function generalCanGetCheck(checklist) {
         return "available";
     }
     if (canGet == 0) {
-        return "unavailable";
+        if (inlogic == numchecks) {
+            return "hidden";
+        }
+        else {
+            return "unavailable";
+        }
     }
-    /*
-    if (checkable == 1)
-    {
-        return "hidden";
-    }*/
-    return "possible";
+    else {
+        return "possible";
+    }
 }
 /*
 function isCheckable(key) {
@@ -187,15 +192,16 @@ var areas = [
             },
         },
         isBeatable: function() {
-            if (masks.KeatonMask && masks.PostmanHat && masks.DekuMask) {
-                if (this.canGetCheck() == 'available') {
-                    return 'available';
-                }
-                return 'possible';
-            }
-            else {
-                return 'unavailable';
-            }
+            return this.canGetCheck();
+            // if (masks.KeatonMask && masks.PostmanHat && masks.DekuMask) {
+            //     if (this.canGetCheck() == 'available') {
+            //         return 'available';
+            //     }
+            //     return 'possible';
+            // }
+            // else {
+            //     return 'unavailable';
+            // }
         },
         canGetCheck: function() {
             return generalCanGetCheck(this.checklist);
@@ -1797,18 +1803,15 @@ var checks = [
         x: "47%",
         y: "45%",
         isAvailable: function() {
-            if (items.Bomb >=1 && quests.BombersNotebook){
+            if (!this.isLogic()) {
+                return "hidden";
+            }
+            else if (items.Bomb >=1 && quests.BombersNotebook){
                 return "available";
             }
-            return "unavailable"; 
+            else {return "unavailable"; }
         },
         isLogic: function() { return true;},
-        isBeatable: function() {
-            return this.canGetCheck();
-        },
-        canGetCheck: function() {
-            return generalCanGetCheck(this.checklist);
-        },
     },
     {
         name: 'Mystery Woods Grotto Chest',
@@ -1824,10 +1827,13 @@ var checks = [
         x: "52%",
         y: "75%",
         isAvailable: function() {
-            if (dungeons.SwampStrayFairy >= 15) {
+            if (!this.isLogic()) {
+                return "hidden";
+            }
+            else if (dungeons.SwampStrayFairy >= 15) {
                 return "available";
             }
-            return "unavailable";
+            else {return "unavailable";}
         },
         isLogic: function() { return greatfairylogic;},
     },
@@ -1836,7 +1842,10 @@ var checks = [
         x: "46%",
         y: "25%",
         isAvailable: function() {
-            if (items.Bow >=1 && HasExplosives() && masks.GoronMask && masks.MaskOfTruth && items.Magic >= 1) {
+            if (!this.isLogic()) {
+                return "hidden";
+            }
+            else if (items.Bow >=1 && HasExplosives() && masks.GoronMask && masks.MaskOfTruth && items.Magic >= 1) {
                 return "available";
             }
             return "unavailable";
@@ -1848,7 +1857,10 @@ var checks = [
         x: "47%",
         y: "28%",
         isAvailable: function() {
-            if (piecelogic && items.Bow >=1 && HasExplosives() && masks.GoronMask && CanUse(items.LensOfTruth) && items.Hookshot && canPlay(quests.ScarecrowSong)) {
+            if (!this.isLogic()) {
+                return "hidden";
+            }
+            else if (piecelogic && items.Bow >=1 && HasExplosives() && masks.GoronMask && CanUse(items.LensOfTruth) && items.Hookshot && canPlay(quests.ScarecrowSong)) {
                 return "available";
             }
             return "unavailable";
@@ -1860,7 +1872,10 @@ var checks = [
         x: "49%",
         y: "21%",
         isAvailable: function() {
-            if (dungeons.SnowStrayFairy >= 15) {
+            if (!this.isLogic()) {
+                return "hidden";
+            }
+            else if (dungeons.SnowStrayFairy >= 15) {
                 return "available";
             }
             return "unavailable";
@@ -1872,7 +1887,10 @@ var checks = [
         x: "25%",
         y: "64%",
         isAvailable: function() {
-            if (dungeons.OceanStrayFairy >= 15) {
+            if (!this.isLogic()) {
+                return "hidden";
+            }
+            else if (dungeons.OceanStrayFairy >= 15) {
                 return "available";
             }
             return "unavailable";
@@ -1884,7 +1902,10 @@ var checks = [
         x: "77%",
         y: "45%",
         isAvailable: function() {
-            if (dungeons.StoneStrayFairy >= 15) {
+            if (!this.isLogic()) {
+                return "hidden";
+            }
+            else if (dungeons.StoneStrayFairy >= 15) {
                 return "available";
             }
             return "unavailable";
@@ -1896,7 +1917,10 @@ var checks = [
         x: "50%",
         y: "85%",
         isAvailable: function() {
-            if (WoodfallClear() || SnowheadClear() || BayClear() || StoneClear()) {
+            if (!this.isLogic()) {
+                return "hidden";
+            }
+            else if (WoodfallClear() || SnowheadClear() || BayClear() || StoneClear()) {
                 return "available";
             }
             return "unavailable";

@@ -624,11 +624,17 @@ function setSkipBombers() {
         skipbombers = true;
     }
     else { skipbombers = false;}
-    
-    updateGridItemAll();
-    updateGridMaskAll();
-    updateGridDungeonAll();
+    // if (skipbombers) {
+    //     document.getElementById(baseQuests.NoteNumOne = 1);
+    //     document.getElementById(baseQuests.NoteNumTwo = 2);
+    //     document.getElementById(baseQuests.NoteNumThree = 3);
+    //     document.getElementById(baseQuests.NoteNumFour = 4);
+    //     document.getElementById(baseQuests.NoteNumFive = 5);
+    // }
+    // updateGridQuest(3,2);
+    // updateGridQuest(3,3);
     updateGridQuestAll();
+    // saveCookie("logic");
 }
 
 function setZoom(target, sender) {
@@ -1847,16 +1853,14 @@ function gridQuestRClick(row, col, corner) {
 
 function updateMap() {
     for (k = 0; k < checks.length; k++) {
-        if(checks[k].isOpened) {
             document.getElementById(k).className = "mapspan check " + checks[k].isAvailable();
-        }
     }
     for (k = 0; k < areas.length; k++) {
         document.getElementById("area" + k).className = "mapspan area " + areas[k].canGetCheck();
         var DCcount = 0;
         for (var key in areas[k].checklist) {
             if (areas[k].checklist.hasOwnProperty(key)) {
-                if (!areas[k].checklist[key].isOpened && areas[k].checklist[key].isAvailable()) {
+                if (!areas[k].checklist[key].isOpened && areas[k].checklist[key].isAvailable() && areas[k].checklist[key].isLogic()) {
                     DCcount++;
                 }
             }
@@ -2075,10 +2079,10 @@ function populateMapDiv() {
             l.className = "DCopened";
         }
         else if (!areas[areaSelect].checklist[key1].isLogic()) {
-            length.className = "DChidden";
+            l.className = "DChidden";
         }
         else if (areas[areaSelect].checklist[key1].isAvailable()) {
-            length.className = "DCavailable";
+            l.className = "DCavailable";
         }
         
         else {
