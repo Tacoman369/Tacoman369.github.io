@@ -333,6 +333,7 @@ function deserializeAreaChecks(serializedAreas) {
 function toggleCheck(x) {
     checks[x].isOpened = !checks[x].isOpened;
     refreshCheck(x);
+    updateMap();
     saveCookie("checks");
 }
 
@@ -1852,6 +1853,45 @@ function gridQuestRClick(row, col, corner) {
 }
 
 function updateMap() {
+    var checked = 0;
+    var available = 0;
+    var remaining = 0;
+
+    for (var k = 0; k < checks.length; k++) {
+        if (checks[k].isLogic()) {
+            if (checks[k].isOpened) {
+                checked++;
+            }
+            else {
+                remaining++;
+                if (checks[k].isAvailable() === "available") {
+                    available++;
+                }
+            }
+        }
+    }
+
+    for (var k = 0; k < areas.length; k++) {
+        for (var key in areas[k].checklist) {
+            var check = areas[k].checklist[key];
+            if (check.isLogic()) {
+                if (check.isOpened) {
+                    checked++;
+                }
+                else {
+                    remaining++;
+                    if (check.isAvailable()) {
+                        available++;
+                    }
+                }
+            }
+        }
+    }
+
+    document.getElementById("statschecked").innerHTML = checked;
+    document.getElementById("statsavailable").innerHTML = available;
+    document.getElementById("statsremaining").innerHTML = remaining;
+
     for (k = 0; k < checks.length; k++) {
             document.getElementById(k).className = "mapspan check " + checks[k].isAvailable();
     }
