@@ -507,6 +507,14 @@ var areas = [
                 isAvailable: function() { return (items.Bomb >=1 || masks.GoronMask) && ((quests.SonataOfAwakening && masks.DekuMask) || (quests.GoronLullaby && masks.GoronMask) || (quests.NewWaveBossaNova && masks.ZoraMask))  ;}, 
                 isLogic: function() { return piecelogic;},
             },
+            'Grotto Cow 1': { 
+                isAvailable: function() { return items.Bomb >= 1 && HasBottle() && canPlay(quests.EponasSong);},
+                isLogic: function() { return cowlogic;},
+            },
+            'Grotto Cow 2': { 
+                isAvailable: function() { return items.Bomb >= 1 && HasBottle() && canPlay(quests.EponasSong);}, 
+                isLogic: function() { return cowlogic;},
+            },
         },
         isBeatable: function() {
             return this.canGetCheck();
@@ -851,6 +859,14 @@ var areas = [
                 isAvailable: function() { return masks.BremenMask;}, 
                 isLogic: function() { return piecelogic;},
             },
+            'Barn Cow 1': { 
+                isAvailable: function() { return HasBottle() && CanPlay(quests.EponasSong) && items.PowderKeg && masks.GoronMask;}, 
+                isLogic: function() { return cowlogic;},
+            },
+            'Barn Cow 2': { 
+                isAvailable: function() { return HasBottle() && CanPlay(quests.EponasSong) && items.PowderKeg && masks.GoronMask;}, 
+                isLogic: function() { return cowlogic;},
+            },
         },
         isBeatable: function() {
             return this.canGetCheck();
@@ -899,6 +915,14 @@ var areas = [
             'Fisherman Photo': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.PictographBox;}, 
                 isLogic: function() { return true;},
+            },
+            'Grotto Cow 1': { 
+                isAvailable: function() { return canPlay(quests.EponasSong) && HasBottle() && items.Hookshot;}, 
+                isLogic: function() { return cowlogic;},
+            },
+            'Grotto Cow 2': { 
+                isAvailable: function() { return canPlay(quests.EponasSong) && HasBottle() && items.Hookshot;}, 
+                isLogic: function() { return cowlogic;},
             },
         },
         isBeatable: function() {
@@ -1444,6 +1468,10 @@ var areas = [
             'Mirror Shield Chest': { 
                 isAvailable: function() { return EnterIkana() && HasBottle() && masks.GibdoMask && CanUse(items.FireArrow);}, 
                 isLogic: function() { return true;},
+            },
+            'Cow': { 
+                isAvailable: function() { return EnterIkana() && HasBottle() && masks.GibdoMask && items.DekuNut && items.MagicBean;}, 
+                isLogic: function() { return cowlogic;},
             },
         },
         isBeatable: function() {
