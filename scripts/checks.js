@@ -112,7 +112,7 @@ function EnterIkana() {
 }
 
 function EnterStoneTower() {
-    return (EnterIkana() && masks.ZoraMask && masks.GoronMask && canPlay(quests.ElegyOfEmptiness));
+    return (EnterIkana() && masks.DekuMask && masks.ZoraMask && masks.GoronMask && canPlay(quests.ElegyOfEmptiness));
 }
 
 function EnterMoon() {
@@ -193,15 +193,6 @@ var areas = [
         },
         isBeatable: function() {
             return this.canGetCheck();
-            // if (masks.KeatonMask && masks.PostmanHat && masks.DekuMask) {
-            //     if (this.canGetCheck() == 'available') {
-            //         return 'available';
-            //     }
-            //     return 'possible';
-            // }
-            // else {
-            //     return 'unavailable';
-            // }
         },
         canGetCheck: function() {
             return generalCanGetCheck(this.checklist);
@@ -444,6 +435,10 @@ var areas = [
             'Kafei': { 
                 isAvailable: function() { return quests.LetterToKafei;}, 
                 isLogic: function() { return anjulogic;},
+            },
+            'Stray Fairy': {
+                isAvailable: function() { return true;},
+                isLogic: function() { return townstraylogic;},
             },
 
         },
@@ -1220,6 +1215,66 @@ var areas = [
                 isAvailable: function() { return EnterWoodfallTemple() && dungeons.SwampSmallKey >= 1 && dungeons.SwampBigKey && items.Bow >= 1;}, 
                 isLogic: function() { return remainslogic;},
             },
+            'Entrance Stray Fairy': { 
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Entrance Chest Stray Fairy': { 
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Main Room Bubble Stray Fairy': { 
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Main Room Jar Stray Fairy': { 
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Main Room Deku Baba Stray Fairy': { 
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Main Room Switch Stray Fairy': { 
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && (items.Hookshot || items.Bow >= 1);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Platform Room Beehive Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Bridge Room Beehive Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Bridge Room Skulltula Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Dark Room Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1 && (items.DekuStick || (items.Bow >= 1 && items.FireArrow));}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Dragonfly Room Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Pre-Boss Room Lower Right Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Pre-Boss Room Upper Left Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Pre-Boss Room Upper Right Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Pre-Boss Room Pillar Stray Fairy': {
+                isAvailable: function() { return EnterWoodfallTemple() && masks.GreatFairyMask && dungeons.SwampSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
         },
         isBeatable: function() {
             return this.canGetCheck();
@@ -1269,6 +1324,67 @@ var areas = [
                 isAvailable: function() { return EnterSnowheadTemple() && dungeons.SnowSmallKey >= 3 && dungeons.SnowBigKey && CanUse(items.FireArrow);}, 
                 isLogic: function() { return containerlogic;},
             },
+            'Bridge Room Ledge Stray Fairy': { 
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Bridge Room Pillar Stray Fairy': { 
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack();}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Lower Map Room Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Upper Map Room Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Basement Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Compass Room Ice Puzzle Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && CanUse(items.FireArrow) && dungeons.SnowSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Compass Room Crate': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && dungeons.SnowSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Double Block Room Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && CanUse(items.FireArrow) && dungeons.SnowSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Icicle Room Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && dungeons.SnowSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Switch Puzzle Ceiling Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && dungeons.SnowSmallKey >= 2;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Main Room Wall Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && ((CanPlay(quest.ScarecrowSong) && items.Hookshot) || dungeons.SnowSmallKey >= 3);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Pillar Room Freezards Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && CanUse(items.FireArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Snow Room Stray Fairy': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && dungeons.SnowSmallKey >= 3;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Dinolfos Room Stray Fairy 1': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && Fighting() && dungeons.SnowSmallKey >= 3;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Dinolfos Room Stray Fairy 2': {
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && Fighting() && dungeons.SnowSmallKey >= 3;}, 
+                isLogic: function() { return straylogic;},
+            },
+
         },
         isBeatable: function() {
             return this.canGetCheck();
@@ -1309,6 +1425,66 @@ var areas = [
             'Heart Container': { 
                 isAvailable: function() { return EnterGreatBayTemple() && CanUse(items.FireArrow) && CanUse(items.IceArrow) && dungeons.OceanSmallKey >= 1 && dungeons.OceanBigKey;}, 
                 isLogic: function() { return containerlogic;},
+            },
+            'Entrance Torches Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask && CanUse(items.FireArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Water Control Room Skulltula Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Water Control Room Underwater Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Whirlpool Jar Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Whirlpool Barrel Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Map Room Jar Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Bio Baba Chest Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Dexihand Jar Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Green Valve Room Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask && CanUse(items.IceArrow);}, 
+                isLogic: function() { return straylogic;}, 
+            },
+            'Lower Waterwheel Room Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask && CanUse(items.IceArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Upper Waterwheel Room Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask && CanUse(items.IceArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Seesaw Room Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask && CanUse(items.IceArrow) && CanUse(items.FireArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Seesaw Room Barrel Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask && CanUse(items.IceArrow) && CanUse(items.FireArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Pre-Boss Room Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask && CanUse(items.IceArrow) && CanUse(items.FireArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Pre-Boss Room Underwater Stray Fairy': {
+                isAvailable: function() { return EnterGreatBayTemple() && masks.GreatFairyMask && CanUse(items.IceArrow) && CanUse(items.FireArrow);}, 
+                isLogic: function() { return straylogic;},
             },
         },
         isBeatable: function() {
@@ -1363,6 +1539,67 @@ var areas = [
                 isAvailable: function() { return EnterStoneTower() && CanUse(items.LightArrow) && (dungeons.StoneSmallKey >= 4) && dungeons.StoneBigKey && CanUse(masks.GiantsMask);},
                 isLogic: function() { return containerlogic;}, 
             },
+            'Statue Eye Stray Fairy': { 
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Death Armos Switch Stray Fairy Chest': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 3;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Basement Ledge Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Bridge Crystal Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 1;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Underwater Chest Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Mirror Room Sun Block Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && (CanUse(items.LightArrow) || items.Shield >= 1) && dungeons.StoneSmallKey >= 2;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Mirror Room Sun Switch Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && (CanUse(items.LightArrow) || items.Shield >= 1) && dungeons.StoneSmallKey >= 2;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Lava Room Ledge Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 2;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Lava Room Fire Ring Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 2;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Thin Bridge Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 4;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Eyegore Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 2;}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Chest Infront of Boss Warp Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Updraft Room Frozen Eye Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Updraft Room Fire Ring Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow);}, 
+                isLogic: function() { return straylogic;},
+            },
+            'Wizzrobe Room Stray Fairy': {
+                isAvailable: function() { return EnterStoneTower() && masks.GreatFairyMask && CanUse(items.LightArrow) && dungeons.StoneSmallKey >= 3;}, 
+                isLogic: function() { return straylogic;},
+            },
+            
         },
         isBeatable: function() {
             return this.canGetCheck();
