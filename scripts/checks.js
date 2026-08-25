@@ -1613,7 +1613,7 @@ var areas = [
         x: "32%",
         y: "40%",
         checklist: {
-            'Exterior Log Chest': { 
+            'Exterior Ledge Chest': { 
                 isAvailable: function() { return canPlay(quests.EponasSong) && masks.ZoraMask && items.Magic >= 1;}, 
                 isLogic: function() { return true;},
             },
