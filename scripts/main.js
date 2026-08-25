@@ -26,6 +26,9 @@ var remainslogic;
 var containerlogic;
 var songslogic;
 var eggslogic;
+var cowlogic;
+var straylogic;
+var townstraylogic;
 //trick vars
 var skipbombers;
 
@@ -208,6 +211,9 @@ function loadCookie(name) {
         document.getElementById("containerlogictoggle").checked = cookieobj.containers ? 1 : 0;
 		document.getElementById("eggslogictoggle").checked = cookieobj.eggs ? 1 : 0 ;
 		document.getElementById("songslogictoggle").checked = cookieobj.songs ? 1 : 0;
+        document.getElementById("cowlogictoggle").checked = cookieobj.cow ? 1 : 0;
+        document.getElementById("straylogictoggle").checked = cookieobj.stray ? 1 : 0;
+        document.getElementById("townstraylogictoggle").checked = cookieobj.townstray ? 1 : 0;
         
         //Tricks and Logic Settings
         document.getElementById("skipbomberstoggle").checked = cookieobj.skipnotebook ? 1 : 0;
@@ -270,6 +276,9 @@ function saveCookie(name) {
         cookieobj.bosses = document.getElementById("remainslogictoggle").checked;
         cookieobj.containers = document.getElementById("containerlogictoggle").checked;
 		cookieobj.songs = document.getElementById("songslogictoggle").checked;
+        cookieobj.cow = document.getElementById("cowlogictoggle").checked;
+        cookieobj.stray = document.getElementById("straylogictoggle").checked;
+        cookieobj.townstray = document.getElementById("townstraylogictoggle").checked;
 		cookieobj.eggs = document.getElementById("eggslogictoggle").checked;
         //Tricks and Logic Settings
         cookieobj.skipnotebook = document.getElementById("skipbomberstoggle").checked;
@@ -295,6 +304,9 @@ function saveCookie(name) {
         if(cookieobj.containers) {setContainerLogic();}
 		if(cookieobj.eggs) {setEggsLogic();}
 		if(cookieobj.songs) {setSongsLogic();}
+        if(cookieobj.cow) {setCowLogic();}
+        if(cookieobj.stray) {setStrayLogic();}
+        if(cookieobj.townstray) {setTownStrayLogic();}
 
         if(cookieobj.skipnotebook) {setSkipBombers();}
     }   
@@ -611,6 +623,33 @@ function setSongsLogic() {
 	saveCookie("logic");
 }
 
+function setCowLogic() {
+	if (document.getElementById("cowlogictoggle").checked) {
+		cowlogic = true;
+	}
+	else { cowlogic = false;}
+	updateMap();
+	saveCookie("logic");
+}
+
+function setStrayLogic() {
+	if (document.getElementById("straylogictoggle").checked) {
+		straylogic = true;
+	}
+	else { straylogic = false;}
+	updateMap();
+	saveCookie("logic");
+}
+
+function setTownStrayLogic() {
+	if (document.getElementById("townstraylogictoggle").checked) {
+		townstraylogic = true;
+	}
+	else { townstraylogic = false;}
+	updateMap();
+	saveCookie("logic");
+}
+
 function setEggsLogic() {
 	if (document.getElementById("eggslogictoggle").checked) {
 		eggslogic = true;
@@ -755,8 +794,10 @@ function ResetLogic() {
     document.getElementById("tinglelogictoggle").checked = false;
     document.getElementById("notebooklogictoggle").checked = false;
     document.getElementById("moonitemlogictoggle").checked = false;
+    document.getElementById("cowlogictoggle").checked = false;
     document.getElementById("deitylogictoggle").checked = false;
-    
+    document.getElementById("straylogictoggle").checked = false;
+    document.getElementById("townstraylogictoggle").checked = false;
     //Area Settings
     document.getElementById("mapslogictoggle").checked = false;
     document.getElementById("smallkeylogictoggle").checked = false;
@@ -777,6 +818,9 @@ function ResetLogic() {
     setSkullsLogic();
     setScrubTradeLogic();
     setAnjuLogic();
+    setCowLogic();
+    setStrayLogic();
+    setTownStrayLogic();
     setGFLogic();
     setTingleLogic();
     setNotebookLogic();
