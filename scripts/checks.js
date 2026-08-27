@@ -855,11 +855,11 @@ var areas = [
                 isLogic: function() { return piecelogic;},
             },
             'Barn Cow 1': { 
-                isAvailable: function() { return HasBottle() && CanPlay(quests.EponasSong) && items.PowderKeg && masks.GoronMask;}, 
+                isAvailable: function() { return HasBottle() && canPlay(quests.EponasSong) && items.PowderKeg && masks.GoronMask;}, 
                 isLogic: function() { return cowlogic;},
             },
             'Barn Cow 2': { 
-                isAvailable: function() { return HasBottle() && CanPlay(quests.EponasSong) && items.PowderKeg && masks.GoronMask;}, 
+                isAvailable: function() { return HasBottle() && canPlay(quests.EponasSong) && items.PowderKeg && masks.GoronMask;}, 
                 isLogic: function() { return cowlogic;},
             },
         },
@@ -1365,7 +1365,7 @@ var areas = [
                 isLogic: function() { return straylogic;},
             },
             'Main Room Wall Stray Fairy': {
-                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && ((CanPlay(quest.ScarecrowSong) && items.Hookshot) || dungeons.SnowSmallKey >= 3);}, 
+                isAvailable: function() { return EnterSnowheadTemple() && masks.GreatFairyMask && HasRangeAttack() && HasExplosives() && ((canPlay(quest.ScarecrowSong) && items.Hookshot) || dungeons.SnowSmallKey >= 3);}, 
                 isLogic: function() { return straylogic;},
             },
             'Pillar Room Freezards Stray Fairy': {
