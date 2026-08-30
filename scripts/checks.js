@@ -432,10 +432,6 @@ var areas = [
                 isAvailable: function() { return true;}, 
                 isLogic: function() { return true;},
             },
-            'Kafei': { 
-                isAvailable: function() { return quests.LetterToKafei;}, 
-                isLogic: function() { return anjulogic;},
-            },
             'Stray Fairy': {
                 isAvailable: function() { return true;},
                 isLogic: function() { return townstraylogic;},
